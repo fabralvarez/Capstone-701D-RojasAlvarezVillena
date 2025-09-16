@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">VITALARM</string>
+    <string name="login">Ingresar</string>
+    <string name="register">Registrar</string>
+    <string name="username">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="enter">Entrar</string>
+    <string name="name">Nombre</string>
+    <string name="lastname">Apellidos</string>
+    <string name="email">Correo</string>
+    <string name="confirm_password">Confirmar Contraseña</string>
+    <string name="birthdate">Fecha de nacimiento</string>
+    <string name="contact_name">Nombre persona de contacto</string>
+    <string name="contact_relationship">Relación persona de contacto</string>
+    <string name="contact_number">Número persona de contacto</string>
+    <string name="continue_button">Continuar</string>
+</resources>

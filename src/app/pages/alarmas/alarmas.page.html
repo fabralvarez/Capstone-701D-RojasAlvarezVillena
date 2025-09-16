@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Alarmas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item *ngFor="let alarma of alarmas">
+      <ion-label>{{ alarma.medicamento }} - {{ alarma.hora }}</ion-label>
+      <ion-toggle [(ngModel)]="alarma.activo"></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Perfil del Cuidador</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card style="border-radius:15px; box-shadow:0 4px 8px rgba(0,0,0,0.1); margin-bottom:20px;">
+    <ion-card-header>
+      <ion-card-title>{{ usuario.nombre }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Correo:</strong> {{ usuario.correo }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" color="danger" shape="round" (click)="cerrarSesion()">
+    Cerrar Sesión
+  </ion-button>
+</ion-content>

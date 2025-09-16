@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ paciente?.nombre }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h3 style="text-align:center; color:#4a90e2">Medicamentos de {{ paciente?.nombre }}</h3>
+
+  <ion-card *ngFor="let med of medicamentos" style="margin-bottom:15px; border-radius:15px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+    <ion-card-header>
+      <ion-card-title>{{ med.nombre }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Dosis:</strong> {{ med.dosis }}</p>
+      <p><strong>Horarios:</strong> {{ med.horarios.join(', ') }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

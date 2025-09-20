@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:localeConfig="@xml/locales_config"
+        android:minSdkVersion="31"
+        android:targetSdkVersion="36"
         android:theme="@style/Theme.Vitalarmapp"
-        tools:targetApi="31">
-
+        tools:targetApi="36">
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -17,14 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainMenuActivity" />
         <activity android:name=".AddPersonActivity" />
         <activity android:name=".PersonListActivity" />
         <activity android:name=".MedicationListActivity" />
-
     </application>
-
 </manifest>

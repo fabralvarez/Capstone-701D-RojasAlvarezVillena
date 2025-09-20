@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VITALARM</string>
+    <string name="app_name">Vitalarm</string>
     <string name="login">Ingresar</string>
     <string name="register">Registrar</string>
     <string name="username">Usuario</string>

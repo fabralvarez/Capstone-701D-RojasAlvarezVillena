@@ -41,20 +41,16 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    // Navigation Component
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    // Lifecycle components
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    // Preferences
     implementation(libs.androidx.preference.ktx)
-    // Circle Image View
     implementation(libs.circleimageview)
-    // Gson para serialización
-    implementation(libs.gson)
-    // Testing
+    // Dependencias de testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    // Dependencias de librerías externas
+    implementation(libs.gson) //Gson para serializacion
 }

@@ -1,3 +1,11 @@
+## [0.02.1] - 2025-09-20
+
+### Changed
+
+- Mejorada la organización de comentarios en `app/build.gradle.kts`:
+  - Agrupadas las dependencias de testing bajo un único comentario.
+  - Agrupadas las librerías externas (incluyendo Gson) bajo un único comentario.
+
 ## [0.02.0] - 2025-09-20
 
 ### Added

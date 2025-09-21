@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/md_theme_background"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingHorizontal="32dp"
+    android:paddingTop="72dp"
     tools:context=".MainMenuActivity">
 
     <TextView

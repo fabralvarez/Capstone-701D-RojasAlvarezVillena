@@ -21,6 +21,7 @@ class MainMenuActivity : AppCompatActivity() {
         preferencesManager = PreferencesManager(this)
         verificarSesion()
         setupUI()
+        darkModeChecker()
         initListeners()
     }
 
@@ -79,6 +80,7 @@ class MainMenuActivity : AppCompatActivity() {
         Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
     }
 
+    @Deprecated("This method has been deprecated in favor of using the\n      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.\n      The OnBackPressedDispatcher controls how back button events are dispatched\n      to one or more {@link OnBackPressedCallback} objects.")
     @SuppressLint("MissingSuperCall", "GestureBackNavigation")
     override fun onBackPressed() {
         super.onBackPressed()

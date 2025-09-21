@@ -1,9 +1,12 @@
 package com.example.vitalarmapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import com.example.vitalarmapp.databinding.ActivityRegisterBinding
 import com.example.vitalarmapp.models.User
 import com.example.vitalarmapp.utils.PreferencesManager
@@ -12,18 +15,24 @@ import java.util.UUID
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var preferencesManager: PreferencesManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(binding.root)
-
         preferencesManager = PreferencesManager(this)
-
-        setupClickListeners()
+        darkModeChecker()
+        initListeners()
     }
 
-    private fun setupClickListeners() {
+    private fun darkModeChecker() {
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> {}
+            Configuration.UI_MODE_NIGHT_YES -> {}
+        }
+    }
+
+    private fun initListeners() {
         binding.btnEntrar.setOnClickListener {
             if (validarCampos()) {
                 registrarUsuario()
@@ -101,6 +110,8 @@ class RegisterActivity : AppCompatActivity() {
         finish()
     }
 
+    @SuppressLint("GestureBackNavigation")
+    @Deprecated("This method has been deprecated in favor of using the\n      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.\n      The OnBackPressedDispatcher controls how back button events are dispatched\n      to one or more {@link OnBackPressedCallback} objects.")
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, MainActivity::class.java)

@@ -1,28 +1,37 @@
 package com.example.vitalarmapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import com.example.vitalarmapp.databinding.ActivityLoginBinding
 import com.example.vitalarmapp.utils.PreferencesManager
 
 class LoginActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityLoginBinding
     private lateinit var preferencesManager: PreferencesManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(binding.root)
-
         preferencesManager = PreferencesManager(this)
-
-        setupClickListeners()
+        darkModeChecker()
+        initListeners()
     }
 
-    private fun setupClickListeners() {
+    // Verificar el modo oscuro
+    private fun darkModeChecker() {
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> {}
+            Configuration.UI_MODE_NIGHT_YES -> {}
+        }
+    }
+
+    private fun initListeners() {
         binding.btnEntrar.setOnClickListener {
             val usuario = binding.etUsuario.text.toString().trim()
             val contrasena = binding.etContrasena.text.toString().trim()
@@ -47,7 +56,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun iniciarSesion(usuario: String, contrasena: String) {
         val registeredUsers = preferencesManager.getRegisteredUsers()
-        val user = registeredUsers.firstOrNull { it.correo == usuario && it.contrasena == contrasena }
+        val user =
+            registeredUsers.firstOrNull { it.correo == usuario && it.contrasena == contrasena }
 
         if (user != null) {
             preferencesManager.saveUser(user)
@@ -61,7 +71,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    @Deprecated("Deprecated in Java")
+    @Deprecated("This method has been deprecated in favor of using the\n      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.\n      The OnBackPressedDispatcher controls how back button events are dispatched\n      to one or more {@link OnBackPressedCallback} objects.")
+    @SuppressLint("GestureBackNavigation")
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, MainActivity::class.java)

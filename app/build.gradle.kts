@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.preference.ktx)
     implementation(libs.circleimageview)
+    implementation(libs.androidx.fragment)
+    implementation(libs.androidx.recyclerview)
     // Dependencias de testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

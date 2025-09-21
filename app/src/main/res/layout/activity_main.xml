@@ -2,37 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/md_theme_background"
     android:gravity="center"
-    android:padding="16dp"
-    android:background="@color/white">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="VITALARM"
+        android:layout_marginBottom="50dp"
+        android:text="@string/app_name"
+        android:textColor="@color/md_theme_primary"
         android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="@color/primary"
-        android:layout_marginBottom="50dp"/>
+        android:textStyle="bold" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnIngresar"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:text="@string/login"
-        android:backgroundTint="@color/primary"
-        android:textColor="@color/white"
         android:layout_marginBottom="16dp"
-        style="@style/Widget.AppCompat.Button.Colored"/>
+        android:backgroundTint="@color/md_theme_primary"
+        android:text="@string/login"
+        android:textColor="@color/md_theme_onPrimary" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegistrar"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:backgroundTint="@color/md_theme_primary"
         android:text="@string/register"
-        android:backgroundTint="@color/teal_700"
-        android:textColor="@color/white"
-        style="@style/Widget.AppCompat.Button.Colored"/>
+        android:textColor="@color/md_theme_onPrimary" />
 
 </LinearLayout>

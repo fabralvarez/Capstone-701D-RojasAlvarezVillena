@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Vitalarm</string>
-    <string name="login">Ingresar</string>
+    <string name="login">Login</string>
     <string name="register">Registrar</string>
     <string name="username">Usuario</string>
     <string name="password">Contraseña</string>
@@ -14,4 +14,17 @@
     <string name="contact_relationship">Relación persona de contacto</string>
     <string name="contact_number">Número persona de contacto</string>
     <string name="continue_button">Continuar</string>
+    <string name="main_menu">Menú Principal</string>
+    <string name="add_person_to_care">Ingresar Persona a cuidado</string>
+    <string name="people_list">Personas a cuidado</string>
+    <string name="medications">Medicamentos</string>
+    <string name="next_medication">PRÓXIMO MEDICAMENTO</string>
+    <string name="medication_name">Medicamento</string>
+    <string name="time">Hora</string>
+    <string name="person">Persona</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="placeholder_text_keyboard">AQUÍ SE MOSTRARÍA EL TECLADO</string>
+    <string name="user_or_email">Usuario o correo electrónico</string>
+    <string name="register_title">Registro</string>
+    <string name="register_action">Registrarse</string>
 </resources>

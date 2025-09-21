@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/md_theme_background"
     android:paddingHorizontal="32dp"
-    android:paddingVertical="64dp">
+    android:paddingVertical="72dp">
 
     <TextView
         android:id="@+id/activity_main_title"

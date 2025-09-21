@@ -85,7 +85,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEntrar"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="56dp"
             android:backgroundTint="@color/md_theme_primary"
             android:text="@string/login"
             android:textColor="@color/md_theme_onPrimary" />

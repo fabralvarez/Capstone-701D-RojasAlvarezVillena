@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "580482152775",
+    "project_id": "vitalarm-app",
+    "storage_bucket": "vitalarm-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580482152775:android:4261f53f884af45ab23462",
+        "android_client_info": {
+          "package_name": "com.example.vitalarmapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFQNcWRm1gvNFkOSN7CNFTf5oGEG-RlGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

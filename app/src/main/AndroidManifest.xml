@@ -24,5 +24,6 @@
         <activity android:name=".AddPersonActivity" />
         <activity android:name=".PersonListActivity" />
         <activity android:name=".MedicationListActivity" />
+        <activity android:name=".AddMedicationActivity" />
     </application>
 </manifest>

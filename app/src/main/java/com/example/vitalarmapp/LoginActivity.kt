@@ -1,82 +1,75 @@
 package com.example.vitalarmapp
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import com.example.vitalarmapp.databinding.ActivityLoginBinding
-import com.example.vitalarmapp.utils.PreferencesManager
+import com.example.vitalarmapp.utils.FirebaseManager
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var preferencesManager: PreferencesManager
+    private val scope = MainScope()
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        preferencesManager = PreferencesManager(this)
-        darkModeChecker()
-        initListeners()
-    }
 
-    // Verificar el modo oscuro
-    private fun darkModeChecker() {
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_NO -> {}
-            Configuration.UI_MODE_NIGHT_YES -> {}
-        }
+        initListeners()
     }
 
     private fun initListeners() {
         binding.btnEntrar.setOnClickListener {
-            val usuario = binding.etUsuario.text.toString().trim()
-            val contrasena = binding.etContrasena.text.toString().trim()
+            loginUser()
+        }
+    }
 
-            if (validarCredenciales(usuario, contrasena)) {
-                iniciarSesion(usuario, contrasena)
-            } else {
-                Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
+    private fun loginUser() {
+        val email = binding.etUsuario.text.toString().trim()
+        val password = binding.etContrasena.text.toString()
+
+        // Validaciones
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (password.length < 6) {
+            Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Mostrar progreso
+        binding.btnEntrar.isEnabled = false
+        binding.btnEntrar.text = "Iniciando sesión..."
+
+        // Login con Firebase
+        scope.launch {
+            val success = FirebaseManager.loginUser(email, password)
+
+            // Volver al hilo principal para mostrar resultado
+            runOnUiThread {
+                binding.btnEntrar.isEnabled = true
+                binding.btnEntrar.text = "Login"
+
+                if (success) {
+                    Toast.makeText(this@LoginActivity, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this@LoginActivity, MainMenuActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(this@LoginActivity, "Error en el inicio de sesión. Verifique sus credenciales", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
-    private fun validarCredenciales(usuario: String, contrasena: String): Boolean {
-        if (usuario.isEmpty() || contrasena.isEmpty()) {
-            Toast.makeText(this, "Complete todos los campos", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        val registeredUsers = preferencesManager.getRegisteredUsers()
-        return registeredUsers.any { it.correo == usuario && it.contrasena == contrasena }
-    }
-
-    private fun iniciarSesion(usuario: String, contrasena: String) {
-        val registeredUsers = preferencesManager.getRegisteredUsers()
-        val user =
-            registeredUsers.firstOrNull { it.correo == usuario && it.contrasena == contrasena }
-
-        if (user != null) {
-            preferencesManager.saveUser(user)
-            preferencesManager.saveSessionToken("token_${System.currentTimeMillis()}")
-
-            val intent = Intent(this, MainMenuActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else {
-            Toast.makeText(this, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    @Deprecated("This method has been deprecated in favor of using the\n      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.\n      The OnBackPressedDispatcher controls how back button events are dispatched\n      to one or more {@link OnBackPressedCallback} objects.")
-    @SuppressLint("GestureBackNavigation")
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+    override fun onDestroy() {
+        super.onDestroy()
+        // scope.cancel() // Comenta si da error
     }
 }

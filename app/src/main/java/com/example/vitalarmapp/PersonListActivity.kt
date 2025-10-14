@@ -17,7 +17,8 @@ import kotlinx.coroutines.withContext
 class PersonListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPersonListBinding
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
-    private lateinit var adapter: PersonAdapter
+    private lateinit var peopleAdapter: PeopleAdapter
+    private var peopleList = mutableListOf<Map<String, Any>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,56 +27,82 @@ class PersonListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupRecyclerView()
-        initListeners()
         loadPeople()
+        setupClickListeners()
     }
 
     private fun setupRecyclerView() {
-        adapter = PersonAdapter(emptyList()) { person ->
-            // Al hacer clic en una persona
-            val personId = person["id"] as? String
-            val personName = person["name"] as? String
-
-            if (personId != null && personName != null) {
-                val intent = Intent(this, MedicationListActivity::class.java)
-                intent.putExtra("personId", personId)
-                intent.putExtra("personName", personName)
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "Error: Datos de persona inválidos", Toast.LENGTH_SHORT).show()
-            }
+        peopleAdapter = PeopleAdapter(peopleList) { person ->
+            // Click en persona - ir a medicamentos
+            val intent = Intent(this, MedicationListActivity::class.java)
+            intent.putExtra("personId", person["id"] as? String)
+            intent.putExtra("personName", person["name"] as? String)
+            startActivity(intent)
         }
 
-        binding.rvPersonas.layoutManager = LinearLayoutManager(this)
-        binding.rvPersonas.adapter = adapter
+        binding.rvPeople.apply {
+            layoutManager = LinearLayoutManager(this@PersonListActivity)
+            adapter = peopleAdapter
+        }
     }
 
-    private fun initListeners() {
-        binding.btnAgregarPersona.setOnClickListener {
+    private fun setupClickListeners() {
+        binding.btnAddPerson.setOnClickListener {
             startActivity(Intent(this, AddPersonActivity::class.java))
         }
+
     }
 
     private fun loadPeople() {
         coroutineScope.launch {
             try {
-                Log.d("PersonList", "🔄 Cargando personas...")
+                binding.progressBar.visibility = android.view.View.VISIBLE
 
                 val people = withContext(Dispatchers.IO) {
                     FirebaseManager.getPeople()
                 }
 
-                Log.d("PersonList", "✅ Personas cargadas: ${people.size}")
+                peopleList.clear()
+                peopleList.addAll(people)
+                peopleAdapter.notifyDataSetChanged()
 
                 if (people.isEmpty()) {
-                    Toast.makeText(this@PersonListActivity, "No hay personas agregadas", Toast.LENGTH_SHORT).show()
+                    binding.tvEmptyState.visibility = android.view.View.VISIBLE
+                } else {
+                    binding.tvEmptyState.visibility = android.view.View.GONE
                 }
 
-                adapter.updateList(people)
-
             } catch (e: Exception) {
-                Log.e("PersonList", "❌ Error cargando personas: ${e.message}")
+                Log.e("PersonList", "Error cargando personas: ${e.message}")
                 Toast.makeText(this@PersonListActivity, "Error al cargar personas", Toast.LENGTH_SHORT).show()
+            } finally {
+                binding.progressBar.visibility = android.view.View.GONE
+            }
+        }
+    }
+
+    // Función para eliminar persona
+    fun deletePerson(personId: String, position: Int) {
+        coroutineScope.launch {
+            try {
+                val success = withContext(Dispatchers.IO) {
+                    FirebaseManager.deletePerson(personId)
+                }
+
+                if (success) {
+                    peopleList.removeAt(position)
+                    peopleAdapter.notifyItemRemoved(position)
+                    Toast.makeText(this@PersonListActivity, "Persona eliminada", Toast.LENGTH_SHORT).show()
+
+                    if (peopleList.isEmpty()) {
+                        binding.tvEmptyState.visibility = android.view.View.VISIBLE
+                    }
+                } else {
+                    Toast.makeText(this@PersonListActivity, "Error al eliminar persona", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.e("PersonList", "Error eliminando persona: ${e.message}")
+                Toast.makeText(this@PersonListActivity, "Error al eliminar persona", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -83,10 +110,5 @@ class PersonListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loadPeople()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //coroutineScope.cancel()
     }
 }

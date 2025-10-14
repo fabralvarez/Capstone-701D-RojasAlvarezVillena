@@ -19,33 +19,33 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <!-- CORREGIDO: Estos son los IDs que debe usar el adapter -->
             <TextView
-                android:id="@+id/tvPersonName"
+                android:id="@+id/tvMedicationName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre de la persona"
+                android:text="Nombre del medicamento"
                 android:textColor="@color/md_theme_onBackground"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvBirthDate"
+                android:id="@+id/tvDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Fecha de nacimiento"
+                android:text="Medicamento base"
                 android:textColor="@color/md_theme_onBackground"
                 android:textSize="14sp" />
         </LinearLayout>
 
+        <!-- Botón eliminar -->
         <ImageButton
             android:id="@+id/btnDelete"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_delete"
-            android:contentDescription="Eliminar persona"
+            android:contentDescription="Eliminar medicamento"
             android:tint="@color/md_theme_error" />
 
     </LinearLayout>

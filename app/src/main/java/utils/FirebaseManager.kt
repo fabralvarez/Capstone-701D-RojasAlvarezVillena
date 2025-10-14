@@ -142,6 +142,19 @@ object FirebaseManager {
 
     suspend fun deletePerson(personId: String): Boolean {
         return try {
+            // Primero eliminar todos los medicamentos asociados a esta persona
+            val medications = getMedicationsForPerson(personId)
+            medications.forEach { medication ->
+                val medId = medication["id"] as? String
+                if (medId != null) {
+                    db.collection(COLLECTION_MEDICATIONS)
+                        .document(medId)
+                        .delete()
+                        .await()
+                }
+            }
+
+            // Luego eliminar la persona
             db.collection(COLLECTION_PEOPLE)
                 .document(personId)
                 .delete()
@@ -226,6 +239,156 @@ object FirebaseManager {
 
         } catch (e: Exception) {
             Log.e("FirebaseManager", "❌ Error en getMedicationsForPerson: ${e.message}")
+            emptyList()
+        }
+    }
+// ==================== OBTENER DATOS DEL USUARIO ====================
+
+    suspend fun getCurrentUserName(): String {
+        return try {
+            val userId = getCurrentUserId()
+            if (userId != null) {
+                val document = db.collection(COLLECTION_USERS)
+                    .document(userId)
+                    .get()
+                    .await()
+
+                if (document.exists()) {
+                    val name = document.getString("name")
+                    name ?: "Usuario"
+                } else {
+                    Log.w(
+                        "FirebaseManager",
+                        "⚠️ Documento de usuario no encontrado para ID: $userId"
+                    )
+                    "Usuario"
+                }
+            } else {
+                Log.w("FirebaseManager", "⚠️ Usuario no autenticado")
+                "Usuario"
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "❌ Error obteniendo nombre de usuario: ${e.message}")
+            "Usuario"
+        }
+    }
+    // ==================== MEDICAMENTOS BASE ====================
+
+    private const val COLLECTION_BASE_MEDICATIONS = "base_medications"
+
+    suspend fun addBaseMedication(name: String, description: String? = null): Boolean {
+        return try {
+            Log.d("FirebaseManager", "🎯 Iniciando addBaseMedication: $name")
+
+            val medicationData = hashMapOf(
+                "name" to name,
+                "description" to description,
+                "createdAt" to System.currentTimeMillis()
+            )
+
+            Log.d("FirebaseManager", "📝 Datos del medicamento: $medicationData")
+
+            // Guardar en Firestore
+            db.collection(COLLECTION_BASE_MEDICATIONS)
+                .add(medicationData)
+                .addOnSuccessListener { documentReference ->
+                    Log.d(
+                        "FirebaseManager",
+                        "✅ Medicamento base guardado con ID: ${documentReference.id}"
+                    )
+                }
+                .addOnFailureListener { e ->
+                    Log.e("FirebaseManager", "❌ Error guardando medicamento base: ${e.message}")
+                }
+                .await()
+
+            Log.d("FirebaseManager", "🎯 Medicamento base guardado exitosamente")
+            true
+
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "❌ Error en addBaseMedication: ${e.message}", e)
+            false
+        }
+    }
+
+    suspend fun getBaseMedications(): List<Map<String, Any>> {
+        return try {
+            val result = db.collection(COLLECTION_BASE_MEDICATIONS)
+                .orderBy("name")
+                .get()
+                .await()
+
+            result.documents.map { document ->
+                mutableMapOf<String, Any>(
+                    "id" to document.id
+                ).apply {
+                    putAll(document.data ?: emptyMap())
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error obteniendo medicamentos base: ${e.message}")
+            emptyList()
+        }
+    }
+
+    suspend fun deleteBaseMedication(medicationId: String): Boolean {
+        return try {
+            db.collection(COLLECTION_BASE_MEDICATIONS)
+                .document(medicationId)
+                .delete()
+                .await()
+            true
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error eliminando medicamento base: ${e.message}")
+            false
+        }
+    }
+
+    suspend fun getMedicationUsers(medicationName: String): List<Map<String, Any>> {
+        return try {
+            Log.d("FirebaseManager", "🔍 Buscando usuarios del medicamento: $medicationName")
+
+            // Buscar en todos los medicamentos de todas las personas
+            val result = db.collection(COLLECTION_MEDICATIONS)
+                .whereEqualTo("name", medicationName)
+                .get()
+                .await()
+
+            val usersList = mutableListOf<Map<String, Any>>()
+
+            for (document in result.documents) {
+                val medicationData = document.data ?: continue
+                val personId = medicationData["personId"] as? String ?: continue
+
+                Log.d("FirebaseManager", "📄 Encontrado para persona: $personId")
+
+                // Obtener información de la persona
+                val personDoc = db.collection(COLLECTION_PEOPLE)
+                    .document(personId)
+                    .get()
+                    .await()
+
+                if (personDoc.exists()) {
+                    val personData = personDoc.data ?: emptyMap()
+                    val userInfo = mutableMapOf<String, Any>().apply {
+                        put("personName", personData["name"] as? String ?: "Sin nombre")
+                        put("dosage", medicationData["dosage"] as? String ?: "Sin dosis")
+                        put("frequency", medicationData["frequency"] as? String ?: "Sin frecuencia")
+                        put(
+                            "alarmTimes",
+                            medicationData["alarmTimes"] as? List<String> ?: emptyList<String>()
+                        )
+                    }
+                    usersList.add(userInfo)
+                    Log.d("FirebaseManager", "✅ Agregado: ${userInfo["personName"]}")
+                }
+            }
+
+            Log.d("FirebaseManager", "👥 Total de usuarios encontrados: ${usersList.size}")
+            usersList
+
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "❌ Error obteniendo usuarios del medicamento: ${e.message}")
             emptyList()
         }
     }

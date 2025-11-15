@@ -2,36 +2,37 @@ package com.example.vitalarmapp
 
 import android.content.Intent
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import com.example.vitalarmapp.databinding.ActivityMainBinding
-import com.example.vitalarmapp.utils.NotificationHelper  // <- IMPORT FALTANTE
+import com.example.vitalarmapp.utils.NotificationHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
+    private companion object {
+        const val TAG = "MainActivity"
+        private const val DEFAULT_USER_NAME = "Usuario"
+    }
+
     private lateinit var binding: ActivityMainBinding
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-
-        // Inicializar Firebase
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
 
         // Crear canal de notificaciones
         NotificationHelper.createNotificationChannel(this)
 
         // Verificar si ya está logueado
         checkCurrentUser()
-        darkModeChecker()
+        logDarkModeConfiguration()
         initListeners()
     }
 
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             getUserNameAndNavigate(currentUser.uid)
         } else {
             // No hay usuario logueado, mostrar pantalla de inicio normal
-            Log.d("MainActivity", "No hay usuario logueado")
+            Log.d(TAG, "No hay usuario logueado")
         }
     }
 
@@ -51,33 +52,35 @@ class MainActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { document ->
                 val userName = if (document.exists()) {
-                    document.getString("name") ?: "Usuario"
+                    document.getString("name") ?: DEFAULT_USER_NAME
                 } else {
-                    "Usuario"
+                    DEFAULT_USER_NAME
                 }
 
-                Log.d("MainActivity", "Usuario logueado: $userName")
-
-                // Ir al menú principal con el nombre del usuario
-                val intent = Intent(this, MainMenuActivity::class.java)
-                intent.putExtra("userName", userName)
-                startActivity(intent)
-                finish()
+                Log.d(TAG, "Usuario logueado: $userName")
+                navigateToMainMenu(userName)
             }
             .addOnFailureListener { e ->
-                Log.e("MainActivity", "Error obteniendo nombre: ${e.message}")
+                Log.e(TAG, "Error obteniendo nombre: ${e.message}", e)
                 // Ir al menú igualmente, sin nombre
-                val intent = Intent(this, MainMenuActivity::class.java)
-                startActivity(intent)
-                finish()
+                navigateToMainMenu()
             }
     }
 
+    private fun navigateToMainMenu(userName: String = DEFAULT_USER_NAME) {
+        Intent(this, MainMenuActivity::class.java).apply {
+            putExtra("userName", userName)
+            startActivity(this)
+        }
+        finish()
+    }
+
     // Verificar el modo oscuro
-    private fun darkModeChecker() {
+    private fun logDarkModeConfiguration() {
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_NO -> {}
-            Configuration.UI_MODE_NIGHT_YES -> {}
+            Configuration.UI_MODE_NIGHT_NO -> Log.d(TAG, "Modo claro activo")
+            Configuration.UI_MODE_NIGHT_YES -> Log.d(TAG, "Modo oscuro activo")
+            else -> Log.d(TAG, "Modo de interfaz desconocido")
         }
     }
 

@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         // Verificar si ya está logueado
         checkCurrentUser()
         logDarkModeConfiguration()
-        initListeners()
     }
 
     private fun checkCurrentUser() {
@@ -81,16 +80,6 @@ class MainActivity : AppCompatActivity() {
             Configuration.UI_MODE_NIGHT_NO -> Log.d(TAG, "Modo claro activo")
             Configuration.UI_MODE_NIGHT_YES -> Log.d(TAG, "Modo oscuro activo")
             else -> Log.d(TAG, "Modo de interfaz desconocido")
-        }
-    }
-
-    private fun initListeners() {
-        binding.btnIngresar.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
-
-        binding.btnRegistrar.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 }

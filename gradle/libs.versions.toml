@@ -1,16 +1,19 @@
 [versions]
-agp = "8.13.0"
-kotlin = "2.2.20"
+agp = "8.13.1"
+firebaseBom = "34.6.0"
+firebaseCommonKtx = "22.0.1"
+kotlin = "2.2.21"
 coreKtx = "1.17.0"
 appcompat = "1.7.1"
-material = "1.14.0-alpha04"
+kotlinxCoroutinesAndroid = "1.10.2"
+material = "1.14.0-alpha06"
 constraintlayout = "2.2.1"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 activity = "1.11.0"
-navigationFragment = "2.9.4"
-navigationUi = "2.9.4"
+navigationFragment = "2.9.6"
+navigationUi = "2.9.6"
 lifecycleLivedata = "2.9.4"
 lifecycleViewmodel = "2.9.4"
 preference = "1.2.1"
@@ -22,6 +25,11 @@ recyclerview = "1.4.0"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-common = { module = "com.google.firebase:firebase-common", version.ref = "firebaseCommonKtx" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }

@@ -1,3 +1,29 @@
+## [0.1.2] - 2025-11-14
+
+### Changed
+
+- **Librerias y dependencias:**
+    - Actualización de Gradle a la ultima versión estable.
+    - Actualización y re-declaración de las dependencias de la aplicación.
+    - Limpieza general del codigo fuente.
+
+## [0.1.1] - 2025-11-14
+
+### Changed
+
+- **Librerias y dependencias:**
+  - Actualización y re-declaración de las dependencias de la aplicación.
+  - Actualización de GMS a la ultima versión estable.
+
+## [0.1.0] - 2025-11-14
+
+### Changed
+
+- **Librerias y dependencias:**
+  - Actualización de las dependencias de la aplicación.
+  - Actualización de AGP a la ultima versión estable.
+  - Actualización de Kotlin a la ultima versión estable.
+
 ## [0.03.0] - 2025-09-20
 
 ### Added

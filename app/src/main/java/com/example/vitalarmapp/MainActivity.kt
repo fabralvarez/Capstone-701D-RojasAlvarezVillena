@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import com.example.vitalarmapp.databinding.ActivityMainBinding
+import com.example.vitalarmapp.utils.NotificationHelper  // <- IMPORT FALTANTE
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -24,6 +25,9 @@ class MainActivity : AppCompatActivity() {
         // Inicializar Firebase
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+
+        // Crear canal de notificaciones
+        NotificationHelper.createNotificationChannel(this)
 
         // Verificar si ya está logueado
         checkCurrentUser()

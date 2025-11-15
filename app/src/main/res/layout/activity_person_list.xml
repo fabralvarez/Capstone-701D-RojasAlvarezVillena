@@ -5,33 +5,62 @@
     android:layout_height="match_parent"
     android:background="@color/md_theme_background"
     android:orientation="vertical"
-    android:paddingHorizontal="16dp"
     tools:context=".PersonListActivity">
 
+    <!-- Solo título -->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="24dp"
+        android:padding="20dp"
+        android:background="@color/md_theme_primary"
         android:text="Personas a Cuidado"
-        android:textColor="@color/md_theme_primary"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textColor="@color/md_theme_onPrimary"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPersonas"
+    <!-- Contenedor para el contenido -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnAgregarPersona"
+        <!-- Lista de personas -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPeople"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Progress Bar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <!-- Mensaje cuando no hay personas -->
+        <TextView
+            android:id="@+id/tvEmptyState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="No hay personas agregadas\n\nPresiona el botón de abajo para agregar una persona"
+            android:textColor="@color/md_theme_onBackground"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <!-- Botón simple abajo -->
+    <Button
+        android:id="@+id/btnAddPerson"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/md_theme_primary"
-        android:text="Agregar Nueva Persona"
-        android:textColor="@color/md_theme_onPrimary" />
+        android:layout_height="60dp"
+        android:background="@color/md_theme_primary"
+        android:text="Agregar Persona"
+        android:textColor="@color/md_theme_onPrimary"
+        android:textSize="18sp" />
 
 </LinearLayout>

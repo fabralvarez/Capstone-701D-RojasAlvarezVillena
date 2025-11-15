@@ -1,8 +1,10 @@
 package com.example.vitalarmapp
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import com.example.vitalarmapp.databinding.ActivityAddPersonBinding
@@ -11,10 +13,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class AddPersonActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPersonBinding
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val calendar = Calendar.getInstance()
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,56 +29,71 @@ class AddPersonActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        initListeners()
+        setupClickListeners()
     }
 
-    private fun initListeners() {
-        binding.btnGuardarPersona.setOnClickListener {
-            agregarPersona()
+    private fun setupClickListeners() {
+        // Selector de fecha
+        binding.etBirthDate.setOnClickListener {
+            showDatePicker()
+        }
+
+        // Botón guardar
+        binding.btnSavePerson.setOnClickListener {
+            addPerson()
+        }
+
+        // Botón cancelar
+        binding.btnCancel.setOnClickListener {
+            finish()
         }
     }
 
-    private fun agregarPersona() {
-        val nombre = binding.etNombrePersona.text.toString().trim()
-        val fechaNacimiento = binding.etFechaNacimiento.text.toString().trim()
+    private fun showDatePicker() {
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        // Validaciones
-        if (nombre.isEmpty()) {
-            Toast.makeText(this, "Por favor, ingrese el nombre", Toast.LENGTH_SHORT).show()
+        val datePicker = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            calendar.set(selectedYear, selectedMonth, selectedDay)
+            binding.etBirthDate.setText(dateFormat.format(calendar.time))
+        }, year, month, day)
+
+        // Establecer fecha máxima (hoy)
+        datePicker.datePicker.maxDate = System.currentTimeMillis()
+        datePicker.show()
+    }
+
+    private fun addPerson() {
+        val name = binding.etPersonName.text.toString().trim()
+        val birthDate = binding.etBirthDate.text.toString().trim()
+
+        if (name.isEmpty()) {
+            binding.etPersonName.error = "Ingresa el nombre"
             return
         }
 
-        // Mostrar progreso
-        binding.btnGuardarPersona.isEnabled = false
-        binding.btnGuardarPersona.text = "Guardando..."
-
-        // Guardar persona en Firebase
         coroutineScope.launch {
             try {
-                val success = withContext(Dispatchers.IO) {
-                    FirebaseManager.addPerson(nombre, if (fechaNacimiento.isEmpty()) null else fechaNacimiento)
-                }
+                binding.progressBar.visibility = android.view.View.VISIBLE
 
-                binding.btnGuardarPersona.isEnabled = true
-                binding.btnGuardarPersona.text = "Guardar Persona"
+                val success = withContext(Dispatchers.IO) {
+                    FirebaseManager.addPerson(name, if (birthDate.isNotEmpty()) birthDate else null)
+                }
 
                 if (success) {
-                    Toast.makeText(this@AddPersonActivity, "✅ Persona agregada exitosamente", Toast.LENGTH_SHORT).show()
-                    // Regresar al menú principal
+                    Toast.makeText(this@AddPersonActivity, "Persona agregada exitosamente", Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this@AddPersonActivity, "❌ Error al guardar persona", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddPersonActivity, "Error al agregar persona", Toast.LENGTH_SHORT).show()
                 }
+
             } catch (e: Exception) {
-                binding.btnGuardarPersona.isEnabled = true
-                binding.btnGuardarPersona.text = "Guardar Persona"
-                Toast.makeText(this@AddPersonActivity, "❌ Error: ${e.message}", Toast.LENGTH_LONG).show()
+                Log.e("AddPerson", "Error agregando persona: ${e.message}")
+                Toast.makeText(this@AddPersonActivity, "Error al agregar persona", Toast.LENGTH_SHORT).show()
+            } finally {
+                binding.progressBar.visibility = android.view.View.GONE
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //coroutineScope.cancel()
     }
 }

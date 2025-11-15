@@ -1,4 +1,7 @@
 <resources>
+    <!-- Colores básicos -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
     <color name="md_theme_primary">#4C662B</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
     <color name="md_theme_primaryContainer">#CDEDA3</color>
@@ -140,4 +143,5 @@
     <color name="md_theme_surfaceContainer_highContrast">#E2E3D8</color>
     <color name="md_theme_surfaceContainerHigh_highContrast">#D4D5CA</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#C6C7BD</color>
+
 </resources>

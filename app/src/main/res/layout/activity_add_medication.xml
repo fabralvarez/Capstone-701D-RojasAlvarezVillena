@@ -1,87 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/md_theme_background"
     android:orientation="vertical"
-    android:paddingHorizontal="32dp"
-    android:paddingTop="72dp"
+    android:padding="24dp"
     tools:context=".AddMedicationActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/tvPersonName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="32dp"
-        android:text="Agregar Medicamento"
+        android:layout_marginBottom="24dp"
+        android:text="Para: [Nombre]"
         android:textColor="@color/md_theme_primary"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <!-- Layout para cuando HAY medicamentos -->
+    <LinearLayout
+        android:id="@+id/layoutMedicationSelection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginBottom="16dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etNombreMedicamento"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nombre del medicamento"
-            android:inputType="textCapWords" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="Seleccionar Medicamento:"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <Spinner
+            android:id="@+id/spinnerMedications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <!-- Layout para cuando NO HAY medicamentos -->
+    <LinearLayout
+        android:id="@+id/layoutNoMedications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etDosis"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Dosis (ej: 1 tableta, 5ml)"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="❌ No hay medicamentos creados"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <Button
+            android:id="@+id/btnGoCreateMedications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ir a Crear Medicamentos" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/etDosage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:hint="Dosis (ej: 500mg, 1 tableta)" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etFrecuencia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Frecuencia (ej: cada 8 horas, una vez al día)"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <EditText
+        android:id="@+id/etFrequency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp">
+        android:layout_marginBottom="16dp"
+        android:hint="Frecuencia (ej: Cada 8 horas)" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etHorarios"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Horarios (ej: 08:00, 14:00, 20:00)"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnGuardarMedicamento"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:backgroundTint="@color/md_theme_primary"
-        android:text="Guardar Medicamento"
-        android:textColor="@color/md_theme_onPrimary" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Horarios:"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnAddTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="➕ Agregar Horario" />
+
+    <TextView
+        android:id="@+id/tvAlarmTimes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:padding="16dp"
+        android:background="@color/md_theme_surfaceVariant"
+        android:text="No hay horarios"
+        android:textSize="14sp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="Cancelar" />
+
+        <Button
+            android:id="@+id/btnSaveMedication"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@color/md_theme_primary"
+            android:textColor="@color/white"
+            android:text="Guardar" />
+
+    </LinearLayout>
 
 </LinearLayout>

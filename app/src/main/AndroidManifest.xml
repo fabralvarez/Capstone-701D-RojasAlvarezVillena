@@ -25,5 +25,23 @@
         <activity android:name=".PersonListActivity" />
         <activity android:name=".MedicationListActivity" />
         <activity android:name=".AddMedicationActivity" />
+        <activity android:name=".MedicationGeneralListActivity" />
+        <activity
+            android:name=".BaseMedicationsActivity"
+            android:exported="false" />
+        <service
+            android:name=".services.AlarmService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- NUEVO: Receptor de alarmas -->
+        <receiver
+            android:name=".receiver.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="ACTION_TRIGGER_ALARM" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

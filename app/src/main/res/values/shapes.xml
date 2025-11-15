@@ -1,12 +1,4 @@
 <resources>
-    <style name="ShapeAppearance.Vitalarm.SevenSidedCookie" parent="ShapeAppearance.Material3.Corner.None">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">32dp</item>
-        <item name="topRightCornerFamily">cut</item>
-        <item name="topRightCornerSize">32dp</item>
-        <item name="bottomRightCornerFamily">cut</item>
-        <item name="bottomRightCornerSize">32dp</item>
-        <item name="bottomLeftCornerFamily">cut</item>
-        <item name="bottomLeftCornerSize">32dp</item>
+    <style name="ShapeAppearance.Vitalarm.Circle" parent="ShapeAppearance.Material3.Corner.Full">
     </style>
 </resources>

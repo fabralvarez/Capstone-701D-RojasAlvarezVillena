@@ -38,14 +38,14 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/seven_sided_cookie"
+        android:id="@+id/main_shape"
         style="@style/Widget.Material3.CardView.Elevated"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_marginTop="64dp"
         app:cardBackgroundColor="@color/md_theme_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/main_coordinator"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Vitalarm.SevenSidedCookie" />
+        app:shapeAppearance="@style/ShapeAppearance.Vitalarm.Circle"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

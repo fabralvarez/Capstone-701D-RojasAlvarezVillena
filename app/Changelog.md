@@ -1,4 +1,9 @@
-## [0.2.01] - 2025-11-14
+## [0.2.0] - 2025-11-14
+
+### Changed
+
+- **Librerias y dependencias:**
+    - Limpieza general del codigo fuente.
 
 ## [0.1.2] - 2025-11-14
 

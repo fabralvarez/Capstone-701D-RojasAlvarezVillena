@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.vitalarmapp" />
+                  <option name="mobileSdkAppId" value="1:580482152775:android:4261f53f884af45ab23462" />
+                  <option name="projectId" value="vitalarm-app" />
+                  <option name="projectNumber" value="580482152775" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

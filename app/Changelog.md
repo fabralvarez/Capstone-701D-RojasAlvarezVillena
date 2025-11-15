@@ -1,3 +1,11 @@
+## [0.1.1] - 2025-11-14
+
+### Changed
+
+- **Librerias y dependencias:**
+  - Actualización y re-declaración de las dependencias de la aplicación.
+  - Actualización de GMS a la ultima versión estable.
+
 ## [0.1.0] - 2025-11-14
 
 ### Changed

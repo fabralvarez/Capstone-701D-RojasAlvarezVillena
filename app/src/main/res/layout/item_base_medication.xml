@@ -46,7 +46,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_delete"
             android:contentDescription="Eliminar medicamento"
-            android:tint="@color/md_theme_error" />
+            app:tint="@color/md_theme_error" />
 
     </LinearLayout>
 

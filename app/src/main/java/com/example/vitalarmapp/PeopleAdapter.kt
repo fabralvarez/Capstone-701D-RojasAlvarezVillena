@@ -39,12 +39,12 @@ class PeopleAdapter(
             "🎂 No especificada"
         }
 
-        // Click en toda la tarjeta
+        // Clic en toda la tarjeta
         holder.itemView.setOnClickListener {
             onPersonClick(person)
         }
 
-        // Click en botón eliminar
+        // Clic en botón eliminar
         holder.btnDelete.setOnClickListener {
             val personId = person["id"] as? String
             if (personId != null) {
@@ -55,8 +55,4 @@ class PeopleAdapter(
 
     override fun getItemCount(): Int = peopleList.size
 
-    fun updateList(newList: List<Map<String, Any>>) {
-        peopleList = newList
-        notifyDataSetChanged()
-    }
 }

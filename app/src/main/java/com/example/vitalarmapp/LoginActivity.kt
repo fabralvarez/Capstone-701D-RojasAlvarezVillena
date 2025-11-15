@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import com.example.vitalarmapp.databinding.ActivityLoginBinding
-import com.example.vitalarmapp.utils.FirebaseManager
+import utils.FirebaseManager
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -68,8 +68,4 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        // scope.cancel() // Comenta si da error
-    }
 }

@@ -53,8 +53,4 @@ class GeneralMedicationsAdapter(
 
     override fun getItemCount(): Int = medicationsList.size
 
-    fun updateList(newList: List<Map<String, Any>>) {
-        medicationsList = newList
-        notifyDataSetChanged()
-    }
 }

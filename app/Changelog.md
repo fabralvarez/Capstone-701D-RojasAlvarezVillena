@@ -10,8 +10,8 @@
 ### Changed
 
 - **Librerias y dependencias:**
-    - Actualización de Gradle a la ultima versión estable.
-    - Actualización y re-declaración de las dependencias de la aplicación.
+    - Actualización de Gradle a la última versión estable.
+    - Actualización y redeclaración de las dependencias de la aplicación.
     - Limpieza general del codigo fuente.
 
 ## [0.1.1] - 2025-11-14
@@ -19,8 +19,8 @@
 ### Changed
 
 - **Librerias y dependencias:**
-  - Actualización y re-declaración de las dependencias de la aplicación.
-  - Actualización de GMS a la ultima versión estable.
+  - Actualización y redeclaración de las dependencias de la aplicación.
+  - Actualización de GMS a la última versión estable.
 
 ## [0.1.0] - 2025-11-14
 
@@ -28,8 +28,8 @@
 
 - **Librerias y dependencias:**
   - Actualización de las dependencias de la aplicación.
-  - Actualización de AGP a la ultima versión estable.
-  - Actualización de Kotlin a la ultima versión estable.
+  - Actualización de AGP a la última versión estable.
+  - Actualización de Kotlin a la última versión estable.
 
 ## [0.03.0] - 2025-09-20
 
@@ -60,8 +60,7 @@
 - **Temas y Estilos:**
   - Actualización completa de los temas de la aplicación para utilizar Material Design 3.
   - Los layouts existentes (`activity_main.xml`, `activity_main_menu.xml`, `activity_login.xml`,
-    `activity_register.xml`) ahora utilizan los nuevos colores y componentes de Material Design (
-    e.g., `MaterialButton`).
+    `activity_register.xml`) ahora utilizan los nuevos colores y componentes de Material Design (e.g., `MaterialButton`).
 - **AndroidManifest:**
   - `AndroidManifest.xml` actualizado para referenciar el nuevo `AppTheme` de Material Design 3.
 - **Recursos de Strings:**
@@ -72,7 +71,7 @@
 *Activities (`MainMenuActivity.kt`, `LoginActivity.kt`, `RegisterActivity.kt`, `MainActivity.kt`):
 **
 
-- Refactorizada la inicialización de listeners: la función `setupClickListeners` fue reemplazada
+- Actualizada la inicialización de listeners: la función `setupClickListeners` fue reemplazada
   por `initListeners`.
 - Ajustado el manejo del botón "Atrás" en algunas actividades.
 
@@ -113,7 +112,7 @@
 - **Dependencias:**
     - Versión de Kotlin actualizada.
     - Actualizadas varias versiones de bibliotecas de AndroidX.
-    - (Se recomienda listar las bibliotecas específicas más importantes si es posible, ej:
+    - (Se recomienda listar las bibliotecas específicas más importantes si es posible, ej.:
       `androidx.core:core-ktx` a `1.17.0`).
 - **Recursos:** Nombre de la aplicación en `strings.xml` (`app_name`) cambiado de "VITALARM" a "
   Vitalarm".

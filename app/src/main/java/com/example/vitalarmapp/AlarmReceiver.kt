@@ -1,10 +1,9 @@
-package com.example.vitalarmapp.receiver
+package com.example.vitalarmapp
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.example.vitalarmapp.services.AlarmService
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {

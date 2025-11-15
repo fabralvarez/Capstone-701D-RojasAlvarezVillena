@@ -1,20 +1,15 @@
-package com.example.vitalarmapp.services
+package com.example.vitalarmapp
 
+import android.R
 import android.app.Notification
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.example.vitalarmapp.MainMenuActivity
-import com.example.vitalarmapp.R
-import com.example.vitalarmapp.receiver.AlarmReceiver
 
 class AlarmService : Service() {
 
@@ -65,7 +60,7 @@ class AlarmService : Service() {
         val notification = NotificationCompat.Builder(this, "vitalarm_alarm_channel")
             .setContentTitle("💊 Hora de tomar medicamento")
             .setContentText("$medicationName para $personName")
-            .setSmallIcon(android.R.drawable.ic_dialog_info) // Icono del sistema
+            .setSmallIcon(R.drawable.ic_dialog_info) // Icono del sistema
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -73,11 +68,11 @@ class AlarmService : Service() {
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
             .setStyle(NotificationCompat.BigTextStyle()
                 .bigText("💊 $medicationName\n👤 Para: $personName\n📏 Dosis: $dosage\n\nToca para abrir la app"))
-            .addAction(android.R.drawable.ic_input_add, "✅ Tomado", takenPendingIntent) // Icono del sistema
+            .addAction(R.drawable.ic_input_add, "✅ Tomado", takenPendingIntent) // Icono del sistema
             .build()
 
         // Mostrar notificación
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(medicationId.hashCode(), notification)
 
         Log.d("AlarmService", "✅ Notificación mostrada: ID ${medicationId.hashCode()}")

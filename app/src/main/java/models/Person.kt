@@ -1,4 +1,4 @@
-package com.example.vitalarmapp.models
+package models
 
 data class Person(
     val id: String = "",
@@ -6,11 +6,4 @@ data class Person(
     val birthDate: String? = null,
     val userId: String = "",
     val createdAt: Long = 0
-) {
-
-    data class Contacto(
-        val nombre: String,
-        val relacion: String,
-        val numero: String
-    )
-}
+)

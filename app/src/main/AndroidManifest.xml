@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -31,13 +35,13 @@
             android:exported="false" />
 
         <service
-            android:name=".services.AlarmService"
+            android:name=".AlarmService"
             android:enabled="true"
             android:exported="false" />
 
         <!-- NUEVO: Receptor de alarmas -->
         <receiver
-            android:name=".receiver.AlarmReceiver"
+            android:name=".AlarmReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

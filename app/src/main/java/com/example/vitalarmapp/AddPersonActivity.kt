@@ -1,14 +1,13 @@
 package com.example.vitalarmapp
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import com.example.vitalarmapp.databinding.ActivityAddPersonBinding
-import com.example.vitalarmapp.utils.FirebaseManager
+import utils.FirebaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -78,7 +77,7 @@ class AddPersonActivity : AppCompatActivity() {
                 binding.progressBar.visibility = android.view.View.VISIBLE
 
                 val success = withContext(Dispatchers.IO) {
-                    FirebaseManager.addPerson(name, if (birthDate.isNotEmpty()) birthDate else null)
+                    FirebaseManager.addPerson(name, birthDate.ifEmpty { null })
                 }
 
                 if (success) {

@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.databinding.ActivityPersonListBinding
-import com.example.vitalarmapp.utils.FirebaseManager
+import utils.FirebaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,7 +33,7 @@ class PersonListActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         peopleAdapter = PeopleAdapter(peopleList) { person ->
-            // Click en persona - ir a medicamentos
+            // Clic en persona - ir a medicamentos
             val intent = Intent(this, MedicationListActivity::class.java)
             intent.putExtra("personId", person["id"] as? String)
             intent.putExtra("personName", person["name"] as? String)

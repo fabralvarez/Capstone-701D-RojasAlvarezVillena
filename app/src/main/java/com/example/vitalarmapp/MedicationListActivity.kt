@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.databinding.ActivityMedicationListBinding
-import com.example.vitalarmapp.utils.FirebaseManager
+import utils.FirebaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -117,8 +117,4 @@ class MedicationListActivity : AppCompatActivity() {
         loadMedications()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //coroutineScope.cancel()
-    }
 }

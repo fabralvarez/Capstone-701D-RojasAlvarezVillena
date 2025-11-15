@@ -1,4 +1,4 @@
-package com.example.vitalarmapp.utils
+package utils
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -21,46 +21,6 @@ object FirebaseManager {
     private const val COLLECTION_MEDICATIONS = "medications"
 
     // ==================== AUTHENTICATION ====================
-
-    suspend fun registerUser(email: String, password: String, name: String): Boolean {
-        return try {
-            Log.d("FirebaseDebug", "🎯 Registrando: $email")
-
-            // Solo crear usuario en Authentication
-            val result = auth.createUserWithEmailAndPassword(email, password).await()
-
-            if (result.user != null) {
-                Log.d("FirebaseDebug", "✅ Usuario AUTENTICADO: ${result.user!!.uid}")
-
-                // Intentar guardar en Firestore, pero si falla no es crítico
-                try {
-                    val userData = hashMapOf(
-                        "name" to name,
-                        "email" to email,
-                        "createdAt" to System.currentTimeMillis()
-                    )
-
-                    db.collection(COLLECTION_USERS).document(result.user!!.uid)
-                        .set(userData)
-                        .await()
-
-                    Log.d("FirebaseDebug", "✅ Datos guardados en Firestore")
-                } catch (firestoreError: Exception) {
-                    Log.w(
-                        "FirebaseDebug",
-                        "⚠️  No se pudo guardar en Firestore, pero el usuario está creado: ${firestoreError.message}"
-                    )
-                }
-
-                true // SIEMPRE retorna true si el usuario se creó en Auth
-            } else {
-                false
-            }
-        } catch (e: Exception) {
-            Log.e("FirebaseDebug", "❌ Error crítico en registro: ${e.message}")
-            false
-        }
-    }
 
     suspend fun loginUser(email: String, password: String): Boolean {
         return try {

@@ -1,4 +1,4 @@
-package com.example.vitalarmapp.models
+package models
 
 data class Medication(
     val id: String = "",

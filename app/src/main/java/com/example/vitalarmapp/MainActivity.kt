@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.vitalarmapp.databinding.ActivityMainBinding
-import com.example.vitalarmapp.utils.NotificationHelper
+import utils.NotificationHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 

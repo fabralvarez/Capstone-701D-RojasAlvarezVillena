@@ -1,4 +1,4 @@
-package com.example.vitalarmapp.utils
+package utils
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

@@ -64,8 +64,6 @@ class RegisterActivity : AppCompatActivity() {
 
         coroutineScope.launch {
             try {
-                val fullName = "$name $lastName"
-
                 // REGISTRO DIRECTO CON FIREBASE AUTH
                 val result = auth.createUserWithEmailAndPassword(email, password).await()
 
@@ -97,8 +95,4 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-       // coroutineScope.cancel()
-    }
 }

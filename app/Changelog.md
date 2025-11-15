@@ -1,3 +1,10 @@
+## [0.2.1] - 2025-11-15
+
+### Changed
+
+- **Temas Material Design 3:**
+    - Actualización completa de los temas de la aplicación para utilizar la última versión de Material Design 3.
+
 ## [0.2.0] - 2025-11-14
 
 ### Changed

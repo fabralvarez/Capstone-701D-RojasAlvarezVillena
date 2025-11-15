@@ -1,3 +1,12 @@
+## [0.1.2] - 2025-11-14
+
+### Changed
+
+- **Librerias y dependencias:**
+    - Actualización de Gradle a la ultima versión estable.
+    - Actualización y re-declaración de las dependencias de la aplicación.
+    - Limpieza general del codigo fuente.
+
 ## [0.1.1] - 2025-11-14
 
 ### Changed

@@ -1,5 +1,6 @@
 package com.example.vitalarmapp
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,12 +11,13 @@ class MedicationAdapter(
 ) : RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder>() {
 
     class MedicationViewHolder(private val binding: ItemMedicationBinding) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(medication: Map<String, Any>) {
             binding.tvNombreMedicamento.text = medication["name"] as? String ?: "Sin nombre"
             binding.tvDosis.text = "💊 Dosis: ${medication["dosage"] as? String ?: "No especificada"}"
             binding.tvFrecuencia.text = "🕒 Frecuencia: ${medication["frequency"] as? String ?: "No especificada"}"
 
-            val alarmTimes = medication["alarmTimes"] as? List<String>
+            val alarmTimes = medication["alarmTimes"] as? List<*>
             binding.tvHorarios.text = if (!alarmTimes.isNullOrEmpty()) {
                 "⏰ Horarios: ${alarmTimes.joinToString(", ")}"
             } else {

@@ -12,7 +12,7 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.1.1"
+        versionName = "0.1.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -63,9 +63,9 @@ dependencies {
 
     // Dependencias de Firebase
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.firestore.ktx)
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.common.ktx)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.common)
 
     // Coroutines para las funciones suspend
     implementation(libs.kotlinx.coroutines.android)

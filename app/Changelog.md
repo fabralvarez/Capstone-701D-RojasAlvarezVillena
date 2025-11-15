@@ -1,3 +1,12 @@
+## [0.1.0] - 2025-11-14
+
+### Changed
+
+- **Librerias y dependencias:**
+  - Actualización de las dependencias de la aplicación.
+  - Actualización de AGP a la ultima versión estable.
+  - Actualización de Kotlin a la ultima versión estable.
+
 ## [0.03.0] - 2025-09-20
 
 ### Added

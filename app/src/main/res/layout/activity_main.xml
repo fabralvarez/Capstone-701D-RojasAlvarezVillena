@@ -74,16 +74,10 @@
             android:minWidth="0dp"
             android:paddingHorizontal="28dp"
             android:paddingVertical="12dp"
-            app:cornerRadius="28dp">
-
-            <TextView
-                android:id="@+id/text_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login"
-                android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                android:textColor="@color/md_theme_onPrimary" />
-        </com.google.android.material.button.MaterialButton>
+            android:text="@string/login"
+            android:textColor="@color/md_theme_onPrimary"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            app:cornerRadius="28dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_register"
@@ -96,31 +90,13 @@
             android:minWidth="0dp"
             android:paddingHorizontal="24dp"
             android:paddingVertical="12dp"
-            app:cornerRadius="28dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/baseline_person_outline_24"
-                    app:tint="@color/md_theme_onSecondaryContainer" />
-
-                <TextView
-                    android:id="@+id/text_register"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/sign_up"
-                    android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                    android:textColor="@color/md_theme_onSecondaryContainer" />
-            </LinearLayout>
-        </com.google.android.material.button.MaterialButton>
+            android:text="@string/sign_up"
+            android:textColor="@color/md_theme_onSecondaryContainer"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            app:cornerRadius="28dp"
+            app:icon="@drawable/baseline_person_outline_24"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/md_theme_onSecondaryContainer" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

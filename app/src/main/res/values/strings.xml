@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Vitalarm</string>
     <string name="login">Login</string>
+    <string name="sign_up">Registrate</string>
     <string name="register">Registrar</string>
     <string name="username">Usuario</string>
     <string name="password">Contraseña</string>

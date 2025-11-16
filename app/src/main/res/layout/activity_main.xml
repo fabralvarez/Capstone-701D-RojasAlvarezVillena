@@ -47,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/main_coordinator"
-        app:shapeAppearance="@style/ShapeAppearance.Vitalarm.Circle"/>
+        app:shapeAppearance="@style/ShapeAppearance.Vitalarm.Circle" />
 
     <LinearLayout
         android:id="@+id/auth_actions"
@@ -69,8 +69,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/md_theme_primary"
-            android:insetBottom="0dp"
             android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:minWidth="0dp"
             android:paddingHorizontal="28dp"
             android:paddingVertical="12dp"
@@ -80,7 +80,7 @@
                 android:id="@+id/text_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login"
+                android:text="@string/login"
                 android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
                 android:textColor="@color/md_theme_onPrimary" />
         </com.google.android.material.button.MaterialButton>
@@ -91,8 +91,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/md_theme_secondaryContainer"
-            android:insetBottom="0dp"
             android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:minWidth="0dp"
             android:paddingHorizontal="24dp"
             android:paddingVertical="12dp"
@@ -102,21 +102,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/baseline_person_outline_24"
-                    android:tint="@color/md_theme_onSecondaryContainer" />
+                    app:tint="@color/md_theme_onSecondaryContainer" />
 
                 <TextView
                     android:id="@+id/text_register"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Registrate"
+                    android:text="@string/sign_up"
                     android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
                     android:textColor="@color/md_theme_onSecondaryContainer" />
             </LinearLayout>

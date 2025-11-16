@@ -5,14 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityLoginBinding
-import utils.FirebaseManager
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import utils.FirebaseManager
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val scope = MainScope()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,48 +23,54 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initListeners() {
-        binding.btnEntrar.setOnClickListener {
-            loginUser()
-        }
+        binding.btnEntrar.setOnClickListener { loginUser() }
     }
 
     private fun loginUser() {
         val email = binding.etUsuario.text.toString().trim()
         val password = binding.etContrasena.text.toString()
 
-        // Validaciones
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
-            return
+        if (!validateCredentials(email, password)) return
+
+        updateLoadingState(isLoading = true)
+
+        lifecycleScope.launch {
+            val success = FirebaseManager.loginUser(email, password)
+            updateLoadingState(isLoading = false)
+
+            if (success) {
+                showToast("Inicio de sesión exitoso")
+                startActivity(Intent(this@LoginActivity, MainMenuActivity::class.java))
+                finish()
+            } else {
+                showToast("Error en el inicio de sesión. Verifique sus credenciales")
+            }
+        }
+    }
+
+    private fun validateCredentials(email: String, password: String): Boolean {
+        if (email.isBlank() || password.isBlank()) {
+            showToast("Por favor, complete todos los campos")
+            return false
         }
 
         if (password.length < 6) {
-            Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
-            return
+            showToast("La contraseña debe tener al menos 6 caracteres")
+            return false
         }
 
-        // Mostrar progreso
-        binding.btnEntrar.isEnabled = false
-        binding.btnEntrar.text = "Iniciando sesión..."
+        return true
+    }
 
-        // Login con Firebase
-        scope.launch {
-            val success = FirebaseManager.loginUser(email, password)
-
-            // Volver al hilo principal para mostrar resultado
-            runOnUiThread {
-                binding.btnEntrar.isEnabled = true
-                binding.btnEntrar.text = "Login"
-
-                if (success) {
-                    Toast.makeText(this@LoginActivity, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@LoginActivity, MainMenuActivity::class.java))
-                    finish()
-                } else {
-                    Toast.makeText(this@LoginActivity, "Error en el inicio de sesión. Verifique sus credenciales", Toast.LENGTH_SHORT).show()
-                }
-            }
+    private fun updateLoadingState(isLoading: Boolean) {
+        binding.btnEntrar.apply {
+            isEnabled = !isLoading
+            text = if (isLoading) "Iniciando sesión..." else "Login"
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 }

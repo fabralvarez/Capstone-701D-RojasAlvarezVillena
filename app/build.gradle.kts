@@ -12,7 +12,7 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.2.171"
+        versionName = "0.2.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -37,7 +37,6 @@ android {
     }
 }
 dependencies {
-
     // Dependencias básicas de Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

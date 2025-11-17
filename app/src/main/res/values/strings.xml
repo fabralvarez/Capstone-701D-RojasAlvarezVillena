@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Vitalarm</string>
     <string name="login">Login</string>
+    <string name="sign_in">Inicia Sesión</string>
+    <string name="sign_in_subtitle">Con tu cuenta Vitalarm</string>
     <string name="sign_up">Registrate</string>
     <string name="register">Registrar</string>
     <string name="username">Usuario</string>

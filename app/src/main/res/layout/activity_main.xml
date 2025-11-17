@@ -22,7 +22,7 @@
                 android:id="@+id/main_collapsing_toolbar"
                 style="?attr/collapsingToolbarLayoutLargeStyle"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+                android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
                 app:expandedTitleGravity="bottom|start"
                 app:expandedTitleTextColor="@color/md_theme_onPrimaryContainer">
 
@@ -42,7 +42,7 @@
         style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="320dp"
         android:layout_height="320dp"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="96dp"
         app:cardBackgroundColor="@color/md_theme_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
         android:id="@+id/auth_actions"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="108dp"
+        android:layout_marginBottom="64dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingHorizontal="24dp"
@@ -63,7 +63,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_login"
+            android:id="@+id/main_login_btn"
             style="@style/Widget.Material3Expressive.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
             app:cornerRadius="36dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_register"
+            android:id="@+id/main_signup_btn"
             style="@style/Widget.Material3Expressive.Button.TonalButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

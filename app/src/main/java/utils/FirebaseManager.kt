@@ -7,6 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
+import models.Medication
+import models.Person
 
 object FirebaseManager {
     // Instancias de Firebase
@@ -63,7 +65,7 @@ object FirebaseManager {
         }
     }
 
-    suspend fun getPeople(): List<Map<String, Any>> {
+    suspend fun getPeople(): List<Person> {
         val userId = getCurrentUserId()
 
         Log.d("FirebaseDebug", "🔍 Buscando personas para userId: $userId")
@@ -83,14 +85,17 @@ object FirebaseManager {
 
             Log.d("FirebaseDebug", "✅ Consulta completada. Documentos: ${result.documents.size}")
 
-            val peopleList = result.documents.map { document ->
+            val peopleList = result.documents.mapNotNull { document ->
                 Log.d("FirebaseDebug", "📄 Procesando documento: ${document.id}")
-                val data = document.data ?: emptyMap()
-                mutableMapOf<String, Any>(
-                    "id" to document.id
-                ).apply {
-                    putAll(data)
-                }
+                val data = document.data ?: return@mapNotNull null
+
+                Person(
+                    id = document.id,
+                    name = data["name"] as? String ?: "",
+                    birthDate = data["birthDate"] as? String,
+                    userId = data["userId"] as? String ?: "",
+                    createdAt = (data["createdAt"] as? Number)?.toLong() ?: 0L
+                )
             }
 
             Log.d("FirebaseDebug", "👥 Personas procesadas: ${peopleList.size}")
@@ -108,8 +113,8 @@ object FirebaseManager {
             // Primero eliminar todos los medicamentos asociados a esta persona
             val medications = getMedicationsForPerson(personId)
             medications.forEach { medication ->
-                val medId = medication["id"] as? String
-                if (medId != null) {
+                val medId = medication.id
+                if (medId.isNotEmpty()) {
                     db.collection(COLLECTION_MEDICATIONS)
                         .document(medId)
                         .delete()
@@ -175,7 +180,7 @@ object FirebaseManager {
         }
     }
 
-    suspend fun getMedicationsForPerson(personId: String): List<Map<String, Any>> {
+    suspend fun getMedicationsForPerson(personId: String): List<Medication> {
         return try {
             Log.d("FirebaseManager", "🔍 Buscando medicamentos para persona: $personId")
 
@@ -186,14 +191,22 @@ object FirebaseManager {
 
             Log.d("FirebaseManager", "📄 Documentos encontrados: ${result.documents.size}")
 
-            val medications = result.documents.map { document ->
+            val medications = result.documents.mapNotNull { document ->
                 Log.d("FirebaseManager", "📋 Procesando documento: ${document.id}")
-                val data = document.data ?: emptyMap()
-                mutableMapOf<String, Any>(
-                    "id" to document.id
-                ).apply {
-                    putAll(data)
-                    Log.d("FirebaseManager", "📊 Datos del medicamento: $this")
+                val data = document.data ?: return@mapNotNull null
+                Medication(
+                    id = document.id,
+                    personId = data["personId"] as? String ?: "",
+                    name = data["name"] as? String ?: "",
+                    dosage = data["dosage"] as? String ?: "",
+                    frequency = data["frequency"] as? String ?: "",
+                    alarmTimes = (data["alarmTimes"] as? List<*>)
+                        ?.filterIsInstance<String>()
+                        ?.sorted()
+                        ?: emptyList(),
+                    createdAt = (data["createdAt"] as? Number)?.toLong() ?: 0L
+                ).also {
+                    Log.d("FirebaseManager", "📊 Datos del medicamento: $it")
                 }
             }
 

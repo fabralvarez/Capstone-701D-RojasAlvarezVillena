@@ -7,11 +7,13 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import com.example.vitalarmapp.databinding.ActivityMainMenuBinding
-import utils.FirebaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import models.Medication
+import models.Person
+import utils.FirebaseManager
 import java.util.Calendar
 
 class MainMenuActivity : AppCompatActivity() {
@@ -76,14 +78,13 @@ class MainMenuActivity : AppCompatActivity() {
                 val allMedications = mutableListOf<MedicationWithTime>()
 
                 for (person in people) {
-                    val personId = person["id"] as? String ?: continue
                     val medications = withContext(Dispatchers.IO) {
-                        FirebaseManager.getMedicationsForPerson(personId)
+                        FirebaseManager.getMedicationsForPerson(person.id)
                     }
 
                     for (medication in medications) {
-                        val alarmTimes = medication["alarmTimes"] as? List<String>
-                        if (!alarmTimes.isNullOrEmpty()) {
+                        val alarmTimes = medication.alarmTimes
+                        if (alarmTimes.isNotEmpty()) {
                             for (time in alarmTimes) {
                                 allMedications.add(MedicationWithTime(medication, person, time))
                             }
@@ -131,7 +132,7 @@ class MainMenuActivity : AppCompatActivity() {
                 difference += 24 * 60
             }
 
-            Log.d("MainMenu", "💊 ${med.medication["name"]} - ${med.time} - diferencia: $difference min")
+            Log.d("MainMenu", "💊 ${med.medication.name} - ${med.time} - diferencia: $difference min")
 
             if (difference < minDifference) {
                 minDifference = difference
@@ -153,10 +154,10 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
-    private fun showNextMedication(medication: Map<String, Any>, person: Map<String, Any>, nextTime: String) {
-        val medicationName = medication["name"] as? String ?: "Medicamento"
-        val dosage = medication["dosage"] as? String ?: "Sin dosis"
-        val personName = person["name"] as? String ?: "Persona"
+    private fun showNextMedication(medication: Medication, person: Person, nextTime: String) {
+        val medicationName = medication.name.ifEmpty { "Medicamento" }
+        val dosage = medication.dosage.ifEmpty { "Sin dosis" }
+        val personName = person.name.ifEmpty { "Persona" }
 
         // Calcular tiempo de forma SIMPLE
         val timeText = calculateSimpleTime(nextTime)
@@ -233,8 +234,8 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private data class MedicationWithTime(
-        val medication: Map<String, Any>,
-        val person: Map<String, Any>,
+        val medication: Medication,
+        val person: Person,
         val time: String
     )
 }

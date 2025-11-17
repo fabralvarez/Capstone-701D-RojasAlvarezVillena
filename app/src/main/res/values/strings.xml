@@ -36,6 +36,7 @@
     <string name="login_password_label">Password</string>
     <string name="login_password_placeholder">Password</string>
     <string name="login_action">Iniciar sesión</string>
+    <string name="login_forgot_password">¿Olvidaste tu password?</string>
     <string name="login_loading">Iniciando…</string>
     <string name="login_error_invalid_email">Ingresa un correo válido.</string>
     <string name="login_error_empty_password">Ingresa tu contraseña.</string>

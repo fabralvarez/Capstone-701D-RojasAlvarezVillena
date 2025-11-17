@@ -7,8 +7,9 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/login_coordinator"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -43,82 +44,96 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/login_form_container"
+    <LinearLayout
+        android:id="@+id/login_form"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fillViewport="true"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:paddingHorizontal="24dp"
         android:paddingTop="24dp"
-        android:paddingBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_coordinator">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_marginBottom="16dp"
+            android:hint="@string/login_email_label"
+            app:boxBackgroundMode="outline"
+            app:placeholderText="@string/login_email_placeholder"
+            app:startIconDrawable="@drawable/outline_email_24">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/emailInputLayout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/login_email_label"
-                android:layout_marginBottom="16dp"
-                app:boxBackgroundMode="outline"
-                app:placeholderText="@string/login_email_placeholder"
-                app:startIconDrawable="@drawable/outline_email_24">
+                android:autofillHints="emailAddress"
+                android:importantForAutofill="yes"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textColorHint="?attr/colorOnSurfaceVariant" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="emailAddress"
-                    android:importantForAutofill="yes"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:textColorHint="?attr/colorOnSurfaceVariant" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:hint="@string/login_password_label"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="password_toggle"
+            app:placeholderText="@string/login_password_placeholder"
+            app:startIconDrawable="@drawable/outline_password_24">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/passwordInputLayout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/login_password_label"
-                android:layout_marginBottom="24dp"
-                app:boxBackgroundMode="outline"
-                app:endIconMode="password_toggle"
-                app:placeholderText="@string/login_password_placeholder"
-                app:startIconDrawable="@drawable/outline_password_24">
+                android:autofillHints="password"
+                android:importantForAutofill="yes"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColorHint="?attr/colorOnSurfaceVariant" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/passwordEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="password"
-                    android:importantForAutofill="yes"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:textColorHint="?attr/colorOnSurfaceVariant" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/loginButton"
-                style="@style/Widget.Material3.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/login_action"
-                android:textAllCaps="false" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/login_forgot_pass_btn"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/login_forgot_password"
+        android:textAllCaps="false"
+        app:cornerRadius="28dp"
+        app:layout_constraintBottom_toTopOf="@id/login_login_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_form" />
 
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/login_login_btn"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:paddingHorizontal="40dp"
+        android:paddingVertical="20dp"
+        android:text="@string/login_action"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:cornerRadius="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

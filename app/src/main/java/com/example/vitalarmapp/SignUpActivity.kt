@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import com.example.vitalarmapp.databinding.ActivityRegisterBinding
+import com.example.vitalarmapp.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -14,14 +14,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-class RegisterActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityRegisterBinding
+class SignUpActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySignUpBinding
     private lateinit var auth: FirebaseAuth
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
 
@@ -69,8 +69,8 @@ class RegisterActivity : AppCompatActivity() {
 
                 if (result.user != null) {
                     // ✅ REGISTRO EXITOSO - IR DIRECTAMENTE AL MENÚ
-                    Toast.makeText(this@RegisterActivity, "✅ ¡Registro exitoso!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@RegisterActivity, LanMenuActivity::class.java))
+                    Toast.makeText(this@SignUpActivity, "✅ ¡Registro exitoso!", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this@SignUpActivity, LanMenuActivity::class.java))
                     finish()
                 } else {
                     throw Exception("Usuario no creado")
@@ -82,13 +82,13 @@ class RegisterActivity : AppCompatActivity() {
 
                 when {
                     e.message?.contains("email address is already") == true -> {
-                        Toast.makeText(this@RegisterActivity, "❌ Este correo ya está registrado", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@SignUpActivity, "❌ Este correo ya está registrado", Toast.LENGTH_SHORT).show()
                     }
                     e.message?.contains("network") == true -> {
-                        Toast.makeText(this@RegisterActivity, "❌ Error de conexión", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@SignUpActivity, "❌ Error de conexión", Toast.LENGTH_SHORT).show()
                     }
                     else -> {
-                        Toast.makeText(this@RegisterActivity, "❌ Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@SignUpActivity, "❌ Error: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

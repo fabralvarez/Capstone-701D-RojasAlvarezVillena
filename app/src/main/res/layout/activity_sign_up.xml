@@ -7,7 +7,7 @@
     android:background="@color/md_theme_background"
     android:paddingHorizontal="32dp"
     android:paddingBottom="72dp"
-    tools:context=".RegisterActivity">
+    tools:context=".SignUpActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/register_appbarlayout"

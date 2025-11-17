@@ -8,17 +8,18 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.databinding.ActivityPersonListBinding
-import utils.FirebaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import models.Person
+import utils.FirebaseManager
 
 class PersonListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPersonListBinding
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var peopleAdapter: PeopleAdapter
-    private var peopleList = mutableListOf<Map<String, Any>>()
+    private var peopleList = mutableListOf<Person>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +36,8 @@ class PersonListActivity : AppCompatActivity() {
         peopleAdapter = PeopleAdapter(peopleList) { person ->
             // Clic en persona - ir a medicamentos
             val intent = Intent(this, MedicationListActivity::class.java)
-            intent.putExtra("personId", person["id"] as? String)
-            intent.putExtra("personName", person["name"] as? String)
+            intent.putExtra("personId", person.id)
+            intent.putExtra("personName", person.name)
             startActivity(intent)
         }
 
@@ -64,7 +65,7 @@ class PersonListActivity : AppCompatActivity() {
 
                 peopleList.clear()
                 peopleList.addAll(people)
-                peopleAdapter.notifyDataSetChanged()
+                peopleAdapter.updateData(peopleList)
 
                 if (people.isEmpty()) {
                     binding.tvEmptyState.visibility = android.view.View.VISIBLE

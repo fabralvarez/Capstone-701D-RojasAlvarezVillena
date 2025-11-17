@@ -8,17 +8,19 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.databinding.ActivityMedicationGeneralListBinding
-import utils.FirebaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import models.Medication
+import models.Person
+import utils.FirebaseManager
 
 class MedicationGeneralListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMedicationGeneralListBinding
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var medicationsAdapter: GeneralMedicationsAdapter
-    private var allMedications = mutableListOf<Map<String, Any>>()
+    private var allMedications = mutableListOf<Pair<Medication, Person>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +34,10 @@ class MedicationGeneralListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        medicationsAdapter = GeneralMedicationsAdapter(allMedications) { medication ->
+        medicationsAdapter = GeneralMedicationsAdapter(allMedications) { (medication, person) ->
             // Click en medicamento - podrías mostrar detalles o editar
-            val personName = medication["personName"] as? String ?: "Persona"
-            val medicationName = medication["name"] as? String ?: "Medicamento"
+            val personName = person.name.ifEmpty { "Persona" }
+            val medicationName = medication.name.ifEmpty { "Medicamento" }
             Toast.makeText(this, "$medicationName - $personName", Toast.LENGTH_SHORT).show()
         }
 
@@ -70,29 +72,21 @@ class MedicationGeneralListActivity : AppCompatActivity() {
 
                 // Para cada persona, obtener sus medicamentos
                 for (person in people) {
-                    val personId = person["id"] as? String ?: continue
-                    val personName = person["name"] as? String ?: "Persona"
-
                     val medications = withContext(Dispatchers.IO) {
-                        FirebaseManager.getMedicationsForPerson(personId)
+                        FirebaseManager.getMedicationsForPerson(person.id)
                     }
 
-                    // Agregar información de la persona a cada medicamento
                     medications.forEach { medication ->
-                        val medWithPerson = medication.toMutableMap()
-                        medWithPerson["personName"] = personName
-                        medWithPerson["personId"] = personId
-                        allMedications.add(medWithPerson)
+                        allMedications.add(medication to person)
                     }
                 }
 
                 // Ordenar por hora más temprana
-                allMedications.sortBy { medication ->
-                    val alarmTimes = medication["alarmTimes"] as? List<String>
-                    alarmTimes?.firstOrNull() ?: "23:59"
+                allMedications.sortBy { (medication, _) ->
+                    medication.alarmTimes.firstOrNull() ?: "23:59"
                 }
 
-                medicationsAdapter.notifyDataSetChanged()
+                medicationsAdapter.updateItems(allMedications)
 
                 if (allMedications.isEmpty()) {
                     binding.tvEmptyState.visibility = android.view.View.VISIBLE

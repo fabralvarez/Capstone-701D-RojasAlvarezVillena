@@ -5,10 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import models.Medication
+import models.Person
 
 class GeneralMedicationsAdapter(
-    private var medicationsList: List<Map<String, Any>>,
-    private val onMedicationClick: (Map<String, Any>) -> Unit
+    private var medicationsList: List<Pair<Medication, Person>>,
+    private val onMedicationClick: (Pair<Medication, Person>) -> Unit
 ) : RecyclerView.Adapter<GeneralMedicationsAdapter.MedicationViewHolder>() {
 
     class MedicationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,15 +28,15 @@ class GeneralMedicationsAdapter(
     }
 
     override fun onBindViewHolder(holder: MedicationViewHolder, position: Int) {
-        val medication = medicationsList[position]
+        val (medication, person) = medicationsList[position]
 
-        val medicationName = medication["name"] as? String ?: "Medicamento"
-        val dosage = medication["dosage"] as? String ?: "Sin dosis"
-        val personName = medication["personName"] as? String ?: "Persona"
-        val frequency = medication["frequency"] as? String ?: "Sin frecuencia"
+        val medicationName = medication.name.ifEmpty { "Medicamento" }
+        val dosage = medication.dosage.ifEmpty { "Sin dosis" }
+        val personName = person.name.ifEmpty { "Persona" }
+        val frequency = medication.frequency.ifEmpty { "Sin frecuencia" }
 
-        val alarmTimes = medication["alarmTimes"] as? List<String>
-        val timesText = if (!alarmTimes.isNullOrEmpty()) {
+        val alarmTimes = medication.alarmTimes
+        val timesText = if (alarmTimes.isNotEmpty()) {
             alarmTimes.sorted().joinToString(" • ") { "⏰ $it" }
         } else {
             "Sin horarios"
@@ -47,10 +49,14 @@ class GeneralMedicationsAdapter(
         holder.tvFrequency.text = frequency
 
         holder.itemView.setOnClickListener {
-            onMedicationClick(medication)
+            onMedicationClick(medicationsList[position])
         }
     }
 
     override fun getItemCount(): Int = medicationsList.size
 
+    fun updateItems(newItems: List<Pair<Medication, Person>>) {
+        medicationsList = newItems
+        notifyDataSetChanged()
+    }
 }

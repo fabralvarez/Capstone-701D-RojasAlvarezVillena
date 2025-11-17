@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import models.Person
 
 class PeopleAdapter(
-    private var peopleList: List<Map<String, Any>>,
-    private val onPersonClick: (Map<String, Any>) -> Unit
+    private var peopleList: List<Person>,
+    private val onPersonClick: (Person) -> Unit
 ) : RecyclerView.Adapter<PeopleAdapter.PersonViewHolder>() {
 
     class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -28,11 +29,11 @@ class PeopleAdapter(
         val person = peopleList[position]
 
         // Configurar nombre
-        val personName = person["name"] as? String ?: "Sin nombre"
+        val personName = person.name.ifEmpty { "Sin nombre" }
         holder.tvPersonName.text = personName
 
         // Configurar fecha de nacimiento
-        val birthDate = person["birthDate"] as? String
+        val birthDate = person.birthDate
         holder.tvBirthDate.text = if (!birthDate.isNullOrEmpty()) {
             "🎂 $birthDate"
         } else {
@@ -46,8 +47,8 @@ class PeopleAdapter(
 
         // Clic en botón eliminar
         holder.btnDelete.setOnClickListener {
-            val personId = person["id"] as? String
-            if (personId != null) {
+            val personId = person.id
+            if (personId.isNotEmpty()) {
                 (holder.itemView.context as? PersonListActivity)?.deletePerson(personId, position)
             }
         }
@@ -55,4 +56,8 @@ class PeopleAdapter(
 
     override fun getItemCount(): Int = peopleList.size
 
+    fun updateData(newList: List<Person>) {
+        peopleList = newList
+        notifyDataSetChanged()
+    }
 }

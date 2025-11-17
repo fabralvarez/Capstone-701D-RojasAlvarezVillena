@@ -2,13 +2,22 @@ package utils
 
 import android.annotation.SuppressLint
 import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.FirebaseNetworkException
 import kotlinx.coroutines.tasks.await
 import models.Medication
 import models.Person
+
+sealed class LoginResult {
+    data object Success : LoginResult()
+    data object UserNotFound : LoginResult()
+    data class ConnectionError(val message: String? = null) : LoginResult()
+    data class UnknownError(val message: String? = null) : LoginResult()
+}
 
 object FirebaseManager {
     // Instancias de Firebase
@@ -24,13 +33,30 @@ object FirebaseManager {
 
     // ==================== AUTHENTICATION ====================
 
-    suspend fun loginUser(email: String, password: String): Boolean {
+    suspend fun loginAndVerifyUser(email: String, password: String): LoginResult {
         return try {
-            val result = auth.signInWithEmailAndPassword(email, password).await()
-            result.user != null
+            val authResult = auth.signInWithEmailAndPassword(email, password).await()
+            val firebaseUser = authResult.user
+                ?: return LoginResult.UnknownError("Usuario autenticado inválido")
+
+            val userDocument = db.collection(COLLECTION_USERS)
+                .document(firebaseUser.uid)
+                .get()
+                .await()
+
+            if (!userDocument.exists()) {
+                auth.signOut()
+                LoginResult.UserNotFound
+            } else {
+                LoginResult.Success
+            }
+        } catch (e: FirebaseNetworkException) {
+            LoginResult.ConnectionError(e.localizedMessage)
+        } catch (e: FirebaseAuthInvalidUserException) {
+            LoginResult.UserNotFound
         } catch (e: Exception) {
-            Log.e("FirebaseManager", "Error en login: ${e.message}")
-            false
+            Log.e("FirebaseManager", "Error en login: ${e.message}", e)
+            LoginResult.UnknownError(e.localizedMessage)
         }
     }
 

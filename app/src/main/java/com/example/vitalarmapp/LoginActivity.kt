@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        binding.loginButton.setOnClickListener {
+        binding.loginLoginBtn.setOnClickListener {
             attemptLogin()
         }
     }
@@ -128,8 +128,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setLoadingState(isLoading: Boolean) {
-        binding.loginButton.isEnabled = !isLoading
-        binding.loginButton.text =
+        binding.loginLoginBtn.isEnabled = !isLoading
+        binding.loginLoginBtn.text =
             if (isLoading) getString(R.string.login_loading) else getString(R.string.login_action)
     }
 

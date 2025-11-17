@@ -24,7 +24,7 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".MainMenuActivity" />
+        <activity android:name=".LanMenuActivity" />
         <activity android:name=".AddPersonActivity" />
         <activity android:name=".PersonListActivity" />
         <activity android:name=".MedicationListActivity" />

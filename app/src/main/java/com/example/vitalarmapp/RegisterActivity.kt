@@ -70,7 +70,7 @@ class RegisterActivity : AppCompatActivity() {
                 if (result.user != null) {
                     // ✅ REGISTRO EXITOSO - IR DIRECTAMENTE AL MENÚ
                     Toast.makeText(this@RegisterActivity, "✅ ¡Registro exitoso!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@RegisterActivity, MainMenuActivity::class.java))
+                    startActivity(Intent(this@RegisterActivity, LanMenuActivity::class.java))
                     finish()
                 } else {
                     throw Exception("Usuario no creado")

@@ -34,7 +34,7 @@ class AlarmService : Service() {
         Log.d("AlarmService", "📱 Creando notificación: $medicationName para $personName")
 
         // Intent para cuando se hace click en la notificación
-        val mainIntent = Intent(this, MainMenuActivity::class.java).apply {
+        val mainIntent = Intent(this, LanMenuActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent = PendingIntent.getActivity(

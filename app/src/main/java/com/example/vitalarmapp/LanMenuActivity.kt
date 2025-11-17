@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import com.example.vitalarmapp.databinding.ActivityMainMenuBinding
+import com.example.vitalarmapp.databinding.ActivityLanMenuBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,16 +16,15 @@ import models.Person
 import utils.FirebaseManager
 import java.util.Calendar
 
-class MainMenuActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainMenuBinding
+class LanMenuActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityLanMenuBinding
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainMenuBinding.inflate(layoutInflater)
+        binding = ActivityLanMenuBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-
         initListeners()
         loadUserName()
         loadNextMedication()
@@ -101,7 +100,11 @@ class MainMenuActivity : AppCompatActivity() {
                 val nextMedication = findNextMedication(allMedications)
 
                 if (nextMedication != null) {
-                    showNextMedication(nextMedication.medication, nextMedication.person, nextMedication.time)
+                    showNextMedication(
+                        nextMedication.medication,
+                        nextMedication.person,
+                        nextMedication.time
+                    )
                 } else {
                     showNoMedicationsMessage("No hay medicamentos programados")
                 }
@@ -132,7 +135,10 @@ class MainMenuActivity : AppCompatActivity() {
                 difference += 24 * 60
             }
 
-            Log.d("MainMenu", "💊 ${med.medication.name} - ${med.time} - diferencia: $difference min")
+            Log.d(
+                "MainMenu",
+                "💊 ${med.medication.name} - ${med.time} - diferencia: $difference min"
+            )
 
             if (difference < minDifference) {
                 minDifference = difference

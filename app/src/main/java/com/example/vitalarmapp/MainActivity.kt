@@ -48,10 +48,20 @@ class MainActivity : AppCompatActivity() {
         mainLoginBtn.setOnClickListener {
             navigateToLogin()
         }
+
+        mainSignupBtn.setOnClickListener {
+            navigateToSignUp()
+        }
     }
 
     private fun navigateToLogin() {
         val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun navigateToSignUp() {
+        val intent = Intent(this, SignUpActivity::class.java)
         startActivity(intent)
         finish()
     }

@@ -1,11 +1,13 @@
 package com.example.vitalarmapp
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityLoginBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -29,9 +31,18 @@ class LoginActivity : AppCompatActivity() {
         setSupportActionBar(binding.loginToolbar)
         binding.loginToolbar.navigationContentDescription =
             getString(R.string.login_toolbar_navigation_description)
+        if (isNightModeActive()) {
+            val navigationColor = ContextCompat.getColor(this, R.color.md_theme_onBackground)
+            binding.loginToolbar.navigationIcon?.setTint(navigationColor)
+        }
         binding.loginToolbar.setNavigationOnClickListener {
             navigateBackToMain()
         }
+    }
+
+    private fun isNightModeActive(): Boolean {
+        val uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return uiMode == Configuration.UI_MODE_NIGHT_YES
     }
 
     private fun setupListeners() {

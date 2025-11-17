@@ -1,9 +1,17 @@
+## [0.3.0] - 2025-11-16
+
+### Changed
+
+- **Estructura del Proyecto:**
+    - Aplicación de la arquitectura MVC (Model-View-Controller) a lo largo de todo el proyecto.
+
 ## [0.2.1] - 2025-11-15
 
 ### Changed
 
 - **Temas Material Design 3:**
-    - Actualización completa de los temas de la aplicación para utilizar la última versión de Material Design 3.
+    - Actualización completa de los temas de la aplicación para utilizar la última versión de
+      Material Design 3.
 
 ## [0.2.0] - 2025-11-14
 
@@ -26,54 +34,55 @@
 ### Changed
 
 - **Librerias y dependencias:**
-  - Actualización y redeclaración de las dependencias de la aplicación.
-  - Actualización de GMS a la última versión estable.
+    - Actualización y redeclaración de las dependencias de la aplicación.
+    - Actualización de GMS a la última versión estable.
 
 ## [0.1.0] - 2025-11-14
 
 ### Changed
 
 - **Librerias y dependencias:**
-  - Actualización de las dependencias de la aplicación.
-  - Actualización de AGP a la última versión estable.
-  - Actualización de Kotlin a la última versión estable.
+    - Actualización de las dependencias de la aplicación.
+    - Actualización de AGP a la última versión estable.
+    - Actualización de Kotlin a la última versión estable.
 
 ## [0.03.0] - 2025-09-20
 
 ### Added
 
 - **Temas Material Design 3:**
-  - Nuevos archivos de recursos `colors.xml` y `themes.xml` (y sus variantes `-night`) para
-    implementar la paleta de colores y temas de Material Design 3.
-  - Nuevos archivos `theme_overlays.xml` (y sus variantes `-night`) para definir estilos de
-    contraste medio y alto.
+    - Nuevos archivos de recursos `colors.xml` y `themes.xml` (y sus variantes `-night`) para
+      implementar la paleta de colores y temas de Material Design 3.
+    - Nuevos archivos `theme_overlays.xml` (y sus variantes `-night`) para definir estilos de
+      contraste medio y alto.
 - **Recursos de Strings:**
-  - Nuevas strings en `strings.xml` para elementos de la interfaz de usuario como "Menú
-    Principal", "Ingresar Persona a cuidado", "Cerrar Sesión", etc.
+    - Nuevas strings en `strings.xml` para elementos de la interfaz de usuario como "Menú
+      Principal", "Ingresar Persona a cuidado", "Cerrar Sesión", etc.
 - **Dependencias:**
-  - Añadidas dependencias para `androidx.fragment` y `androidx.recyclerview` en
-    `app/build.gradle.kts` y `gradle/libs.versions.toml`.
+    - Añadidas dependencias para `androidx.fragment` y `androidx.recyclerview` en
+      `app/build.gradle.kts` y `gradle/libs.versions.toml`.
 - **Configuración del IDE:**
-  - Añadida la declaración `<?xml version="1.0" encoding="UTF-8"?>` a `.idea/misc.xml`.
-  - Configurada una herramienta de visualización en `.idea/misc.xml`.
-  - Añadidas nuevas palabras al diccionario del proyecto en `.idea/dictionaries/project.xml`.
+    - Añadida la declaración `<?xml version="1.0" encoding="UTF-8"?>` a `.idea/misc.xml`.
+    - Configurada una herramienta de visualización en `.idea/misc.xml`.
+    - Añadidas nuevas palabras al diccionario del proyecto en `.idea/dictionaries/project.xml`.
 - **Funcionalidad en Activities:**
-  - Habilitado el modo edge-to-edge en `MainMenuActivity.kt`, `LoginActivity.kt`,
-    `RegisterActivity.kt` y `MainActivity.kt`.
-  - Añadidas funciones para verificar el modo oscuro en las Activities mencionadas.
+    - Habilitado el modo edge-to-edge en `MainMenuActivity.kt`, `LoginActivity.kt`,
+      `RegisterActivity.kt` y `MainActivity.kt`.
+    - Añadidas funciones para verificar el modo oscuro en las Activities mencionadas.
 
 ### Changed
 
 - **Temas y Estilos:**
-  - Actualización completa de los temas de la aplicación para utilizar Material Design 3.
-  - Los layouts existentes (`activity_main.xml`, `activity_main_menu.xml`, `activity_login.xml`,
-    `activity_register.xml`) ahora utilizan los nuevos colores y componentes de Material Design (e.g., `MaterialButton`).
+    - Actualización completa de los temas de la aplicación para utilizar Material Design 3.
+    - Los layouts existentes (`activity_main.xml`, `activity_main_menu.xml`, `activity_login.xml`,
+      `activity_register.xml`) ahora utilizan los nuevos colores y componentes de Material Design (
+      e.g., `MaterialButton`).
 - **AndroidManifest:**
-  - `AndroidManifest.xml` actualizado para referenciar el nuevo `AppTheme` de Material Design 3.
+    - `AndroidManifest.xml` actualizado para referenciar el nuevo `AppTheme` de Material Design 3.
 - **Recursos de Strings:**
-  - Modificada la string `login` de "Ingresar" a "Login" en `strings.xml`.
+    - Modificada la string `login` de "Ingresar" a "Login" en `strings.xml`.
 -
-  *
+    *
 
 *Activities (`MainMenuActivity.kt`, `LoginActivity.kt`, `RegisterActivity.kt`, `MainActivity.kt`):
 **
@@ -85,15 +94,15 @@
 ### Removed
 
 - **Temas Antiguos:**
-  - Eliminados los archivos `colors.xml` y `themes.xml` (y su variante `-night`) anteriores.
+    - Eliminados los archivos `colors.xml` y `themes.xml` (y su variante `-night`) anteriores.
 
 ## [0.02.1] - 2025-09-20
 
 ### Changed
 
 - Mejorada la organización de comentarios en `app/build.gradle.kts`:
-  - Agrupadas las dependencias de testing bajo un único comentario.
-  - Agrupadas las librerías externas (incluyendo Gson) bajo un único comentario.
+    - Agrupadas las dependencias de testing bajo un único comentario.
+    - Agrupadas las librerías externas (incluyendo Gson) bajo un único comentario.
 
 ## [0.02.0] - 2025-09-20
 

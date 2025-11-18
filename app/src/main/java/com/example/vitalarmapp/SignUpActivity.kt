@@ -1,118 +1,167 @@
 package com.example.vitalarmapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import android.util.Patterns
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivitySignUpBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.vitalarmapp.util.ErrorMessageTranslator
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
+import models.User
+import utils.FirebaseManager
+import utils.RegistrationResult
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
-    private lateinit var auth: FirebaseAuth
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-
-        auth = Firebase.auth
-
+        setupToolbar()
         initListeners()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.signupToolbar)
+        binding.signupToolbar.setNavigationOnClickListener {
+            navigateToMain()
+        }
     }
 
     private fun initListeners() {
         binding.signupRegisterBtn.setOnClickListener {
-            registerUser()
-        }
-
-        binding.signupToolbar.setNavigationOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            attemptRegisterUser()
         }
     }
 
-    private fun registerUser() {
-        val name = binding.signupNameTf.text.toString().trim()
-        val email = binding.signupEmailTf.text.toString().trim()
-        val password = binding.signupPassTf.text.toString()
-        val confirmPassword = binding.signupConfirmPassTf.text.toString()
+    private fun attemptRegisterUser() {
+        val name = binding.signupNameTf.text?.toString()?.trim().orEmpty()
+        val email = binding.signupEmailTf.text?.toString()?.trim().orEmpty()
+        val password = binding.signupPassTf.text?.toString().orEmpty()
+        val confirmPassword = binding.signupConfirmPassTf.text?.toString().orEmpty()
 
-        // Validaciones
+        var hasError = false
 
-        if (password != confirmPassword) {
-            Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
-            return
+        if (name.isEmpty()) {
+            binding.signupNameInputLayout.error = getString(R.string.sign_up_error_empty_name)
+            hasError = true
+        } else {
+            binding.signupNameInputLayout.error = null
         }
 
-        if (password.length < 6) {
-            Toast.makeText(
-                this,
-                "La contraseña debe tener al menos 6 caracteres",
-                Toast.LENGTH_SHORT
-            ).show()
-            return
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.signupEmailInputLayout.error = getString(R.string.sign_up_error_invalid_email)
+            hasError = true
+        } else {
+            binding.signupEmailInputLayout.error = null
         }
 
-        binding.signupRegisterBtn.isEnabled = false
-        binding.signupRegisterBtn.text = "Registrando..."
+        when {
+            password.isEmpty() -> {
+                binding.signupPassInputLayout.error = getString(R.string.sign_up_error_empty_password)
+                hasError = true
+            }
 
-        coroutineScope.launch {
-            try {
-                // REGISTRO DIRECTO CON FIREBASE AUTH
-                val result = auth.createUserWithEmailAndPassword(email, password).await()
+            password.length < 6 -> {
+                binding.signupPassInputLayout.error = getString(R.string.sign_up_error_password_length)
+                hasError = true
+            }
 
-                if (result.user != null) {
-                    // ✅ REGISTRO EXITOSO - IR DIRECTAMENTE AL MENÚ
-                    Toast.makeText(this@SignUpActivity, "✅ ¡Registro exitoso!", Toast.LENGTH_SHORT)
-                        .show()
-                    startActivity(Intent(this@SignUpActivity, LanMenuActivity::class.java))
-                    finish()
-                } else {
-                    throw Exception("Usuario no creado")
+            else -> binding.signupPassInputLayout.error = null
+        }
+
+        when {
+            confirmPassword.isEmpty() -> {
+                binding.signupConfirmPassInputLayout.error = getString(R.string.sign_up_error_empty_confirm_password)
+                hasError = true
+            }
+
+            password != confirmPassword -> {
+                binding.signupConfirmPassInputLayout.error = getString(R.string.sign_up_error_password_mismatch)
+                hasError = true
+            }
+
+            else -> binding.signupConfirmPassInputLayout.error = null
+        }
+
+        if (hasError) return
+
+        lifecycleScope.launch {
+            setLoadingState(true)
+            when (val result = FirebaseManager.registerUser(name, email, password)) {
+                is RegistrationResult.Success -> {
+                    FirebaseManager.logout()
+                    showSignUpSuccessDialog(result.user)
                 }
 
-            } catch (e: Exception) {
-                binding.signupRegisterBtn.isEnabled = true
-                binding.signupRegisterBtn.text = "Registrarse"
+                RegistrationResult.EmailAlreadyInUse -> {
+                    showSignUpErrorDialog(getString(R.string.sign_up_error_message_email_in_use))
+                }
 
-                when {
-                    e.message?.contains("email address is already") == true -> {
-                        Toast.makeText(
-                            this@SignUpActivity,
-                            "❌ Este correo ya está registrado",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                RegistrationResult.WeakPassword -> {
+                    showSignUpErrorDialog(getString(R.string.sign_up_error_message_weak_password))
+                }
 
-                    e.message?.contains("network") == true -> {
-                        Toast.makeText(
-                            this@SignUpActivity,
-                            "❌ Error de conexión",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                is RegistrationResult.ConnectionError -> {
+                    val detail = result.message?.let { ErrorMessageTranslator.toSpanish(this@SignUpActivity, it) }
+                        ?: getString(R.string.error_detail_network)
+                    showSignUpErrorDialog(detail)
+                }
 
-                    else -> {
-                        Toast.makeText(
-                            this@SignUpActivity,
-                            "❌ Error: ${e.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                is RegistrationResult.UnknownError -> {
+                    val detail = result.message?.let { ErrorMessageTranslator.toSpanish(this@SignUpActivity, it) }
+                        ?: getString(R.string.sign_up_error_message_generic)
+                    showSignUpErrorDialog(detail)
                 }
             }
+            setLoadingState(false)
         }
     }
 
+    private fun setLoadingState(isLoading: Boolean) {
+        binding.signupRegisterBtn.isEnabled = !isLoading
+        binding.signupRegisterBtn.text =
+            if (isLoading) getString(R.string.sign_up_register_loading) else getString(R.string.register)
+    }
+
+    private fun showSignUpSuccessDialog(user: User) {
+        val userName = if (user.name.isNotBlank()) user.name else getString(R.string.sign_up_success_fallback_name)
+        MaterialAlertDialogBuilder(this, com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog)
+            .setTitle(getString(R.string.sign_up_success_dialog_title))
+            .setMessage(getString(R.string.sign_up_success_dialog_supporting, userName))
+            .setPositiveButton(getString(R.string.sign_up_success_primary_action)) { _, _ ->
+                navigateToLogin()
+            }
+            .setNegativeButton(getString(R.string.sign_up_success_secondary_action)) { _, _ ->
+                navigateToMain()
+            }
+            .show()
+    }
+
+    private fun showSignUpErrorDialog(detailMessage: String) {
+        MaterialAlertDialogBuilder(this, com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog)
+            .setTitle(getString(R.string.sign_up_error_dialog_title))
+            .setMessage(detailMessage)
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
+    }
+
+    private fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun navigateToMain() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
+        finish()
+    }
 }

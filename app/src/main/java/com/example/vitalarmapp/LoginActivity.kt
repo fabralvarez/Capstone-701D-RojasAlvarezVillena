@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityLoginBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
+import com.example.vitalarmapp.util.ErrorMessageTranslator
 import utils.FirebaseManager
 import utils.LoginResult
 
@@ -104,15 +105,19 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showConnectionErrorDialog(message: String?) {
-        val detail = if (message.isNullOrBlank()) "" else "\n\n$message"
+        val detail = message?.let { ErrorMessageTranslator.toSpanish(this, it) }
+            ?: getString(R.string.error_detail_network)
+        val composedMessage =
+            getString(R.string.login_dialog_connection_error_message) + "\n\n" + detail
         showExpressiveDialog(
             title = getString(R.string.login_dialog_connection_error_title),
-            message = getString(R.string.login_dialog_connection_error_message) + detail
+            message = composedMessage
         )
     }
 
     private fun showUnknownErrorDialog(message: String?) {
-        val detail = message ?: getString(R.string.login_dialog_unknown_error_fallback)
+        val detail = message?.let { ErrorMessageTranslator.toSpanish(this, it) }
+            ?: getString(R.string.login_dialog_unknown_error_fallback)
         showExpressiveDialog(
             title = getString(R.string.login_dialog_unknown_error_title),
             message = getString(R.string.login_dialog_unknown_error_message, detail)

@@ -5,18 +5,29 @@ import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.FirebaseNetworkException
 import kotlinx.coroutines.tasks.await
 import models.Medication
 import models.Person
+import models.User
 
 sealed class LoginResult {
     data object Success : LoginResult()
     data object UserNotFound : LoginResult()
     data class ConnectionError(val message: String? = null) : LoginResult()
     data class UnknownError(val message: String? = null) : LoginResult()
+}
+
+sealed class RegistrationResult {
+    data class Success(val user: User) : RegistrationResult()
+    data object EmailAlreadyInUse : RegistrationResult()
+    data object WeakPassword : RegistrationResult()
+    data class ConnectionError(val message: String? = null) : RegistrationResult()
+    data class UnknownError(val message: String? = null) : RegistrationResult()
 }
 
 object FirebaseManager {
@@ -32,6 +43,36 @@ object FirebaseManager {
     private const val COLLECTION_MEDICATIONS = "medications"
 
     // ==================== AUTHENTICATION ====================
+
+    suspend fun registerUser(name: String, email: String, password: String): RegistrationResult {
+        return try {
+            val authResult = auth.createUserWithEmailAndPassword(email, password).await()
+            val firebaseUser = authResult.user ?: return RegistrationResult.UnknownError("Usuario no creado")
+
+            val newUser = User(
+                id = firebaseUser.uid,
+                name = name,
+                email = email,
+                createdAt = System.currentTimeMillis()
+            )
+
+            db.collection(COLLECTION_USERS)
+                .document(firebaseUser.uid)
+                .set(newUser)
+                .await()
+
+            RegistrationResult.Success(newUser)
+        } catch (e: FirebaseAuthUserCollisionException) {
+            RegistrationResult.EmailAlreadyInUse
+        } catch (e: FirebaseAuthWeakPasswordException) {
+            RegistrationResult.WeakPassword
+        } catch (e: FirebaseNetworkException) {
+            RegistrationResult.ConnectionError(e.localizedMessage)
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error registrando usuario: ${e.message}", e)
+            RegistrationResult.UnknownError(e.localizedMessage)
+        }
+    }
 
     suspend fun loginAndVerifyUser(email: String, password: String): LoginResult {
         return try {

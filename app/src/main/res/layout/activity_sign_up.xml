@@ -48,59 +48,97 @@
         app:layout_constraintTop_toBottomOf="@+id/signup_appbar">
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/signupNameInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:hint="@string/sign_up_name_label"
+            app:boxBackgroundMode="outline"
+            app:placeholderText="@string/sign_up_name_placeholder"
+            app:startIconDrawable="@drawable/baseline_person_outline_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/signup_name_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/name"
-                android:inputType="textPersonName" />
+                android:autofillHints="name"
+                android:importantForAutofill="yes"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/signupEmailInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:hint="@string/sign_up_email_label"
+            app:boxBackgroundMode="outline"
+            app:placeholderText="@string/sign_up_email_placeholder"
+            app:startIconDrawable="@drawable/outline_email_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/signup_email_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress" />
+                android:autofillHints="emailAddress"
+                android:importantForAutofill="yes"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/signupPassInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:hint="@string/sign_up_password_label"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="password_toggle"
+            app:placeholderText="@string/sign_up_password_placeholder"
+            app:startIconDrawable="@drawable/outline_password_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/signup_pass_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:inputType="textPassword" />
+                android:autofillHints="password"
+                android:importantForAutofill="yes"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/signupConfirmPassInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="24dp"
+            android:hint="@string/sign_up_confirm_password_label"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="password_toggle"
+            app:placeholderText="@string/sign_up_confirm_password_placeholder"
+            app:startIconDrawable="@drawable/outline_password_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/signup_confirm_pass_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/confirm_password"
-                android:inputType="textPassword" />
+                android:autofillHints="password"
+                android:importantForAutofill="yes"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 

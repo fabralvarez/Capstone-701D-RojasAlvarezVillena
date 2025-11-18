@@ -1,3 +1,11 @@
+## [0.4.0] - 2025-11-18
+
+### Changed
+
+- **Compilación del Proyecto:**
+    - Actualización de Java y JVM desde Java 11 a Java 21, con el fin de optimizar el rendimiento
+      general de la app.
+
 ## [0.3.0] - 2025-11-16
 
 ### Changed

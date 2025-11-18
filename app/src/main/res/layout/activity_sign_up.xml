@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/md_theme_background"
-    android:paddingHorizontal="32dp"
     android:paddingBottom="72dp"
     tools:context=".SignUpActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/register_appbarlayout"
+        android:id="@+id/signup_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -18,19 +17,21 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/register_collapsingtoolbarlayout"
+            android:id="@+id/signup_collapsing_toolbar"
             style="?attr/collapsingToolbarLayoutMediumStyle"
             android:layout_width="match_parent"
-            android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
-            app:expandedTitleGravity="bottom|center_horizontal"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            app:expandedSubtitleTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:expandedTitleGravity="bottom|center_horizontal">
 
             <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/login_toolbar"
+                android:id="@+id/signup_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
                 app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/baseline_arrow_back_24"
+                app:navigationIconTint="?attr/colorOnSurface"
                 app:subtitle="Para acceder a la plataforma"
                 app:title="Registrate en Vitalarm" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -42,7 +43,9 @@
         android:layout_marginTop="48dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_appbarlayout">
+        app:layout_constraintTop_toBottomOf="@+id/signup_appbar"
+        android:layout_marginHorizontal="24dp"
+        >
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -51,7 +54,7 @@
             android:layout_marginBottom="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etNombre"
+                android:id="@+id/signup_name_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name"
@@ -65,21 +68,7 @@
             android:layout_marginBottom="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etApellidos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/lastname"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCorreo"
+                android:id="@+id/signup_email_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
@@ -93,7 +82,7 @@
             android:layout_marginBottom="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etContrasena"
+                android:id="@+id/signup_pass_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
@@ -107,7 +96,7 @@
             android:layout_marginBottom="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etConfirmarContrasena"
+                android:id="@+id/signup_confirm_pass_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/confirm_password"
@@ -126,6 +115,7 @@
             android:id="@+id/btnEntrar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:layout_marginHorizontal="96dp"
             android:backgroundTint="@color/md_theme_primary"
             android:text="@string/register_action"
             android:textColor="@color/md_theme_onPrimary" />

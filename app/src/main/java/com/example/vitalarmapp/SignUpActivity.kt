@@ -34,20 +34,21 @@ class SignUpActivity : AppCompatActivity() {
         binding.btnEntrar.setOnClickListener {
             registerUser()
         }
+
+        binding.signupToolbar.setNavigationOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun registerUser() {
-        val name = binding.etNombre.text.toString().trim()
-        val lastName = binding.etApellidos.text.toString().trim()
-        val email = binding.etCorreo.text.toString().trim()
-        val password = binding.etContrasena.text.toString()
-        val confirmPassword = binding.etConfirmarContrasena.text.toString()
+        val name = binding.signupNameTf.text.toString().trim()
+        val email = binding.signupEmailTf.text.toString().trim()
+        val password = binding.signupPassTf.text.toString()
+        val confirmPassword = binding.signupConfirmPassTf.text.toString()
 
         // Validaciones
-        if (name.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
-            return
-        }
 
         if (password != confirmPassword) {
             Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
@@ -55,7 +56,11 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         if (password.length < 6) {
-            Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "La contraseña debe tener al menos 6 caracteres",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
@@ -69,7 +74,8 @@ class SignUpActivity : AppCompatActivity() {
 
                 if (result.user != null) {
                     // ✅ REGISTRO EXITOSO - IR DIRECTAMENTE AL MENÚ
-                    Toast.makeText(this@SignUpActivity, "✅ ¡Registro exitoso!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignUpActivity, "✅ ¡Registro exitoso!", Toast.LENGTH_SHORT)
+                        .show()
                     startActivity(Intent(this@SignUpActivity, LanMenuActivity::class.java))
                     finish()
                 } else {
@@ -82,13 +88,27 @@ class SignUpActivity : AppCompatActivity() {
 
                 when {
                     e.message?.contains("email address is already") == true -> {
-                        Toast.makeText(this@SignUpActivity, "❌ Este correo ya está registrado", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@SignUpActivity,
+                            "❌ Este correo ya está registrado",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
                     e.message?.contains("network") == true -> {
-                        Toast.makeText(this@SignUpActivity, "❌ Error de conexión", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@SignUpActivity,
+                            "❌ Error de conexión",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
                     else -> {
-                        Toast.makeText(this@SignUpActivity, "❌ Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@SignUpActivity,
+                            "❌ Error: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

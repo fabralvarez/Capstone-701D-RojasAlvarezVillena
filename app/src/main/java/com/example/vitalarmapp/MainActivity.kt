@@ -8,7 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.vitalarmapp.databinding.ActivityMainBinding
 import com.google.android.material.button.MaterialButton
-import utils.NotificationHelper
+import com.example.vitalarmapp.utils.local.NotificationHelper
 
 private lateinit var mainLoginBtn: MaterialButton
 private lateinit var mainSignupBtn: MaterialButton

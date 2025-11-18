@@ -1,12 +1,13 @@
-package com.example.vitalarmapp
+package com.example.vitalarmapp.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import models.Medication
-import models.Person
+import com.example.vitalarmapp.R
+import com.example.vitalarmapp.models.Medication
+import com.example.vitalarmapp.models.Person
 
 class GeneralMedicationsAdapter(
     private var medicationsList: List<Pair<Medication, Person>>,

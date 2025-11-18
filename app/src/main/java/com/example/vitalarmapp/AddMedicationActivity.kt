@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import com.example.vitalarmapp.databinding.ActivityAddMedicationBinding
-import utils.FirebaseManager
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

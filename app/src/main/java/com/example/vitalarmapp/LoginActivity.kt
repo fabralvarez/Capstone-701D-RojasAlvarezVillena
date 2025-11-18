@@ -12,9 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityLoginBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
-import com.example.vitalarmapp.util.ErrorMessageTranslator
-import utils.FirebaseManager
-import utils.LoginResult
+import com.example.vitalarmapp.utils.local.ErrorMessageTranslator
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.example.vitalarmapp.utils.firebase.LoginResult
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding

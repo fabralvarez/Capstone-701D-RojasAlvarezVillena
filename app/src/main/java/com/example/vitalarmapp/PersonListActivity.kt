@@ -7,13 +7,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.vitalarmapp.adapters.PeopleAdapter
 import com.example.vitalarmapp.databinding.ActivityPersonListBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import models.Person
-import utils.FirebaseManager
+import com.example.vitalarmapp.models.Person
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
 
 class PersonListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPersonListBinding

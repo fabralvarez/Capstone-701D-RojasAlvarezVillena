@@ -1,4 +1,4 @@
-package utils
+package com.example.vitalarmapp.utils.local
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -27,7 +27,8 @@ object NotificationHelper {
                 vibrationPattern = longArrayOf(1000, 1000, 1000, 1000)
             }
 
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
 
             Log.d("NotificationHelper", "✅ Canal de notificaciones creado")

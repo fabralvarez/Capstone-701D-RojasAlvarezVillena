@@ -1,3 +1,10 @@
+## [0.5.0] - 2025-11-18
+
+### Changed
+
+- **Estructura del Proyecto:**
+    - Limpieza y reestructuración general del código fuente.
+
 ## [0.4.0] - 2025-11-18
 
 ### Changed

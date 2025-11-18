@@ -1,4 +1,4 @@
-package models
+package com.example.vitalarmapp.models
 
 data class User(
     val id: String = "",

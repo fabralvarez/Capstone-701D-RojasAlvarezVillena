@@ -11,9 +11,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import models.Medication
-import models.Person
-import utils.FirebaseManager
+import com.example.vitalarmapp.models.Medication
+import com.example.vitalarmapp.models.Person
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import java.util.Calendar
 
 class LanMenuActivity : AppCompatActivity() {

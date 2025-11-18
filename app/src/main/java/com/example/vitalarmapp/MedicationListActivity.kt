@@ -7,12 +7,13 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.vitalarmapp.adapters.MedicationAdapter
 import com.example.vitalarmapp.databinding.ActivityMedicationListBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import utils.FirebaseManager
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
 
 class MedicationListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMedicationListBinding

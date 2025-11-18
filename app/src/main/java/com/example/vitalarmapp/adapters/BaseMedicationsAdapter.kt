@@ -1,4 +1,4 @@
-package com.example.vitalarmapp
+package com.example.vitalarmapp.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.vitalarmapp.R
 
 class BaseMedicationsAdapter(
     private var medicationsList: List<Map<String, Any>>,

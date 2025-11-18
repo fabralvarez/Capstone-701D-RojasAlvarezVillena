@@ -1,4 +1,4 @@
-package com.example.vitalarmapp.util
+package com.example.vitalarmapp.utils.local
 
 import android.content.Context
 import com.example.vitalarmapp.R
@@ -9,8 +9,8 @@ object ErrorMessageTranslator {
         val normalized = rawMessage.lowercase()
         return when {
             normalized.contains("network") ||
-                normalized.contains("timeout") ||
-                normalized.contains("connection") -> {
+                    normalized.contains("timeout") ||
+                    normalized.contains("connection") -> {
                 context.getString(R.string.error_detail_network)
             }
 

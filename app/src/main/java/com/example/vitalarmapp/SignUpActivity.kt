@@ -7,12 +7,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivitySignUpBinding
-import com.example.vitalarmapp.util.ErrorMessageTranslator
+import com.example.vitalarmapp.utils.local.ErrorMessageTranslator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
-import models.User
-import utils.FirebaseManager
-import utils.RegistrationResult
+import com.example.vitalarmapp.models.User
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.example.vitalarmapp.utils.firebase.RegistrationResult
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding

@@ -1,11 +1,14 @@
-package com.example.vitalarmapp
+package com.example.vitalarmapp.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import models.Person
+import com.example.vitalarmapp.PersonListActivity
+import com.example.vitalarmapp.R
+import com.example.vitalarmapp.models.Person
 
 class PeopleAdapter(
     private var peopleList: List<Person>,

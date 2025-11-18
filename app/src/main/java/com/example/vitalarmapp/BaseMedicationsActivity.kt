@@ -6,8 +6,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.vitalarmapp.adapters.BaseMedicationsAdapter
 import com.example.vitalarmapp.databinding.ActivityBaseMedicationsBinding
-import utils.FirebaseManager
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

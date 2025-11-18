@@ -5,6 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="models.Medication">
+    tools:context=".models.Medication">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

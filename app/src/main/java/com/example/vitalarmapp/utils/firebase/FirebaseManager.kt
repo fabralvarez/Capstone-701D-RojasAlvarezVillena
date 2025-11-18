@@ -1,4 +1,4 @@
-package utils
+package com.example.vitalarmapp.utils.firebase
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -11,9 +11,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.FirebaseNetworkException
 import kotlinx.coroutines.tasks.await
-import models.Medication
-import models.Person
-import models.User
+import com.example.vitalarmapp.models.Medication
+import com.example.vitalarmapp.models.Person
+import com.example.vitalarmapp.models.User
 
 sealed class LoginResult {
     data object Success : LoginResult()
@@ -31,23 +31,18 @@ sealed class RegistrationResult {
 }
 
 object FirebaseManager {
-    // Instancias de Firebase
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-
     @SuppressLint("StaticFieldLeak")
     private val db: FirebaseFirestore = Firebase.firestore
-
-    // Colecciones de Firestore
     private const val COLLECTION_USERS = "users"
     private const val COLLECTION_PEOPLE = "people"
     private const val COLLECTION_MEDICATIONS = "medications"
 
-    // ==================== AUTHENTICATION ====================
-
     suspend fun registerUser(name: String, email: String, password: String): RegistrationResult {
         return try {
             val authResult = auth.createUserWithEmailAndPassword(email, password).await()
-            val firebaseUser = authResult.user ?: return RegistrationResult.UnknownError("Usuario no creado")
+            val firebaseUser =
+                authResult.user ?: return RegistrationResult.UnknownError("Usuario no creado")
 
             val newUser = User(
                 id = firebaseUser.uid,
@@ -62,9 +57,9 @@ object FirebaseManager {
                 .await()
 
             RegistrationResult.Success(newUser)
-        } catch (e: FirebaseAuthUserCollisionException) {
+        } catch (_: FirebaseAuthUserCollisionException) {
             RegistrationResult.EmailAlreadyInUse
-        } catch (e: FirebaseAuthWeakPasswordException) {
+        } catch (_: FirebaseAuthWeakPasswordException) {
             RegistrationResult.WeakPassword
         } catch (e: FirebaseNetworkException) {
             RegistrationResult.ConnectionError(e.localizedMessage)
@@ -93,7 +88,7 @@ object FirebaseManager {
             }
         } catch (e: FirebaseNetworkException) {
             LoginResult.ConnectionError(e.localizedMessage)
-        } catch (e: FirebaseAuthInvalidUserException) {
+        } catch (_: FirebaseAuthInvalidUserException) {
             LoginResult.UserNotFound
         } catch (e: Exception) {
             Log.e("FirebaseManager", "Error en login: ${e.message}", e)
@@ -108,8 +103,6 @@ object FirebaseManager {
     fun logout() {
         auth.signOut()
     }
-
-    // ==================== PERSONAS A CUIDADO ====================
 
     suspend fun addPerson(name: String, birthDate: String? = null): Boolean {
         val userId = getCurrentUserId() ?: return false
@@ -201,8 +194,6 @@ object FirebaseManager {
         }
     }
 
-    // ==================== MEDICAMENTOS ====================
-
     suspend fun addMedication(
         personId: String,
         name: String,
@@ -285,7 +276,6 @@ object FirebaseManager {
             emptyList()
         }
     }
-// ==================== OBTENER DATOS DEL USUARIO ====================
 
     suspend fun getCurrentUserName(): String {
         return try {
@@ -315,7 +305,6 @@ object FirebaseManager {
             "Usuario"
         }
     }
-    // ==================== MEDICAMENTOS BASE ====================
 
     private const val COLLECTION_BASE_MEDICATIONS = "base_medications"
 
@@ -419,7 +408,7 @@ object FirebaseManager {
                         put("frequency", medicationData["frequency"] as? String ?: "Sin frecuencia")
                         put(
                             "alarmTimes",
-                            medicationData["alarmTimes"] as? List<String> ?: emptyList<String>()
+                            medicationData["alarmTimes"] as? List<*> ?: emptyList<String>()
                         )
                     }
                     usersList.add(userInfo)

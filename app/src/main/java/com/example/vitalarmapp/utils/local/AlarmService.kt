@@ -1,4 +1,4 @@
-package com.example.vitalarmapp
+package com.example.vitalarmapp.utils.local
 
 import android.R
 import android.app.Notification
@@ -10,6 +10,7 @@ import android.media.RingtoneManager
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.vitalarmapp.LanMenuActivity
 
 class AlarmService : Service() {
 
@@ -30,7 +31,12 @@ class AlarmService : Service() {
         return START_NOT_STICKY
     }
 
-    private fun showNotification(medicationName: String, personName: String, dosage: String, medicationId: String) {
+    private fun showNotification(
+        medicationName: String,
+        personName: String,
+        dosage: String,
+        medicationId: String
+    ) {
         Log.d("AlarmService", "📱 Creando notificación: $medicationName para $personName")
 
         // Intent para cuando se hace click en la notificación
@@ -66,8 +72,10 @@ class AlarmService : Service() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setDefaults(Notification.DEFAULT_ALL)
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText("💊 $medicationName\n👤 Para: $personName\n📏 Dosis: $dosage\n\nToca para abrir la app"))
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText("💊 $medicationName\n👤 Para: $personName\n📏 Dosis: $dosage\n\nToca para abrir la app")
+            )
             .addAction(R.drawable.ic_input_add, "✅ Tomado", takenPendingIntent) // Icono del sistema
             .build()
 
@@ -83,7 +91,8 @@ class AlarmService : Service() {
             val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
             if (alarmSound == null) {
                 // Si no hay alarma, usar notificación
-                val notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                val notificationSound =
+                    RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                 val ringtone = RingtoneManager.getRingtone(this, notificationSound)
                 ringtone?.play()
             } else {

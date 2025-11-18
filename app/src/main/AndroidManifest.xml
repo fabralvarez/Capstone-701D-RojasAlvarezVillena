@@ -35,13 +35,13 @@
             android:exported="false" />
 
         <service
-            android:name=".AlarmService"
+            android:name=".utils.local.AlarmService"
             android:enabled="true"
             android:exported="false" />
 
         <!-- NUEVO: Receptor de alarmas -->
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".utils.local.AlarmReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

@@ -31,7 +31,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun initListeners() {
-        binding.btnEntrar.setOnClickListener {
+        binding.signupRegisterBtn.setOnClickListener {
             registerUser()
         }
 
@@ -64,8 +64,8 @@ class SignUpActivity : AppCompatActivity() {
             return
         }
 
-        binding.btnEntrar.isEnabled = false
-        binding.btnEntrar.text = "Registrando..."
+        binding.signupRegisterBtn.isEnabled = false
+        binding.signupRegisterBtn.text = "Registrando..."
 
         coroutineScope.launch {
             try {
@@ -83,8 +83,8 @@ class SignUpActivity : AppCompatActivity() {
                 }
 
             } catch (e: Exception) {
-                binding.btnEntrar.isEnabled = true
-                binding.btnEntrar.text = "Registrarse"
+                binding.signupRegisterBtn.isEnabled = true
+                binding.signupRegisterBtn.text = "Registrarse"
 
                 when {
                     e.message?.contains("email address is already") == true -> {

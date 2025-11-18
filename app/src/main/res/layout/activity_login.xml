@@ -48,11 +48,11 @@
         android:id="@+id/login_form"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
         android:paddingTop="24dp"
-        android:layout_marginHorizontal="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_coordinator">
@@ -107,38 +107,38 @@
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/login_forgot_pass_btn"
-        style="@style/Widget.Material3.Button.TextButton"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="232dp"
-        android:text="@string/login_forgot_password"
-        android:textAllCaps="false"
-        app:cornerRadius="28dp"
-        app:layout_constraintBottom_toTopOf="@id/login_login_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="96dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_form" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/login_login_btn"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:paddingHorizontal="40dp"
-        android:paddingVertical="20dp"
-        android:text="@string/login_action"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        app:cornerRadius="36dp"
-        android:layout_marginHorizontal="96dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="VisualLintButtonSize" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="64dp"
+        android:gravity="center_horizontal"
+        >
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_forgot_pass_btn"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/login_forgot_password"
+            android:textAllCaps="false"
+            app:cornerRadius="28dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_login_btn"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="60dp"
+            android:paddingVertical="20dp"
+            android:text="@string/login_action"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:cornerRadius="36dp"
+            tools:ignore="VisualLintButtonSize" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

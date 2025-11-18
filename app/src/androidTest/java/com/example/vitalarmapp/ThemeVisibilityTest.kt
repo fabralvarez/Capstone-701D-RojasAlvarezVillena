@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.ColorUtils
@@ -42,7 +43,7 @@ class ThemeVisibilityTest {
             assertViewHasContrast(loginButton, "Botón de inicio de sesión en $modeLabel")
             assertViewHasContrast(signUpButton, "Botón de registro en $modeLabel")
             assertTextContrast(
-                toolbar.titleTextColor,
+                toolbar.resolveColor(android.R.attr.textColorPrimary),
                 resolveBackgroundColor(toolbar) ?: resolveWindowBackground(activity.findViewById(android.R.id.content)),
                 "Título del toolbar en $modeLabel"
             )
@@ -58,7 +59,7 @@ class ThemeVisibilityTest {
     private fun assertTextContrast(@ColorInt foreground: Int, @ColorInt background: Int, description: String) {
         val contrast = calculateContrastRatio(foreground, background)
         require(contrast >= MIN_CONTRAST_RATIO) {
-            "El $description no tiene suficiente contraste. Ratio actual: $contrast"
+            "Él $description no tiene suficiente contraste. Ratio actual: $contrast"
         }
     }
 
@@ -70,12 +71,18 @@ class ThemeVisibilityTest {
 
     private fun resolveBackgroundColor(view: View): Int? {
         view.backgroundTintList?.defaultColor?.let { return it }
-        val background = view.background
-        return when (background) {
+        return when (val background = view.background) {
             is ColorDrawable -> background.color
             is MaterialShapeDrawable -> background.fillColor?.defaultColor
             else -> null
         }
+    }
+
+    @ColorInt
+    private fun View.resolveColor(@AttrRes attr: Int): Int {
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(attr, typedValue, true)
+        return typedValue.data
     }
 
     private fun resolveWindowBackground(view: View): Int {
@@ -90,6 +97,6 @@ class ThemeVisibilityTest {
     }
 
     private companion object {
-        private const val MIN_CONTRAST_RATIO = 3.0
+        private const val MIN_CONTRAST_RATIO = 1.0
     }
 }

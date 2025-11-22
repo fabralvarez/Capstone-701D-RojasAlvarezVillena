@@ -7,15 +7,25 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivitySignUpBinding
-import com.example.vitalarmapp.utils.local.ErrorMessageTranslator
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.launch
 import com.example.vitalarmapp.models.User
-import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.example.vitalarmapp.utils.firebase.DefaultRegistrationProvider
 import com.example.vitalarmapp.utils.firebase.RegistrationResult
+import com.example.vitalarmapp.utils.firebase.UserRegistrationProvider
+import com.example.vitalarmapp.utils.local.ErrorMessageTranslator
+import com.example.vitalarmapp.utils.validation.LibreApiRutValidationService
+import com.example.vitalarmapp.utils.validation.RutValidationService
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
+
+    companion object {
+        var registrationProvider: () -> UserRegistrationProvider = { DefaultRegistrationProvider() }
+        var rutValidationServiceProvider: () -> RutValidationService = { LibreApiRutValidationService() }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,9 +104,21 @@ class SignUpActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             setLoadingState(true)
-            when (val result = FirebaseManager.registerUser(name, rut, email, password)) {
+
+            val rutValidator = rutValidationServiceProvider()
+            val isRutValid = withContext(Dispatchers.IO) { rutValidator.isValid(rut) }
+            if (!isRutValid) {
+                binding.signupRutInputLayout.error = getString(R.string.sign_up_error_invalid_rut)
+                setLoadingState(false)
+                return@launch
+            } else {
+                binding.signupRutInputLayout.error = null
+            }
+
+            val registrationManager = registrationProvider()
+            when (val result = registrationManager.registerUser(name, rut, email, password)) {
                 is RegistrationResult.Success -> {
-                    FirebaseManager.logout()
+                    registrationManager.logout()
                     showSignUpSuccessDialog(result.user)
                 }
 

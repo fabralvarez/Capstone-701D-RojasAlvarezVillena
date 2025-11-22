@@ -12,9 +12,9 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.6.12"
+        versionName = "0.6.13"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "LIBREAPI_TOKEN", "demo")
+        buildConfigField("String", "LIBREAPI_TOKEN", "\"demo\"")
     }
     buildTypes {
         release {

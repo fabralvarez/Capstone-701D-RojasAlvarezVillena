@@ -59,6 +59,7 @@
     <string name="sign_up_confirm_password_placeholder">Confirmar Password</string>
     <string name="sign_up_error_empty_name">Ingresa tu nombre completo.</string>
     <string name="sign_up_error_invalid_email">Ingresa un correo válido.</string>
+    <string name="sign_up_error_invalid_rut">Ingresa un RUT válido.</string>
     <string name="sign_up_error_password_length">La contraseña debe tener al menos 6 caracteres.</string>
     <string name="sign_up_error_password_mismatch">Las contraseñas no coinciden.</string>
     <string name="sign_up_error_empty_password">Ingresa una contraseña.</string>

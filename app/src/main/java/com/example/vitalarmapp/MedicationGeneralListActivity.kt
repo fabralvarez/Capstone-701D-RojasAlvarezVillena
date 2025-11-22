@@ -14,14 +14,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.example.vitalarmapp.models.Medication
-import com.example.vitalarmapp.models.Person
+import com.example.vitalarmapp.models.Patient
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 
 class MedicationGeneralListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMedicationGeneralListBinding
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var medicationsAdapter: GeneralMedicationsAdapter
-    private var allMedications = mutableListOf<Pair<Medication, Person>>()
+    private var allMedications = mutableListOf<Pair<Medication, Patient>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

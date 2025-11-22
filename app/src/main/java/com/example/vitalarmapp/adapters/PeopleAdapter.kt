@@ -8,15 +8,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vitalarmapp.PersonListActivity
 import com.example.vitalarmapp.R
-import com.example.vitalarmapp.models.Person
+import com.example.vitalarmapp.models.Patient
 
 class PeopleAdapter(
-    private var peopleList: List<Person>,
-    private val onPersonClick: (Person) -> Unit
+    private var peopleList: List<Patient>,
+    private val onPersonClick: (Patient) -> Unit
 ) : RecyclerView.Adapter<PeopleAdapter.PersonViewHolder>() {
 
     class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // Encuentra las vistas usando findViewById
         val tvPersonName: TextView = itemView.findViewById(R.id.tvPersonName)
         val tvBirthDate: TextView = itemView.findViewById(R.id.tvBirthDate)
         val btnDelete: ImageButton = itemView.findViewById(R.id.btnDelete)
@@ -30,25 +29,17 @@ class PeopleAdapter(
 
     override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
         val person = peopleList[position]
-
-        // Configurar nombre
         val personName = person.name.ifEmpty { "Sin nombre" }
         holder.tvPersonName.text = personName
-
-        // Configurar fecha de nacimiento
         val birthDate = person.birthDate
         holder.tvBirthDate.text = if (!birthDate.isNullOrEmpty()) {
             "🎂 $birthDate"
         } else {
             "🎂 No especificada"
         }
-
-        // Clic en toda la tarjeta
         holder.itemView.setOnClickListener {
             onPersonClick(person)
         }
-
-        // Clic en botón eliminar
         holder.btnDelete.setOnClickListener {
             val personId = person.id
             if (personId.isNotEmpty()) {
@@ -59,7 +50,7 @@ class PeopleAdapter(
 
     override fun getItemCount(): Int = peopleList.size
 
-    fun updateData(newList: List<Person>) {
+    fun updateData(newList: List<Patient>) {
         peopleList = newList
         notifyDataSetChanged()
     }

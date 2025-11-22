@@ -1,6 +1,6 @@
 package com.example.vitalarmapp.models
 
-data class Person(
+data class Patient(
     val id: String = "",
     val name: String = "",
     val birthDate: String? = null,

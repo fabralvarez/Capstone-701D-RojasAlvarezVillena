@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.example.vitalarmapp.models.Medication
-import com.example.vitalarmapp.models.Person
+import com.example.vitalarmapp.models.Patient
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import java.util.Calendar
 
@@ -102,7 +102,7 @@ class LanMenuActivity : AppCompatActivity() {
                 if (nextMedication != null) {
                     showNextMedication(
                         nextMedication.medication,
-                        nextMedication.person,
+                        nextMedication.patient,
                         nextMedication.time
                     )
                 } else {
@@ -160,10 +160,10 @@ class LanMenuActivity : AppCompatActivity() {
         }
     }
 
-    private fun showNextMedication(medication: Medication, person: Person, nextTime: String) {
+    private fun showNextMedication(medication: Medication, patient: Patient, nextTime: String) {
         val medicationName = medication.name.ifEmpty { "Medicamento" }
         val dosage = medication.dosage.ifEmpty { "Sin dosis" }
-        val personName = person.name.ifEmpty { "Persona" }
+        val personName = patient.name.ifEmpty { "Persona" }
 
         // Calcular tiempo de forma SIMPLE
         val timeText = calculateSimpleTime(nextTime)
@@ -241,7 +241,7 @@ class LanMenuActivity : AppCompatActivity() {
 
     private data class MedicationWithTime(
         val medication: Medication,
-        val person: Person,
+        val patient: Patient,
         val time: String
     )
 }

@@ -41,6 +41,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun attemptRegisterUser() {
         val name = binding.signupNameTf.text?.toString()?.trim().orEmpty()
+        val rut = binding.signupRutTf.text?.toString()?.trim().orEmpty()
         val email = binding.signupEmailTf.text?.toString()?.trim().orEmpty()
         val password = binding.signupPassTf.text?.toString().orEmpty()
         val confirmPassword = binding.signupConfirmPassTf.text?.toString().orEmpty()
@@ -93,7 +94,7 @@ class SignUpActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             setLoadingState(true)
-            when (val result = FirebaseManager.registerUser(name, email, password)) {
+            when (val result = FirebaseManager.registerUser(name, rut, email, password)) {
                 is RegistrationResult.Success -> {
                     FirebaseManager.logout()
                     showSignUpSuccessDialog(result.user)
@@ -130,7 +131,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun showSignUpSuccessDialog(user: User) {
-        val userName = if (user.name.isNotBlank()) user.name else getString(R.string.sign_up_success_fallback_name)
+        val userName = user.name.ifBlank { getString(R.string.sign_up_success_fallback_name) }
         MaterialAlertDialogBuilder(this, com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog)
             .setTitle(getString(R.string.sign_up_success_dialog_title))
             .setMessage(getString(R.string.sign_up_success_dialog_supporting, userName))

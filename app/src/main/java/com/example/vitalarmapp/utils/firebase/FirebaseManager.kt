@@ -12,7 +12,7 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.FirebaseNetworkException
 import kotlinx.coroutines.tasks.await
 import com.example.vitalarmapp.models.Medication
-import com.example.vitalarmapp.models.Person
+import com.example.vitalarmapp.models.Patient
 import com.example.vitalarmapp.models.User
 
 sealed class LoginResult {
@@ -35,10 +35,15 @@ object FirebaseManager {
     @SuppressLint("StaticFieldLeak")
     private val db: FirebaseFirestore = Firebase.firestore
     private const val COLLECTION_USERS = "users"
-    private const val COLLECTION_PEOPLE = "people"
+    private const val COLLECTION_PATIENTS = "patients"
     private const val COLLECTION_MEDICATIONS = "medications"
 
-    suspend fun registerUser(name: String, email: String, password: String): RegistrationResult {
+    suspend fun registerUser(
+        name: String,
+        rut: String,
+        email: String,
+        password: String
+    ): RegistrationResult {
         return try {
             val authResult = auth.createUserWithEmailAndPassword(email, password).await()
             val firebaseUser =
@@ -47,6 +52,7 @@ object FirebaseManager {
             val newUser = User(
                 id = firebaseUser.uid,
                 name = name,
+                rut = rut,
                 email = email,
                 createdAt = System.currentTimeMillis()
             )
@@ -115,7 +121,7 @@ object FirebaseManager {
                 "createdAt" to System.currentTimeMillis()
             )
 
-            db.collection(COLLECTION_PEOPLE)
+            db.collection(COLLECTION_PATIENTS)
                 .add(personData)
                 .await()
             true
@@ -125,7 +131,7 @@ object FirebaseManager {
         }
     }
 
-    suspend fun getPeople(): List<Person> {
+    suspend fun getPeople(): List<Patient> {
         val userId = getCurrentUserId()
 
         Log.d("FirebaseDebug", "🔍 Buscando personas para userId: $userId")
@@ -138,7 +144,7 @@ object FirebaseManager {
         return try {
             Log.d("FirebaseDebug", "🎯 Consultando Firestore...")
 
-            val result = db.collection(COLLECTION_PEOPLE)
+            val result = db.collection(COLLECTION_PATIENTS)
                 .whereEqualTo("userId", userId)
                 .get()
                 .await()
@@ -149,7 +155,7 @@ object FirebaseManager {
                 Log.d("FirebaseDebug", "📄 Procesando documento: ${document.id}")
                 val data = document.data ?: return@mapNotNull null
 
-                Person(
+                Patient(
                     id = document.id,
                     name = data["name"] as? String ?: "",
                     birthDate = data["birthDate"] as? String,
@@ -170,7 +176,6 @@ object FirebaseManager {
 
     suspend fun deletePerson(personId: String): Boolean {
         return try {
-            // Primero eliminar todos los medicamentos asociados a esta persona
             val medications = getMedicationsForPerson(personId)
             medications.forEach { medication ->
                 val medId = medication.id
@@ -181,9 +186,7 @@ object FirebaseManager {
                         .await()
                 }
             }
-
-            // Luego eliminar la persona
-            db.collection(COLLECTION_PEOPLE)
+            db.collection(COLLECTION_PATIENTS)
                 .document(personId)
                 .delete()
                 .await()
@@ -214,8 +217,6 @@ object FirebaseManager {
             )
 
             Log.d("FirebaseManager", "📝 Datos del medicamento: $medicationData")
-
-            // Guardar en Firestore
             db.collection(COLLECTION_MEDICATIONS)
                 .add(medicationData)
                 .addOnSuccessListener { documentReference ->
@@ -320,7 +321,6 @@ object FirebaseManager {
 
             Log.d("FirebaseManager", "📝 Datos del medicamento: $medicationData")
 
-            // Guardar en Firestore
             db.collection(COLLECTION_BASE_MEDICATIONS)
                 .add(medicationData)
                 .addOnSuccessListener { documentReference ->
@@ -379,8 +379,6 @@ object FirebaseManager {
     suspend fun getMedicationUsers(medicationName: String): List<Map<String, Any>> {
         return try {
             Log.d("FirebaseManager", "🔍 Buscando usuarios del medicamento: $medicationName")
-
-            // Buscar en todos los medicamentos de todas las personas
             val result = db.collection(COLLECTION_MEDICATIONS)
                 .whereEqualTo("name", medicationName)
                 .get()
@@ -393,9 +391,7 @@ object FirebaseManager {
                 val personId = medicationData["personId"] as? String ?: continue
 
                 Log.d("FirebaseManager", "📄 Encontrado para persona: $personId")
-
-                // Obtener información de la persona
-                val personDoc = db.collection(COLLECTION_PEOPLE)
+                val personDoc = db.collection(COLLECTION_PATIENTS)
                     .document(personId)
                     .get()
                     .await()

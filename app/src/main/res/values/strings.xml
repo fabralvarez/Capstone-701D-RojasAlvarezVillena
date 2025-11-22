@@ -78,4 +78,6 @@
     <string name="error_detail_email_in_use">Ese correo ya cuenta con una cuenta creada.</string>
     <string name="error_detail_weak_password">Tu contraseña debe ser más segura. Intenta con al menos 6 caracteres combinando letras y números.</string>
     <string name="error_detail_generic">Ocurrió un imprevisto. Prueba de nuevo en unos minutos.</string>
+    <string name="sign_up_rut_label">Rut</string>
+    <string name="sign_up_rut_placeholder">11.111.111-1</string>
 </resources>

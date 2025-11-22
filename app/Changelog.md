@@ -1,3 +1,10 @@
+## [0.6.0] - 2025-11-22
+
+### Changed
+
+- **Estructura del Modelo de Datos:**
+    - Limpieza y reestructuración general del código fuente.
+
 ## [0.5.0] - 2025-11-18
 
 ### Changed

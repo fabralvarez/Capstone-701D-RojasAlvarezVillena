@@ -7,11 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vitalarmapp.R
 import com.example.vitalarmapp.models.Medication
-import com.example.vitalarmapp.models.Person
+import com.example.vitalarmapp.models.Patient
 
 class GeneralMedicationsAdapter(
-    private var medicationsList: List<Pair<Medication, Person>>,
-    private val onMedicationClick: (Pair<Medication, Person>) -> Unit
+    private var medicationsList: List<Pair<Medication, Patient>>,
+    private val onMedicationClick: (Pair<Medication, Patient>) -> Unit
 ) : RecyclerView.Adapter<GeneralMedicationsAdapter.MedicationViewHolder>() {
 
     class MedicationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -56,7 +56,7 @@ class GeneralMedicationsAdapter(
 
     override fun getItemCount(): Int = medicationsList.size
 
-    fun updateItems(newItems: List<Pair<Medication, Person>>) {
+    fun updateItems(newItems: List<Pair<Medication, Patient>>) {
         medicationsList = newItems
         notifyDataSetChanged()
     }

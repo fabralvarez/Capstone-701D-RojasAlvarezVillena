@@ -13,14 +13,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.example.vitalarmapp.models.Person
+import com.example.vitalarmapp.models.Patient
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 
 class PersonListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPersonListBinding
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var peopleAdapter: PeopleAdapter
-    private var peopleList = mutableListOf<Person>()
+    private var peopleList = mutableListOf<Patient>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

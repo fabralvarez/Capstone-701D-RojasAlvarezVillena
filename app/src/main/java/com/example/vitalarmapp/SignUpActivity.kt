@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Patterns
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivitySignUpBinding
 import com.example.vitalarmapp.models.User
@@ -21,6 +22,7 @@ import kotlinx.coroutines.withContext
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
+    private var isRutFormatting = false
 
     companion object {
         var registrationProvider: () -> UserRegistrationProvider = { DefaultRegistrationProvider() }
@@ -47,6 +49,7 @@ class SignUpActivity : AppCompatActivity() {
         binding.signupRegisterBtn.setOnClickListener {
             attemptRegisterUser()
         }
+        setupRutFormatting()
     }
 
     private fun attemptRegisterUser() {
@@ -150,6 +153,36 @@ class SignUpActivity : AppCompatActivity() {
         binding.signupRegisterBtn.isEnabled = !isLoading
         binding.signupRegisterBtn.text =
             if (isLoading) getString(R.string.sign_up_register_loading) else getString(R.string.register)
+    }
+
+    private fun setupRutFormatting() {
+        binding.signupRutTf.addTextChangedListener { editable ->
+            if (isRutFormatting) return@addTextChangedListener
+
+            val currentValue = editable?.toString().orEmpty()
+            val formattedValue = formatRutInput(currentValue)
+
+            if (formattedValue != currentValue) {
+                isRutFormatting = true
+                binding.signupRutTf.setText(formattedValue)
+                binding.signupRutTf.setSelection(formattedValue.length)
+                isRutFormatting = false
+            }
+        }
+    }
+
+    private fun formatRutInput(input: String): String {
+        val cleanedRut = input.filter { it.isLetterOrDigit() }.uppercase()
+
+        if (cleanedRut.length <= 1) return cleanedRut
+
+        val body = cleanedRut.dropLast(1)
+        val verifier = cleanedRut.last()
+
+        val reversedGrouped = body.reversed().chunked(3).joinToString(".")
+        val formattedBody = reversedGrouped.reversed()
+
+        return "$formattedBody-$verifier"
     }
 
     private fun showSignUpSuccessDialog(user: User) {

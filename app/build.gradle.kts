@@ -14,7 +14,6 @@ android {
         versionCode = 1
         versionName = "0.6.17"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "LIBREAPI_TOKEN", "\"demo\"")
     }
     buildTypes {
         release {
@@ -75,5 +74,4 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.intents)
-    implementation(libs.okhttp)
 }

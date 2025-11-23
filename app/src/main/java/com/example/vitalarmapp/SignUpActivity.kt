@@ -13,7 +13,7 @@ import com.example.vitalarmapp.utils.firebase.DefaultRegistrationProvider
 import com.example.vitalarmapp.utils.firebase.RegistrationResult
 import com.example.vitalarmapp.utils.firebase.UserRegistrationProvider
 import com.example.vitalarmapp.utils.local.ErrorMessageTranslator
-import com.example.vitalarmapp.utils.validation.LibreApiRutValidationService
+import com.example.vitalarmapp.utils.validation.LocalRutValidationService
 import com.example.vitalarmapp.utils.validation.RutValidationService
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +26,7 @@ class SignUpActivity : AppCompatActivity() {
 
     companion object {
         var registrationProvider: () -> UserRegistrationProvider = { DefaultRegistrationProvider() }
-        var rutValidationServiceProvider: () -> RutValidationService = { LibreApiRutValidationService() }
+        var rutValidationServiceProvider: () -> RutValidationService = { LocalRutValidationService() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,7 +2,6 @@ package com.example.vitalarmapp.utils.firebase
 
 import android.annotation.SuppressLint
 import android.util.Log
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -10,7 +9,6 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.FirebaseNetworkException
-import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 import com.example.vitalarmapp.models.Medication
 import com.example.vitalarmapp.models.Patient
@@ -59,8 +57,6 @@ object FirebaseManager {
                 email = email,
                 createdAt = creationTimestamp
             )
-
-            ensureCollectionInitialized(COLLECTION_USERS)
 
             val profileData = hashMapOf(
                 "id" to firebaseUser.uid,
@@ -417,22 +413,4 @@ object FirebaseManager {
         }
     }
 
-    private suspend fun ensureCollectionInitialized(collectionName: String) {
-        try {
-            val snapshot: QuerySnapshot = db.collection(collectionName)
-                .limit(1)
-                .get()
-                .await()
-
-            if (snapshot.isEmpty) {
-                val sentinelRef = db.collection(collectionName).document("_init")
-                sentinelRef.set(mapOf("initializedAt" to System.currentTimeMillis())).await()
-                sentinelRef.delete().await()
-                Log.d(LOG_TAG, "📂 Colección '$collectionName' inicializada")
-            }
-        } catch (e: Exception) {
-            Log.e(LOG_TAG, "❌ Error inicializando colección $collectionName: ${e.message}", e)
-            throw e
-        }
-    }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -9,15 +10,16 @@
 
     <ImageView
         android:id="@+id/login_bottom_sheet_icon"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@null"
-        android:src="@drawable/outline_error_outline_24" />
+        android:src="@drawable/outline_error_outline_24"
+        app:tint="@color/md_theme_primary" />
 
     <TextView
         android:id="@+id/login_bottom_sheet_title"
-        style="?attr/textAppearanceHeadlineMedium"
+        style="?attr/textAppearanceHeadlineSmallEmphasized"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -37,7 +39,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:gravity="end"
         android:orientation="horizontal">
 
@@ -47,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
+            android:paddingVertical="14dp"
             android:text="@string/login_save_session_dismiss" />
 
         <com.google.android.material.button.MaterialButton
@@ -54,6 +57,7 @@
             style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingVertical="14dp"
             android:text="@string/login_save_session_accept" />
     </LinearLayout>
 </LinearLayout>

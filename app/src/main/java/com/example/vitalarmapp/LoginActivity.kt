@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.credentials.CredentialManager
 import androidx.credentials.CreatePasswordRequest
@@ -117,7 +116,6 @@ class LoginActivity : AppCompatActivity() {
         bottomSheetDialog.setCancelable(false)
         bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetDialog.behavior.isDraggable = false
-        bottomSheetDialog.findViewById<android.view.View>(com.google.android.material.R.id.drag_handle)?.isVisible = false
 
         bottomSheetBinding.loginBottomSheetDismissBtn.setOnClickListener {
             bottomSheetDialog.dismiss()

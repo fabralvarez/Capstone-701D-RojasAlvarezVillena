@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingHorizontal="24dp"
-    android:paddingTop="24dp"
-    android:paddingBottom="16dp">
+    android:paddingVertical="32dp">
 
     <ImageView
         android:id="@+id/login_bottom_sheet_icon"

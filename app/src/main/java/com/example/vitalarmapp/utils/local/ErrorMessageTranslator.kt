@@ -20,7 +20,7 @@ object ErrorMessageTranslator {
 
             normalized.contains("badly formatted") ||
                     normalized.contains("invalid email") ||
-                    normalized.contains("email address is badly formatted") -> {
+                    normalized.contains("the email address is badly formatted") -> {
                 context.getString(R.string.error_detail_invalid_email)
             }
 
@@ -47,7 +47,7 @@ object ErrorMessageTranslator {
                 context.getString(R.string.error_detail_too_many_requests)
             }
 
-            normalized.contains("operation not allowed") -> {
+            normalized.contains("operation isn't allowed") -> {
                 context.getString(R.string.error_detail_operation_not_allowed)
             }
 

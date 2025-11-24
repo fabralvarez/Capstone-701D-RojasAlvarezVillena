@@ -1,3 +1,11 @@
+## [0.8.1] - 2025-11-24
+
+### Changed
+
+- **Librerias y dependencias:**
+    - Actualización de Gradle a la última versión estable.
+    - Actualización de las dependencias de la aplicación a la última versión estable.
+
 ## [0.8.0] - 2025-11-24
 
 ### Changed

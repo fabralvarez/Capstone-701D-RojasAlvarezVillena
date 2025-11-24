@@ -14,7 +14,7 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.CreatePasswordRequest
 import androidx.credentials.exceptions.CreateCredentialException
 import com.example.vitalarmapp.databinding.ActivityLoginBinding
-import com.example.vitalarmapp.databinding.LoginSaveSessionBottomSheetBinding
+import com.example.vitalarmapp.databinding.LoginBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -112,7 +112,7 @@ class LoginActivity : AppCompatActivity() {
             this,
             com.google.android.material.R.style.ThemeOverlay_Material3_BottomSheetDialog
         )
-        val bottomSheetBinding = LoginSaveSessionBottomSheetBinding.inflate(layoutInflater)
+        val bottomSheetBinding = LoginBottomSheetBinding.inflate(layoutInflater)
         bottomSheetDialog.setContentView(bottomSheetBinding.root)
         bottomSheetDialog.setCancelable(false)
         bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED

@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.circleimageview)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
 
     // Dependencias de testing
     testImplementation(libs.junit)

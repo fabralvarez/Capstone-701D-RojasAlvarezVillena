@@ -1,3 +1,17 @@
+## [0.8.0] - 2025-11-24
+
+### Changed
+
+- **Estructura del Modelo de Datos:**
+    - Bugfixes en el login de usuarios.
+
+### Added
+
+- **Funciones de Autenticación:**
+    - Persistencia en el login de usuarios.
+    - Integración con Google Password Manager, para mayor facilidad de guardado de contraseñas.
+    - Autofill en el login de usuarios ahora disponible.
+
 ## [0.6.30] - 2025-11-24
 
 ### Changed

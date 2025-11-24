@@ -15,10 +15,14 @@
         android:theme="@style/AppTheme"
         tools:targetApi="36">
         <activity
+            android:name=".PassRecActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -37,9 +41,7 @@
         <service
             android:name=".utils.local.AlarmService"
             android:enabled="true"
-            android:exported="false" />
-
-        <!-- NUEVO: Receptor de alarmas -->
+            android:exported="false" /> <!-- NUEVO: Receptor de alarmas -->
         <receiver
             android:name=".utils.local.AlarmReceiver"
             android:enabled="true"
@@ -49,4 +51,5 @@
             </intent-filter>
         </receiver>
     </application>
+
 </manifest>

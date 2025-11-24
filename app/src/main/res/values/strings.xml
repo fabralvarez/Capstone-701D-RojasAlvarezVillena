@@ -78,6 +78,12 @@
     <string name="error_detail_credentials">Verifica los datos ingresados e inténtalo otra vez.</string>
     <string name="error_detail_email_in_use">Ese correo ya cuenta con una cuenta creada.</string>
     <string name="error_detail_weak_password">Tu contraseña debe ser más segura. Intenta con al menos 6 caracteres combinando letras y números.</string>
+    <string name="error_detail_invalid_email">El correo no tiene un formato válido. Revísalo e inténtalo de nuevo.</string>
+    <string name="error_detail_missing_password">Nos faltó tu contraseña. Escríbela para continuar.</string>
+    <string name="error_detail_too_many_requests">Hicimos muchos intentos seguidos. Espera un momento y vuelve a probar.</string>
+    <string name="error_detail_operation_not_allowed">El registro con correo y contraseña está deshabilitado por ahora.</string>
+    <string name="error_detail_user_disabled">Esta cuenta fue inhabilitada. Si crees que es un error, contáctanos.</string>
+    <string name="error_detail_permission_denied">No pudimos guardar tus datos por falta de permisos. Inténtalo más tarde.</string>
     <string name="error_detail_generic">Ocurrió un imprevisto. Prueba de nuevo en unos minutos.</string>
     <string name="sign_up_rut_label">Rut</string>
     <string name="sign_up_rut_placeholder">11.111.111-1</string>

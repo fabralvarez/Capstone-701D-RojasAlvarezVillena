@@ -51,19 +51,28 @@ object FirebaseManager {
             val firebaseUser =
                 authResult.user ?: return RegistrationResult.UnknownError("Usuario no creado")
 
+            val creationTimestamp = System.currentTimeMillis()
             val newUser = User(
                 id = firebaseUser.uid,
                 name = name,
                 rut = rut,
                 email = email,
-                createdAt = System.currentTimeMillis()
+                createdAt = creationTimestamp
             )
 
             ensureCollectionInitialized(COLLECTION_USERS)
 
+            val profileData = hashMapOf(
+                "id" to firebaseUser.uid,
+                "name" to name,
+                "rut" to rut,
+                "email" to email,
+                "createdAt" to creationTimestamp
+            )
+
             db.collection(COLLECTION_USERS)
                 .document(firebaseUser.uid)
-                .set(newUser)
+                .set(profileData)
                 .await()
 
             RegistrationResult.Success(newUser)
@@ -75,6 +84,7 @@ object FirebaseManager {
             RegistrationResult.ConnectionError(e.localizedMessage)
         } catch (e: Exception) {
             Log.e(LOG_TAG, "Error registrando usuario: ${e.message}", e)
+            auth.currentUser?.delete()
             RegistrationResult.UnknownError(e.localizedMessage)
         }
     }

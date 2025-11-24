@@ -29,7 +29,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/baseline_arrow_back_24"
+                app:navigationIcon="@drawable/outline_arrow_back_24"
                 app:navigationIconTint="?attr/colorOnSurface"
                 app:subtitle="Para acceder a la plataforma"
                 app:title="Registrate en Vitalarm" />
@@ -56,7 +56,7 @@
             android:hint="@string/sign_up_name_label"
             app:boxBackgroundMode="outline"
             app:placeholderText="@string/sign_up_name_placeholder"
-            app:startIconDrawable="@drawable/baseline_person_outline_24">
+            app:startIconDrawable="@drawable/outline_person_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/signup_name_tf"
@@ -79,7 +79,7 @@
             android:hint="@string/sign_up_rut_label"
             app:boxBackgroundMode="outline"
             app:placeholderText="@string/sign_up_rut_placeholder"
-            app:startIconDrawable="@drawable/baseline_person_outline_24">
+            app:startIconDrawable="@drawable/outline_person_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/signup_rut_tf"

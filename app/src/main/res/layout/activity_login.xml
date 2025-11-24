@@ -33,7 +33,7 @@
                     android:layout_height="?attr/actionBarSize"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
-                    app:navigationIcon="@drawable/baseline_arrow_back_24"
+                    app:navigationIcon="@drawable/outline_arrow_back_24"
                     app:subtitle="@string/sign_in_subtitle"
                     app:subtitleCentered="true"
                     app:title="@string/sign_in"

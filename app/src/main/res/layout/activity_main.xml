@@ -96,7 +96,7 @@
             android:textColor="@color/md_theme_onSecondaryContainer"
             android:textSize="16sp"
             app:cornerRadius="36dp"
-            app:icon="@drawable/baseline_person_outline_24"
+            app:icon="@drawable/outline_person_24"
             app:iconGravity="textStart"
             app:iconPadding="8dp"
             app:iconTint="@color/md_theme_onSecondaryContainer" />

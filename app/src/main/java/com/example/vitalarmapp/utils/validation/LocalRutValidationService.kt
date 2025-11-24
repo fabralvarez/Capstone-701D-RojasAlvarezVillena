@@ -28,8 +28,7 @@ class LocalRutValidationService : RutValidationService {
             multiplier = if (multiplier == MULTIPLIER_MAX) MULTIPLIER_START else multiplier + 1
         }
 
-        val remainder = 11 - (sum % 11)
-        return when (remainder) {
+        return when (val remainder = 11 - (sum % 11)) {
             11 -> '0'
             10 -> 'K'
             else -> remainder.digitToChar()

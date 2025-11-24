@@ -1,3 +1,10 @@
+## [0.6.30] - 2025-11-24
+
+### Changed
+
+- **Estructura del Modelo de Datos:**
+    - Bugfixes en el registro de nuevos usuarios.
+
 ## [0.6.0] - 2025-11-22
 
 ### Changed

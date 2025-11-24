@@ -13,6 +13,7 @@ import kotlinx.coroutines.tasks.await
 import com.example.vitalarmapp.models.Medication
 import com.example.vitalarmapp.models.Patient
 import com.example.vitalarmapp.models.User
+import com.google.firebase.Firebase
 
 sealed class LoginResult {
     data object Success : LoginResult()

@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import com.example.vitalarmapp.utils.local.ErrorMessageTranslator
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.firebase.LoginResult
+import com.example.vitalarmapp.utils.local.SessionManager
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -119,11 +120,13 @@ class LoginActivity : AppCompatActivity() {
 
         bottomSheetBinding.loginBottomSheetDismissBtn.setOnClickListener {
             bottomSheetDialog.dismiss()
+            SessionManager.setKeepSession(this, false)
             promptToSavePassword(email, password)
         }
 
         bottomSheetBinding.loginBottomSheetAgreeBtn.setOnClickListener {
             bottomSheetDialog.dismiss()
+            SessionManager.setKeepSession(this, true)
             promptToSavePassword(email, password)
         }
 

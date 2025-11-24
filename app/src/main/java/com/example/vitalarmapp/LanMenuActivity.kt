@@ -14,6 +14,7 @@ import kotlinx.coroutines.withContext
 import com.example.vitalarmapp.models.Medication
 import com.example.vitalarmapp.models.Patient
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.example.vitalarmapp.utils.local.SessionManager
 import java.util.Calendar
 
 class LanMenuActivity : AppCompatActivity() {
@@ -228,6 +229,7 @@ class LanMenuActivity : AppCompatActivity() {
 
     private fun logoutUser() {
         FirebaseManager.logout()
+        SessionManager.setKeepSession(this, false)
         Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, MainActivity::class.java))
         finish()

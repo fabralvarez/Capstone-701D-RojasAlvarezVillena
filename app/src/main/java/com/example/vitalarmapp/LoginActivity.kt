@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Patterns
 import android.view.autofill.AutofillManager
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -107,7 +106,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleLoginSuccess(email: String, password: String) {
-        Toast.makeText(this, getString(R.string.login_success_toast), Toast.LENGTH_SHORT).show()
         showSaveSessionBottomSheet(email, password)
     }
 

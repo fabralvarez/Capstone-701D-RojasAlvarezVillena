@@ -15,6 +15,9 @@
         android:theme="@style/AppTheme"
         tools:targetApi="36">
         <activity
+            android:name=".OtpActivity"
+            android:exported="false" />
+        <activity
             android:name=".PassRecActivity"
             android:exported="false" />
         <activity

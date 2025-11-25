@@ -57,6 +57,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/pass_rec_coordinator">
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/pass_rec_email_input_layout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:hint="@string/email_label"
+            app:boxBackgroundMode="outline"
+            app:endIconDrawable="@drawable/outline_cancel_24"
+            app:endIconMode="clear_text"
+            app:placeholderText="example@email.com"
+            app:startIconDrawable="@drawable/outline_email_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pass_rec_email_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="emailAddress"
+                android:importantForAutofill="yes"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/pass_rec_info_card"
             style="@style/Widget.Material3.CardView.Filled"
@@ -75,42 +100,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="Información Importante"
+                    android:text="@string/pass_rec_info_card_header"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Asegurate de ingresar un email valido y previamente registrado en la plataforma, de lo contrario puedes registrarte desde la pantalla de inicio."
+                    android:text="@string/pass_rec_info_card_subhead"
                     android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/pass_rec_email_input_layout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:hint="Email"
-            app:boxBackgroundMode="outline"
-            app:endIconDrawable="@drawable/outline_cancel_24"
-            app:endIconMode="clear_text"
-            app:placeholderText="example@email.com"
-            app:startIconDrawable="@drawable/outline_email_24">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/pass_rec_email_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="emailAddress"
-                android:importantForAutofill="yes"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:textColorHint="?attr/colorOnSurfaceVariant"
-                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
-        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -129,7 +129,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="60dp"
             android:paddingVertical="20dp"
-            android:text="Confirmar Email"
+            android:text="@string/confirm_email"
             android:textAllCaps="false"
             android:textSize="16sp"
             app:cornerRadius="36dp"

@@ -48,7 +48,6 @@
     <string name="login_dialog_unknown_error_title">No se pudo iniciar sesión</string>
     <string name="login_dialog_unknown_error_message">Algo salió mal al intentar iniciar sesión. %1$s</string>
     <string name="login_dialog_unknown_error_fallback">Inténtalo otra vez en unos minutos.</string>
-    <string name="login_success_toast">¡Bienvenido de nuevo!</string>
     <string name="login_save_session_title">¿Desea guardar su sesión?</string>
     <string name="login_save_session_supporting_text">Para ahorrar tiempo y facilitar tu acceso a la plataforma, puedes guardar tu sesión de manera rápida y segura.</string>
     <string name="login_save_session_dismiss">En otro momento</string>

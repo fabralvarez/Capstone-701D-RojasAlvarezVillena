@@ -61,6 +61,10 @@ class LoginActivity : AppCompatActivity() {
         binding.loginLoginBtn.setOnClickListener {
             attemptLogin()
         }
+
+        binding.loginForgotPassBtn.setOnClickListener {
+            startActivity(Intent(this, PassRecActivity::class.java))
+        }
     }
 
     private fun attemptLogin() {

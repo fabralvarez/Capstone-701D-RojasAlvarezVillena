@@ -55,6 +55,8 @@
             android:layout_marginBottom="16dp"
             android:hint="@string/sign_up_name_label"
             app:boxBackgroundMode="outline"
+            app:endIconDrawable="@drawable/outline_cancel_24"
+            app:endIconMode="clear_text"
             app:placeholderText="@string/sign_up_name_placeholder"
             app:startIconDrawable="@drawable/outline_person_24">
 
@@ -78,6 +80,8 @@
             android:layout_marginBottom="16dp"
             android:hint="@string/sign_up_rut_label"
             app:boxBackgroundMode="outline"
+            app:endIconDrawable="@drawable/outline_cancel_24"
+            app:endIconMode="clear_text"
             app:placeholderText="@string/sign_up_rut_placeholder"
             app:startIconDrawable="@drawable/outline_person_24">
 
@@ -101,6 +105,8 @@
             android:layout_marginBottom="16dp"
             android:hint="@string/sign_up_email_label"
             app:boxBackgroundMode="outline"
+            app:endIconDrawable="@drawable/outline_cancel_24"
+            app:endIconMode="clear_text"
             app:placeholderText="@string/sign_up_email_placeholder"
             app:startIconDrawable="@drawable/outline_email_24">
 

@@ -12,7 +12,7 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.8.34"
+        versionName = "0.8.340"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val smtpHost: String = (project.findProperty("SMTP_HOST") as? String).orEmpty()

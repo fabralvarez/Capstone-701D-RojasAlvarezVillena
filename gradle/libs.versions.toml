@@ -65,8 +65,8 @@ androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview"
 androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentials" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activityVersion" }
-com.sun.mail.android.mail = { group = "com.sun.mail", name = "android-mail", version.ref = "androidMail" }
-com.sun.mail.android.activation = { group = "com.sun.mail", name = "android-activation", version.ref = "androidActivation" }
+com-sun-mail-android-mail = { group = "com.sun.mail", name = "android-mail", version.ref = "androidMail" }
+com-sun-mail-android-activation = { group = "com.sun.mail", name = "android-activation", version.ref = "androidActivation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

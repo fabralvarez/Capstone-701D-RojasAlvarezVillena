@@ -12,7 +12,7 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.8.4"
+        versionName = "0.8.40"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val smtpHost: String = (project.findProperty("SMTP_HOST") as? String).orEmpty()
@@ -37,6 +37,7 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "META-INF/NOTICE.md"
+            excludes += "/META-INF/LICENSE.md"
         }
     }
     compileOptions {

@@ -7,10 +7,12 @@ import android.os.CountDownTimer
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityOtpBinding
 import com.example.vitalarmapp.utils.local.OtpLocalManager
 import com.example.vitalarmapp.utils.local.OtpVerificationResult
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.launch
 
 class OtpActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOtpBinding
@@ -87,15 +89,19 @@ class OtpActivity : AppCompatActivity() {
     }
 
     private fun resendOtp() {
-        val wasSent = OtpLocalManager.sendNewOtp(this)
-        if (!wasSent) {
-            showDialog(
-                getString(R.string.otp_email_intent_error_title),
-                getString(R.string.otp_email_intent_error_message)
-            )
-            return
+        binding.otpResendBtn.isEnabled = false
+        lifecycleScope.launch {
+            val wasSent = OtpLocalManager.sendNewOtp(this@OtpActivity)
+            if (!wasSent) {
+                showDialog(
+                    getString(R.string.otp_email_intent_error_title),
+                    getString(R.string.otp_email_intent_error_message)
+                )
+                binding.otpResendBtn.isEnabled = true
+                return@launch
+            }
+            startResendCountdown()
         }
-        startResendCountdown()
     }
 
     private fun startResendCountdown() {

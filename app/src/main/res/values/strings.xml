@@ -112,6 +112,7 @@
     <string name="otp_email_body">Aquí tienes tu código OTP de 6 dígitos: %1$s. Es válido por 5 minutos. Úsalo en la app para continuar con el restablecimiento de tu contraseña.</string>
     <string name="otp_email_intent_error_title">No pudimos abrir tu correo</string>
     <string name="otp_email_intent_error_message">Instala o configura una aplicación de correo para enviar el código de acceso.</string>
+    <string name="otp_email_intent_chooser_title">Elige tu aplicación de correo</string>
     <string name="pass_reset_title">Restablecer contraseña</string>
     <string name="pass_reset_subtitle">Pronto podrás elegir una nueva contraseña</string>
     <string name="pass_reset_info_title">Ingresa una nueva contraseña</string>

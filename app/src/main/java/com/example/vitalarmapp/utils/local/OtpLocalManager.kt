@@ -44,8 +44,8 @@ object OtpLocalManager {
     private fun generateOtp(): String = Random.nextInt(100_000, 1_000_000).toString()
 
     private fun launchEmailIntent(context: Context, email: String, otp: String): Boolean {
-        val mailIntent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:")
+        val mailUri = Uri.parse("mailto:$email")
+        val mailIntent = Intent(Intent.ACTION_SENDTO, mailUri).apply {
             putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
             putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.otp_email_subject))
             putExtra(
@@ -53,8 +53,18 @@ object OtpLocalManager {
                 context.getString(R.string.otp_email_body, otp)
             )
         }
-        return mailIntent.resolveActivity(context.packageManager) != null &&
-            runCatching { context.startActivity(mailIntent) }.isSuccess
+
+        if (mailIntent.resolveActivity(context.packageManager) == null) return false
+
+        val chooserIntent = Intent.createChooser(
+            mailIntent,
+            context.getString(R.string.otp_email_intent_chooser_title)
+        )
+
+        return runCatching {
+            context.startActivity(chooserIntent)
+            true
+        }.getOrDefault(false)
     }
 }
 

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OtpActivity">
+    tools:context=".PassResetActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/otp_coordinator"
+        android:id="@+id/pass_reset_coordinator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,13 +15,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/otp_appbar"
+            android:id="@+id/pass_reset_appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/otp_collapsing"
+                android:id="@+id/pass_reset_collapsing"
                 style="?attr/collapsingToolbarLayoutMediumStyle"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
@@ -29,59 +29,60 @@
                 app:expandedTitleGravity="bottom|center_horizontal">
 
                 <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/otp_toolbar"
+                    android:id="@+id/pass_reset_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/outline_arrow_back_24"
-                    app:subtitle="@string/otp_toolbar_subtitle"
+                    app:subtitle="@string/pass_reset_subtitle"
                     app:subtitleCentered="true"
-                    app:title="@string/otp_toolbar_title"
+                    app:title="@string/pass_reset_title"
                     app:titleCentered="true" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
-
         </com.google.android.material.appbar.AppBarLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <LinearLayout
-        android:id="@+id/otp_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
         android:paddingTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/otp_coordinator">
+        app:layout_constraintTop_toBottomOf="@id/pass_reset_coordinator">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/otp_input_layout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:hint="@string/otp_input_label"
-            app:boxBackgroundMode="outline"
-            app:endIconContentDescription="@string/otp_clear_code_content_description"
-            app:endIconDrawable="@drawable/outline_cancel_24"
-            app:endIconMode="custom"
-            app:placeholderText="@string/otp_input_placeholder"
-            app:startIconDrawable="@drawable/outline_password_24">
+            style="@style/Widget.Material3.CardView.Filled"
+            app:strokeColor="@android:color/transparent">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/otp_code_tv"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="6"
-                android:maxLines="1"
-                android:textColorHint="?attr/colorOnSurfaceVariant"
-                tools:text="123456" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/pass_reset_info_title"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pass_reset_info_body"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
 
     <LinearLayout
@@ -95,23 +96,13 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/otp_resend_btn"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/otp_resend_button"
-            android:textAllCaps="false"
-            app:cornerRadius="28dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/otp_confirm_btn"
+            android:id="@+id/pass_reset_finish_btn"
             style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="60dp"
             android:paddingVertical="20dp"
-            android:text="@string/otp_confirm_button"
+            android:text="@string/pass_reset_finish_button"
             android:textAllCaps="false"
             android:textSize="16sp"
             app:cornerRadius="36dp"

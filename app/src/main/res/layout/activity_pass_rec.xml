@@ -127,6 +127,7 @@
             style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:paddingHorizontal="60dp"
             android:paddingVertical="20dp"
             android:text="@string/confirm_email"

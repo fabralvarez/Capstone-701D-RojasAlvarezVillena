@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -15,10 +17,24 @@ android {
         versionName = "0.8.42"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val smtpHost: String = (project.findProperty("SMTP_HOST") as? String).orEmpty()
-        val smtpPort: String = (project.findProperty("SMTP_PORT") as? String).orEmpty()
-        val smtpUsername: String = (project.findProperty("SMTP_USERNAME") as? String).orEmpty()
-        val smtpPassword: String = (project.findProperty("SMTP_PASSWORD") as? String).orEmpty()
+        val localProperties = Properties().apply {
+            val localFile = rootProject.file("local.properties")
+            if (localFile.exists()) {
+                localFile.inputStream().use { load(it) }
+            }
+        }
+
+        fun readSecret(name: String): String {
+            return (project.findProperty(name) as? String)
+                ?: localProperties.getProperty(name)
+                ?: System.getenv(name)
+                ?: ""
+        }
+
+        val smtpHost: String = readSecret("SMTP_HOST")
+        val smtpPort: String = readSecret("SMTP_PORT")
+        val smtpUsername: String = readSecret("SMTP_USERNAME")
+        val smtpPassword: String = readSecret("SMTP_PASSWORD")
 
         buildConfigField("String", "SMTP_HOST", "\"$smtpHost\"")
         buildConfigField("String", "SMTP_PORT", "\"$smtpPort\"")

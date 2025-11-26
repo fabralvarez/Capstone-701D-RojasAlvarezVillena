@@ -8,9 +8,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityPassRecBinding
 import com.example.vitalarmapp.utils.local.OtpLocalManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.launch
 
 class PassRecActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPassRecBinding
@@ -74,16 +76,21 @@ class PassRecActivity : AppCompatActivity() {
             return
         }
 
-        val wasSent = OtpLocalManager.startSession(this, email)
-        if (!wasSent) {
-            MaterialAlertDialogBuilder(this, com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog)
-                .setTitle(R.string.otp_email_intent_error_title)
-                .setMessage(R.string.otp_email_intent_error_message)
-                .setPositiveButton(android.R.string.ok, null)
-                .show()
-            return
-        }
+        lifecycleScope.launch {
+            val wasSent = OtpLocalManager.startSession(this@PassRecActivity, email)
+            if (!wasSent) {
+                MaterialAlertDialogBuilder(
+                    this@PassRecActivity,
+                    com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog
+                )
+                    .setTitle(R.string.otp_email_intent_error_title)
+                    .setMessage(R.string.otp_email_intent_error_message)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show()
+                return@launch
+            }
 
-        startActivity(Intent(this, OtpActivity::class.java))
+            startActivity(Intent(this@PassRecActivity, OtpActivity::class.java))
+        }
     }
 }

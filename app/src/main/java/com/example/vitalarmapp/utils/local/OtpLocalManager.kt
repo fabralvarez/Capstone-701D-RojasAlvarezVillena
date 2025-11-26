@@ -1,9 +1,7 @@
 package com.example.vitalarmapp.utils.local
 
 import android.content.Context
-import android.content.Intent
-import androidx.core.net.toUri
-import com.example.vitalarmapp.R
+import com.example.vitalarmapp.utils.email.EmailSender
 import kotlin.random.Random
 
 object OtpLocalManager {
@@ -11,18 +9,19 @@ object OtpLocalManager {
     private var currentOtp: String? = null
     private var expirationTime: Long = 0L
     private var storedEmail: String? = null
+    private val emailSender = EmailSender()
 
-    fun startSession(context: Context, email: String): Boolean {
+    suspend fun startSession(context: Context, email: String): Boolean {
         storedEmail = email
         return sendNewOtp(context)
     }
 
-    fun sendNewOtp(context: Context): Boolean {
+    suspend fun sendNewOtp(context: Context): Boolean {
         val email = storedEmail ?: return false
         val otp = generateOtp()
         currentOtp = otp
         expirationTime = System.currentTimeMillis() + OTP_VALIDITY_MILLIS
-        return launchEmailIntent(context, email, otp)
+        return sendEmail(context, email, otp)
     }
 
     fun verifyOtp(input: String): OtpVerificationResult {
@@ -41,28 +40,8 @@ object OtpLocalManager {
 
     private fun generateOtp(): String = Random.nextInt(100_000, 1_000_000).toString()
 
-    private fun launchEmailIntent(context: Context, email: String, otp: String): Boolean {
-        val mailUri = "mailto:$email".toUri()
-        val mailIntent = Intent(Intent.ACTION_SENDTO, mailUri).apply {
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
-            putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.otp_email_subject))
-            putExtra(
-                Intent.EXTRA_TEXT,
-                context.getString(R.string.otp_email_body, otp)
-            )
-        }
-
-        if (mailIntent.resolveActivity(context.packageManager) == null) return false
-
-        val chooserIntent = Intent.createChooser(
-            mailIntent,
-            context.getString(R.string.otp_email_intent_chooser_title)
-        )
-
-        return runCatching {
-            context.startActivity(chooserIntent)
-            true
-        }.getOrDefault(false)
+    private suspend fun sendEmail(context: Context, email: String, otp: String): Boolean {
+        return emailSender.sendOtpEmail(context, email, otp)
     }
 }
 

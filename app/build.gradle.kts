@@ -14,6 +14,16 @@ android {
         versionCode = 1
         versionName = "0.8.31"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val smtpHost: String = (project.findProperty("SMTP_HOST") as? String).orEmpty()
+        val smtpPort: String = (project.findProperty("SMTP_PORT") as? String).orEmpty()
+        val smtpUsername: String = (project.findProperty("SMTP_USERNAME") as? String).orEmpty()
+        val smtpPassword: String = (project.findProperty("SMTP_PASSWORD") as? String).orEmpty()
+
+        buildConfigField("String", "SMTP_HOST", "\"${'$'}smtpHost\"")
+        buildConfigField("String", "SMTP_PORT", "\"${'$'}smtpPort\"")
+        buildConfigField("String", "SMTP_USERNAME", "\"${'$'}smtpUsername\"")
+        buildConfigField("String", "SMTP_PASSWORD", "\"${'$'}smtpPassword\"")
     }
     buildTypes {
         release {
@@ -55,6 +65,10 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.activity)
+
+    // Envío de correos vía SMTP
+    implementation("com.sun.mail:android-mail:1.6.7")
+    implementation("com.sun.mail:android-activation:1.6.7")
 
     // Dependencias de testing
     testImplementation(libs.junit)

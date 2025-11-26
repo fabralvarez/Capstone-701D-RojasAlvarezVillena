@@ -18,6 +18,9 @@
             android:name=".OtpActivity"
             android:exported="false" />
         <activity
+            android:name=".PassResetActivity"
+            android:exported="false" />
+        <activity
             android:name=".PassRecActivity"
             android:exported="false" />
         <activity

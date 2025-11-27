@@ -7,11 +7,17 @@ import android.util.Patterns
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import com.example.vitalarmapp.databinding.ActivityPassRecBinding
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
 class PassRecActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPassRecBinding
+    private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +78,34 @@ class PassRecActivity : AppCompatActivity() {
             return
         }
 
-        val intent = Intent(this@PassRecActivity, PassResetActivity::class.java)
-        startActivity(intent)
+        sendResetEmail(email)
+    }
+
+    private fun sendResetEmail(email: String) {
+        setLoading(true)
+        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+            setLoading(false)
+            if (task.isSuccessful) {
+                val intent = Intent(this@PassRecActivity, PassResetWaitingActivity::class.java)
+                intent.putExtra(PassResetWaitingActivity.EXTRA_EMAIL, email)
+                startActivity(intent)
+            } else {
+                val message = when (task.exception) {
+                    is FirebaseAuthInvalidUserException -> getString(R.string.pass_rec_error_user_not_found)
+                    is FirebaseNetworkException -> getString(R.string.error_detail_network)
+                    else -> getString(R.string.pass_rec_error_generic)
+                }
+                binding.passRecEmailInputLayout.error = message
+                Snackbar.make(binding.passRecCoordinator, message, Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        binding.passRecConfirmBtn.isEnabled = !isLoading
+        binding.passRecEmailTv.isEnabled = !isLoading
+        binding.passRecProgressIndicator.isVisible = isLoading
+        binding.passRecConfirmBtn.text =
+            getString(if (isLoading) R.string.pass_rec_sending_email else R.string.confirm_email)
     }
 }

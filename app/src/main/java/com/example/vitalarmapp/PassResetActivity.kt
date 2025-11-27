@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.vitalarmapp.databinding.ActivityPassResetBinding
-import com.example.vitalarmapp.utils.local.OtpLocalManager
 
 class PassResetActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPassResetBinding
@@ -19,13 +18,6 @@ class PassResetActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupToolbar()
         setupButtons()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (!isChangingConfigurations) {
-            OtpLocalManager.clearSession()
-        }
     }
 
     private fun setupToolbar() {

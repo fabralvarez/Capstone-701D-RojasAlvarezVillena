@@ -8,11 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityPassRecBinding
-import com.example.vitalarmapp.utils.local.OtpLocalManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.launch
 
 class PassRecActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPassRecBinding
@@ -53,7 +49,7 @@ class PassRecActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.passRecConfirmBtn.setOnClickListener {
-            sendOtpAndNavigate()
+            navigateToPassReset()
         }
     }
 
@@ -69,28 +65,14 @@ class PassRecActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun sendOtpAndNavigate() {
+    private fun navigateToPassReset() {
         val email = binding.passRecEmailTv.text?.toString()?.trim().orEmpty()
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.passRecEmailInputLayout.error = getString(R.string.pass_rec_invalid_email)
             return
         }
 
-        lifecycleScope.launch {
-            val wasSent = OtpLocalManager.startSession(this@PassRecActivity, email)
-            if (!wasSent) {
-                MaterialAlertDialogBuilder(
-                    this@PassRecActivity,
-                    com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog
-                )
-                    .setTitle(R.string.otp_email_intent_error_title)
-                    .setMessage(R.string.otp_email_intent_error_message)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show()
-                return@launch
-            }
-
-            startActivity(Intent(this@PassRecActivity, OtpActivity::class.java))
-        }
+        val intent = Intent(this@PassRecActivity, PassResetActivity::class.java)
+        startActivity(intent)
     }
 }

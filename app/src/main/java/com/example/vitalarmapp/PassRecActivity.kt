@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import com.example.vitalarmapp.databinding.ActivityPassRecBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
@@ -78,7 +79,29 @@ class PassRecActivity : AppCompatActivity() {
             return
         }
 
-        sendResetEmail(email)
+        verifyEmailRegistration(email)
+    }
+
+    private fun verifyEmailRegistration(email: String) {
+        setLoading(true)
+        firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val signInMethods = task.result?.signInMethods
+                if (signInMethods.isNullOrEmpty()) {
+                    setLoading(false)
+                    showEmailNotRegisteredDialog(email)
+                } else {
+                    sendResetEmail(email)
+                }
+            } else {
+                setLoading(false)
+                val message = when (task.exception) {
+                    is FirebaseNetworkException -> getString(R.string.error_detail_network)
+                    else -> getString(R.string.pass_rec_error_generic)
+                }
+                Snackbar.make(binding.passRecCoordinator, message, Snackbar.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun sendResetEmail(email: String) {
@@ -99,6 +122,20 @@ class PassRecActivity : AppCompatActivity() {
                 Snackbar.make(binding.passRecCoordinator, message, Snackbar.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun showEmailNotRegisteredDialog(email: String) {
+        MaterialAlertDialogBuilder(
+            this,
+            com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog
+        )
+            .setTitle(getString(R.string.pass_rec_not_registered_title))
+            .setMessage(getString(R.string.pass_rec_not_registered_message, email))
+            .setNegativeButton(android.R.string.ok, null)
+            .setPositiveButton(R.string.pass_rec_not_registered_register) { _, _ ->
+                startActivity(Intent(this, SignUpActivity::class.java))
+            }
+            .show()
     }
 
     private fun setLoading(isLoading: Boolean) {

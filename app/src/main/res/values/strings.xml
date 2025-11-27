@@ -110,4 +110,5 @@
     <string name="pass_wait_info_body">1. Abre el correo enviado a %1$s.\n2. Presiona el enlace para crear tu nueva contraseña.\n3. Vuelve a la app y confirma para terminar.</string>
     <string name="pass_wait_open_email">Ir a mi correo</string>
     <string name="pass_wait_continue">Ya cambié mi contraseña</string>
+    <string name="not_for_now">No por ahora</string>
 </resources>

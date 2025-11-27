@@ -131,7 +131,7 @@ class PassRecActivity : AppCompatActivity() {
         )
             .setTitle(getString(R.string.pass_rec_not_registered_title))
             .setMessage(getString(R.string.pass_rec_not_registered_message, email))
-            .setNegativeButton(android.R.string.ok, null)
+            .setNegativeButton(getString(R.string.not_for_now), null)
             .setPositiveButton(R.string.pass_rec_not_registered_register) { _, _ ->
                 startActivity(Intent(this, SignUpActivity::class.java))
             }

@@ -3,12 +3,12 @@ package com.example.vitalarmapp
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.res.Configuration
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.vitalarmapp.databinding.ActivityPassResetWaitingBinding
+import androidx.core.net.toUri
 
 class PassResetWaitingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPassResetWaitingBinding
@@ -38,8 +38,7 @@ class PassResetWaitingActivity : AppCompatActivity() {
 
     private fun setupContent() {
         val email = intent.getStringExtra(EXTRA_EMAIL).orEmpty()
-        val emailToShow = if (email.isNotBlank()) email else getString(R.string.email_placeholder)
-        binding.passWaitSubtitle.text = getString(R.string.pass_wait_subtitle)
+        val emailToShow = email.ifBlank { getString(R.string.email_placeholder) }
         binding.passWaitInfoBody.text = getString(R.string.pass_wait_info_body, emailToShow)
         binding.passWaitInfoTitle.text = getString(R.string.pass_wait_info_title)
     }
@@ -63,8 +62,8 @@ class PassResetWaitingActivity : AppCompatActivity() {
         }
         try {
             startActivity(emailIntent)
-        } catch (error: ActivityNotFoundException) {
-            val mailtoIntent = Intent(Intent.ACTION_VIEW, Uri.parse("mailto:"))
+        } catch (_: ActivityNotFoundException) {
+            val mailtoIntent = Intent(Intent.ACTION_VIEW, "mailto:".toUri())
             startActivity(mailtoIntent)
         }
     }

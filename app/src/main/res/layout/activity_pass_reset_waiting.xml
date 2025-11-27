@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PassRecActivity">
+    tools:context=".PassResetWaitingActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/pass_rec_coordinator"
+        android:id="@+id/pass_wait_coordinator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,13 +15,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/pass_rec_appbar"
+            android:id="@+id/pass_wait_appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/pass_rec_collapsing"
+                android:id="@+id/pass_wait_collapsing"
                 style="?attr/collapsingToolbarLayoutMediumStyle"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
@@ -29,15 +29,15 @@
                 app:expandedTitleGravity="bottom|center_horizontal">
 
                 <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/pass_rec_toolbar"
+                    android:id="@+id/pass_wait_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/outline_arrow_back_24"
-                    app:subtitle="Para recuperar tu password"
+                    app:subtitle="@string/pass_wait_subtitle"
                     app:subtitleCentered="true"
-                    app:title="Ingresa tu Email"
+                    app:title="@string/pass_wait_title"
                     app:titleCentered="true" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -45,49 +45,30 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <LinearLayout
-        android:id="@+id/pass_rec_content"
+        android:id="@+id/pass_wait_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
         android:paddingTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pass_rec_coordinator">
+        app:layout_constraintTop_toBottomOf="@id/pass_wait_coordinator">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/pass_rec_email_input_layout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/pass_wait_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            tools:text="Te enviamos un enlace para cambiar tu contraseña" />
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:hint="@string/email_label"
-            app:boxBackgroundMode="outline"
-            app:endIconDrawable="@drawable/outline_cancel_24"
-            app:endIconMode="clear_text"
-            app:placeholderText="example@email.com"
-            app:startIconDrawable="@drawable/outline_email_24">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/pass_rec_email_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="emailAddress"
-                android:importantForAutofill="yes"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:textColorHint="?attr/colorOnSurfaceVariant"
-                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/pass_rec_info_card"
             style="@style/Widget.Material3.CardView.Filled"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             app:strokeColor="@android:color/transparent">
 
             <LinearLayout
@@ -97,17 +78,19 @@
                 android:padding="16dp">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/pass_wait_info_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/pass_rec_info_card_header"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    tools:text="Sigue estos pasos" />
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/pass_wait_info_body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/pass_rec_info_card_subhead"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    tools:text="1. Abre el correo enviado a example@email.com.\n2. Presiona el enlace para crear tu nueva contraseña.\n3. Vuelve a la app y confirma para terminar." />
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
@@ -117,32 +100,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/pass_rec_progress_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true"
-            android:visibility="gone"
-            style="@style/Widget.Material3.CircularProgressIndicator" />
-
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/pass_rec_confirm_btn"
+            android:id="@+id/pass_wait_open_email_btn"
             style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:paddingHorizontal="60dp"
-            android:paddingVertical="20dp"
-            android:text="@string/confirm_email"
+            android:layout_marginBottom="12dp"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="16dp"
+            android:text="@string/pass_wait_open_email"
             android:textAllCaps="false"
             android:textSize="16sp"
-            app:cornerRadius="36dp"
+            app:cornerRadius="24dp"
+            tools:ignore="VisualLintButtonSize" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pass_wait_continue_btn"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="16dp"
+            android:text="@string/pass_wait_continue"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:cornerRadius="24dp"
             tools:ignore="VisualLintButtonSize" />
     </LinearLayout>
 

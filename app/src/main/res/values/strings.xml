@@ -93,9 +93,20 @@
     <string name="pass_rec_info_card_header">Información Importante</string>
     <string name="pass_rec_info_card_subhead">Asegurate de ingresar un email valido y previamente registrado en la plataforma, de lo contrario puedes registrarte desde la pantalla de inicio.</string>
     <string name="pass_rec_invalid_email">Ingresa un email válido para continuar.</string>
+    <string name="pass_rec_error_user_not_found">No encontramos una cuenta con ese correo. Verifica el email o regístrate.</string>
+    <string name="pass_rec_error_generic">No pudimos enviar el correo de recuperación. Inténtalo nuevamente en unos instantes.</string>
+    <string name="pass_rec_sending_email">Enviando instrucciones…</string>
     <string name="pass_reset_title">Restablecer contraseña</string>
     <string name="pass_reset_subtitle">Pronto podrás elegir una nueva contraseña</string>
-    <string name="pass_reset_info_title">Ingresa una nueva contraseña</string>
-    <string name="pass_reset_info_body">Esta pantalla permitirá definir una nueva contraseña segura. Mientras tanto, volvamos al inicio para completar el proceso.</string>
-    <string name="pass_reset_finish_button">Volver al inicio</string>
+    <string name="pass_reset_info_title">Todo listo</string>
+    <string name="pass_reset_info_body">Si ya cambiaste tu contraseña con el enlace enviado a %1$s, puedes volver a iniciar sesión con tu nueva clave.</string>
+    <string name="pass_reset_finish_button">Ir al inicio de sesión</string>
+    <string name="pass_wait_title">Revisa tu correo</string>
+    <string name="pass_wait_subtitle">Te enviamos un enlace para cambiar tu contraseña</string>
+    <string name="pass_wait_info_title">Sigue estos pasos</string>
+    <string name="pass_wait_info_body">1. Abre el correo enviado a %1$s.
+2. Presiona el enlace para crear tu nueva contraseña.
+3. Vuelve a la app y confirma para terminar.</string>
+    <string name="pass_wait_open_email">Ir a mi correo</string>
+    <string name="pass_wait_continue">Ya cambié mi contraseña</string>
 </resources>

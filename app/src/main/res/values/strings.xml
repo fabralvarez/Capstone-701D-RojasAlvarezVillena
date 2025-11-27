@@ -96,6 +96,9 @@
     <string name="pass_rec_error_user_not_found">No encontramos una cuenta con ese correo. Verifica el email o regístrate.</string>
     <string name="pass_rec_error_generic">No pudimos enviar el correo de recuperación. Inténtalo nuevamente en unos instantes.</string>
     <string name="pass_rec_sending_email">Enviando instrucciones…</string>
+    <string name="pass_rec_not_registered_title">Correo no registrado</string>
+    <string name="pass_rec_not_registered_message">No encontramos una cuenta asociada a %1$s. ¿Quieres registrarte ahora?</string>
+    <string name="pass_rec_not_registered_register">Registrarse</string>
     <string name="pass_reset_title">Restablecer contraseña</string>
     <string name="pass_reset_subtitle">Pronto podrás elegir una nueva contraseña</string>
     <string name="pass_reset_info_title">Todo listo</string>

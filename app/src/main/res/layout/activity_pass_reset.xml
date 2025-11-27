@@ -48,6 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
         android:paddingTop="24dp"
@@ -56,10 +57,10 @@
         app:layout_constraintTop_toBottomOf="@id/pass_reset_coordinator">
 
         <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            style="@style/Widget.Material3.CardView.Filled"
             app:strokeColor="@android:color/transparent">
 
             <LinearLayout
@@ -76,10 +77,13 @@
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/pass_reset_info_body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
                     android:text="@string/pass_reset_info_body"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    app:lineHeight="24sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

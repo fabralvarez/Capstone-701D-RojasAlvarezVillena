@@ -44,7 +44,7 @@ class PassResetActivity : AppCompatActivity() {
     }
 
     private fun setupBodyText() {
-        val emailToShow = if (email.isNotBlank()) email else getString(R.string.email_placeholder)
+        val emailToShow = email.ifBlank { getString(R.string.email_placeholder) }
         binding.passResetInfoBody.text = getString(R.string.pass_reset_info_body, emailToShow)
     }
 

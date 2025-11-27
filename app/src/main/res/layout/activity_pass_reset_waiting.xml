@@ -84,6 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
+                    android:singleLine="false"
                     android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     app:lineHeight="24sp"
                     tools:text="1. Abre el correo enviado a example@email.com\n2. Presiona el enlace para crear tu nueva contraseña.\n3. Vuelve a la app y confirma para terminar." />

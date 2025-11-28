@@ -134,7 +134,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.navigation.NavigationBarView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/lanMenuBottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

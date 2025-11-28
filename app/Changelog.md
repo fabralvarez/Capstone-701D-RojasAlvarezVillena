@@ -1,3 +1,11 @@
+## [0.8.640] - 2025-11-28
+
+### Changed
+
+- **Interfaz de Usuario (UI):**
+    - Actualización y Reorganización de las Activities del proyecto para utilizar el tema de
+      Material Design 3 de forma homogénea.
+
 ## [0.8.1] - 2025-11-24
 
 ### Changed

@@ -49,7 +49,7 @@ class LanMenuActivity : AppCompatActivity() {
                     FirebaseManager.getCurrentUserName()
                 }
                 binding.tvBienvenida.text = "Bienvenido, $userName!"
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 binding.tvBienvenida.text = "Bienvenido, Usuario"
             }
         }
@@ -121,7 +121,7 @@ class LanMenuActivity : AppCompatActivity() {
                     showNoMedicationsMessage("No hay medicamentos programados")
                 }
 
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 showNoMedicationsMessage("Error al cargar medicamentos")
             }
         }
@@ -167,7 +167,7 @@ class LanMenuActivity : AppCompatActivity() {
             val hours = parts[0].toInt()
             val minutes = parts[1].toInt()
             hours * 60 + minutes
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0
         }
     }
@@ -223,7 +223,7 @@ class LanMenuActivity : AppCompatActivity() {
                     if (mins == 0) "$hours horas" else "$hours h $mins min"
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             "Próximo"
         }
     }

@@ -33,9 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/md_theme_surface"
-                app:cardStrokeColor="@color/md_theme_primary"
-                app:strokeWidth="1dp">
+                style="@style/Widget.Material3.CardView.Filled">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -68,7 +66,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/logout"
-                android:textColor="@color/md_theme_onPrimary" />
+                android:textColor="@color/md_theme_onPrimary"
+                tools:ignore="VisualLintButtonSize" />
         </LinearLayout>
     </ScrollView>
 
@@ -80,5 +79,6 @@
         app:itemIconTint="@color/md_theme_onSurfaceVariant"
         app:itemRippleColor="@color/md_theme_secondaryContainer"
         app:itemTextColor="@color/md_theme_onSurfaceVariant"
-        app:menu="@menu/menu_lan_bottom_nav" />
+        app:menu="@menu/menu_lan_bottom_nav"
+        tools:ignore="VisualLintBottomNav" />
 </LinearLayout>

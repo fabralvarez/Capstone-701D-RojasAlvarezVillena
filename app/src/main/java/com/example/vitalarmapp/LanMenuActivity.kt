@@ -26,9 +26,28 @@ class LanMenuActivity : AppCompatActivity() {
         binding = ActivityLanMenuBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
+        setupBottomNavigation()
         initListeners()
         loadUserName()
         loadNextMedication()
+    }
+
+    private fun setupBottomNavigation() {
+        binding.lanMenuBottomNavigation.selectedItemId = R.id.nav_home
+        binding.lanMenuBottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> true
+                R.id.nav_add -> {
+                    startActivity(Intent(this, AddPersonActivity::class.java))
+                    true
+                }
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, PersonListActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun loadUserName() {

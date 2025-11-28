@@ -5,21 +5,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import com.example.vitalarmapp.databinding.ActivityLanMenuBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import com.example.vitalarmapp.models.Medication
 import com.example.vitalarmapp.models.Patient
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.SessionManager
 import java.util.Calendar
+import androidx.activity.enableEdgeToEdge
+import androidx.lifecycle.lifecycleScope
+import com.example.vitalarmapp.databinding.ActivityLanMenuBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LanMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLanMenuBinding
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +66,7 @@ class LanMenuActivity : AppCompatActivity() {
     }
 
     private fun loadUserName() {
-        coroutineScope.launch {
+        lifecycleScope.launch {
             try {
                 val userName = withContext(Dispatchers.IO) {
                     FirebaseManager.getCurrentUserName()
@@ -98,7 +97,7 @@ class LanMenuActivity : AppCompatActivity() {
     }
 
     private fun loadNextMedication() {
-        coroutineScope.launch {
+        lifecycleScope.launch {
             try {
                 val people = withContext(Dispatchers.IO) {
                     FirebaseManager.getPeople()

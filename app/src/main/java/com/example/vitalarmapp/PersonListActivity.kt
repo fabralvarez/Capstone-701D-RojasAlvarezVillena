@@ -1,11 +1,10 @@
 package com.example.vitalarmapp
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.adapters.PeopleAdapter
 import com.example.vitalarmapp.databinding.ActivityPersonListBinding
@@ -35,8 +34,7 @@ class PersonListActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         peopleAdapter = PeopleAdapter(peopleList) { person ->
-            // Clic en persona - ir a medicamentos
-            val intent = Intent(this, MedicationListActivity::class.java)
+            val intent = AddMedsActivity.intent(this)
             intent.putExtra("personId", person.id)
             intent.putExtra("personName", person.name)
             startActivity(intent)
@@ -50,7 +48,7 @@ class PersonListActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         binding.btnAddPerson.setOnClickListener {
-            startActivity(Intent(this, AddPersonActivity::class.java))
+            startActivity(AddPatsActivity.intent(this))
         }
 
     }

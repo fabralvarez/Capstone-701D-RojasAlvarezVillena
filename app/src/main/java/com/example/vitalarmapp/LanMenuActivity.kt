@@ -1,18 +1,19 @@
 package com.example.vitalarmapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.vitalarmapp.databinding.ActivityLanMenuBinding
 import com.example.vitalarmapp.models.Medication
 import com.example.vitalarmapp.models.Patient
+import com.example.vitalarmapp.navigation.BottomNavigationHelper
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.SessionManager
 import java.util.Calendar
-import androidx.activity.enableEdgeToEdge
-import androidx.lifecycle.lifecycleScope
-import com.example.vitalarmapp.databinding.ActivityLanMenuBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,36 +33,12 @@ class LanMenuActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
-        binding.lanMenuBottomNavigation.selectedItemId = R.id.nav_home
-
-        val navigationHandler: (Int) -> Boolean = { itemId ->
-            when (itemId) {
-                R.id.nav_home -> {
-                    loadNextMedication()
-                    loadUserName()
-                    true
-                }
-
-                R.id.nav_add -> {
-                    startActivity(Intent(this, AddPersonActivity::class.java))
-                    true
-                }
-
-                R.id.nav_profile -> {
-                    startActivity(Intent(this, PersonListActivity::class.java))
-                    true
-                }
-
-                else -> false
-            }
-        }
-
-        binding.lanMenuBottomNavigation.setOnItemSelectedListener { item ->
-            navigationHandler(item.itemId)
-        }
-
-        binding.lanMenuBottomNavigation.setOnItemReselectedListener { item ->
-            navigationHandler(item.itemId)
+        BottomNavigationHelper.setup(
+            binding.lanMenuBottomNavigation,
+            this
+        ) {
+            loadNextMedication()
+            loadUserName()
         }
     }
 
@@ -80,7 +57,7 @@ class LanMenuActivity : AppCompatActivity() {
 
     private fun initListeners() {
         binding.btnIngresarPersona.setOnClickListener {
-            startActivity(Intent(this, AddPersonActivity::class.java))
+            startActivity(AddPatsActivity.intent(this))
         }
 
         binding.btnPersonasCuidado.setOnClickListener {
@@ -88,7 +65,7 @@ class LanMenuActivity : AppCompatActivity() {
         }
 
         binding.btnMedicamentos.setOnClickListener {
-            startActivity(Intent(this, BaseMedicationsActivity::class.java))
+            startActivity(AddMedsActivity.intent(this))
         }
 
         binding.btnCerrarSesion.setOnClickListener {
@@ -210,13 +187,13 @@ class LanMenuActivity : AppCompatActivity() {
 
         // Hacer clickable
         binding.tvMedicamentoNombre.setOnClickListener {
-            startActivity(Intent(this, MedicationGeneralListActivity::class.java))
+            startActivity(AddMainTabActivity.intent(this))
         }
         binding.tvHoraAdministracion.setOnClickListener {
-            startActivity(Intent(this, MedicationGeneralListActivity::class.java))
+            startActivity(AddMainTabActivity.intent(this))
         }
         binding.tvPersonaAdministrar.setOnClickListener {
-            startActivity(Intent(this, MedicationGeneralListActivity::class.java))
+            startActivity(AddMainTabActivity.intent(this))
         }
 
         Log.d("MainMenu", "✅ Próximo: $medicationName a las $nextTime para $personName")

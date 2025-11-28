@@ -34,19 +34,35 @@ class LanMenuActivity : AppCompatActivity() {
 
     private fun setupBottomNavigation() {
         binding.lanMenuBottomNavigation.selectedItemId = R.id.nav_home
-        binding.lanMenuBottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> true
+
+        val navigationHandler: (Int) -> Boolean = { itemId ->
+            when (itemId) {
+                R.id.nav_home -> {
+                    loadNextMedication()
+                    loadUserName()
+                    true
+                }
+
                 R.id.nav_add -> {
                     startActivity(Intent(this, AddPersonActivity::class.java))
                     true
                 }
+
                 R.id.nav_profile -> {
                     startActivity(Intent(this, PersonListActivity::class.java))
                     true
                 }
+
                 else -> false
             }
+        }
+
+        binding.lanMenuBottomNavigation.setOnItemSelectedListener { item ->
+            navigationHandler(item.itemId)
+        }
+
+        binding.lanMenuBottomNavigation.setOnItemReselectedListener { item ->
+            navigationHandler(item.itemId)
         }
     }
 
@@ -256,6 +272,7 @@ class LanMenuActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        binding.lanMenuBottomNavigation.selectedItemId = R.id.nav_home
         loadNextMedication()
         loadUserName()
     }

@@ -36,7 +36,7 @@ class ProfileTabActivity : AppCompatActivity() {
         BottomNavigationHelper.setup(
             bottomNavigationView = binding.lanMenuBottomNavigation,
             onItemSelected = ::handleNavigation,
-            onItemReselected = ::handleNavigation
+            onItemReselected = { itemId -> handleNavigation(itemId) }
         )
     }
 

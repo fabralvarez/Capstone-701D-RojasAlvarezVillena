@@ -25,7 +25,12 @@ class AddMainTabActivity : AppCompatActivity() {
         binding.topAppBar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-        BottomNavigationHelper.setup(binding.lanMenuBottomNavigation, this)
+        binding.lanMenuBottomNavigation.selectedItemId = R.id.nav_add
+        BottomNavigationHelper.setup(
+            bottomNavigationView = binding.lanMenuBottomNavigation,
+            onItemSelected = ::handleNavigation,
+            onItemReselected = ::handleNavigation
+        )
     }
 
     private fun setupActions() {
@@ -40,6 +45,24 @@ class AddMainTabActivity : AppCompatActivity() {
         binding.cardAddMedication.setOnClickListener {
             startActivity(AddMedsActivity.intent(this))
         }
+    }
+
+    private fun handleNavigation(itemId: Int): Boolean = when (itemId) {
+        R.id.nav_home -> {
+            startActivity(Intent(this, LanMenuActivity::class.java))
+            finish()
+            true
+        }
+
+        R.id.nav_add -> true
+
+        R.id.nav_profile -> {
+            startActivity(ProfileTabActivity.intent(this))
+            finish()
+            true
+        }
+
+        else -> false
     }
 
     companion object {

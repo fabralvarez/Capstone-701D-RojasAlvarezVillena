@@ -1,5 +1,6 @@
 package com.example.vitalarmapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -31,7 +32,12 @@ class ProfileTabActivity : AppCompatActivity() {
     }
 
     private fun setupNavigation() {
-        BottomNavigationHelper.setup(binding.lanMenuBottomNavigation, this)
+        binding.lanMenuBottomNavigation.selectedItemId = R.id.nav_profile
+        BottomNavigationHelper.setup(
+            bottomNavigationView = binding.lanMenuBottomNavigation,
+            onItemSelected = ::handleNavigation,
+            onItemReselected = ::handleNavigation
+        )
     }
 
     private fun setupActions() {
@@ -55,5 +61,27 @@ class ProfileTabActivity : AppCompatActivity() {
         Toast.makeText(this, getString(R.string.profile_logout_message), Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, MainActivity::class.java))
         finishAffinity()
+    }
+
+    private fun handleNavigation(itemId: Int): Boolean = when (itemId) {
+        R.id.nav_home -> {
+            startActivity(Intent(this, LanMenuActivity::class.java))
+            finish()
+            true
+        }
+
+        R.id.nav_add -> {
+            startActivity(AddMainTabActivity.intent(this))
+            finish()
+            true
+        }
+
+        R.id.nav_profile -> true
+
+        else -> false
+    }
+
+    companion object {
+        fun intent(context: Context): Intent = Intent(context, ProfileTabActivity::class.java)
     }
 }

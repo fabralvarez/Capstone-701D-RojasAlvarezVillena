@@ -43,11 +43,9 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LanMenuActivity" />
         <activity android:name=".PersonListActivity" />
-        <activity android:name=".AddMainTabActivity" />
         <activity android:name=".AddPatsActivity" />
         <activity android:name=".AddAlarmActivity" />
         <activity android:name=".AddMedsActivity" />
-        <activity android:name=".ProfileTabActivity" />
 
         <service
             android:name=".utils.local.AlarmService"

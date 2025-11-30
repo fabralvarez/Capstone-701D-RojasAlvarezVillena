@@ -35,6 +35,9 @@
             android:name=".PassResetActivity"
             android:exported="false" />
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".PassRecActivity"
             android:exported="false" />
         <activity

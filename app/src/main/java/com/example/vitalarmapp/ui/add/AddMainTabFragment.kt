@@ -11,11 +11,21 @@ import com.example.vitalarmapp.AddPatsActivity
 import com.example.vitalarmapp.R
 import com.example.vitalarmapp.SettingsActivity
 import com.example.vitalarmapp.databinding.FragmentAddMainTabBinding
+import com.google.android.material.transition.MaterialFadeThrough
 
 class AddMainTabFragment : Fragment() {
 
     private var _binding: FragmentAddMainTabBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val fadeThrough = MaterialFadeThrough()
+        enterTransition = fadeThrough
+        reenterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
+        returnTransition = MaterialFadeThrough()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -88,6 +88,7 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.activity)
+    implementation("com.google.zxing:core:3.5.3")
 
     // Envío de correos vía SMTP
     implementation(libs.com.sun.mail.android.mail)

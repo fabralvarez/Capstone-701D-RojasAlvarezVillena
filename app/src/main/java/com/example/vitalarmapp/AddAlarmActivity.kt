@@ -4,12 +4,12 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.vitalarmapp.databinding.ActivityAddAlarmBinding
 import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
 import java.util.Calendar
 
 class AddAlarmActivity : AppCompatActivity() {
@@ -49,7 +49,9 @@ class AddAlarmActivity : AppCompatActivity() {
             { _, selectedHour, selectedMinute ->
                 val formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
                 if (alarmTimes.contains(formattedTime)) {
-                    Toast.makeText(this, getString(R.string.add_alarm_time_exists), Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, getString(R.string.add_alarm_time_exists), Snackbar.LENGTH_SHORT)
+                        .setAnchorView(binding.btnSaveAlarm)
+                        .show()
                     return@TimePickerDialog
                 }
                 alarmTimes.add(formattedTime)
@@ -80,10 +82,14 @@ class AddAlarmActivity : AppCompatActivity() {
 
     private fun saveAlarm() {
         if (alarmTimes.isEmpty()) {
-            Toast.makeText(this, getString(R.string.add_alarm_no_times), Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, getString(R.string.add_alarm_no_times), Snackbar.LENGTH_SHORT)
+                .setAnchorView(binding.btnSaveAlarm)
+                .show()
             return
         }
-        Toast.makeText(this, getString(R.string.add_alarm_saved), Toast.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, getString(R.string.add_alarm_saved), Snackbar.LENGTH_SHORT)
+            .setAnchorView(binding.btnSaveAlarm)
+            .show()
         finish()
     }
 

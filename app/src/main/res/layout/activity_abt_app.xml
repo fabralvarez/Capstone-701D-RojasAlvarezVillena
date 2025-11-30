@@ -24,8 +24,12 @@
                 style="?attr/collapsingToolbarLayoutMediumStyle"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+                android:background="?attr/colorSurface"
+                app:contentScrim="?attr/colorSurface"
                 app:expandedTitleGravity="bottom|start"
-                app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineMedium.Emphasized">
+                app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineMedium.Emphasized"
+                app:expandedTitleTextColor="?attr/colorPrimary"
+                app:statusBarScrim="?attr/colorSurface">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/topAppBar"
@@ -37,7 +41,8 @@
                     app:navigationIcon="@drawable/outline_arrow_back_24"
                     app:title="@string/about_app_title"
                     app:titleCentered="false"
-                    app:titleTextAppearance="@style/TextAppearance.App.ToolbarHeadline" />
+                    app:titleTextAppearance="@style/TextAppearance.App.ToolbarHeadline"
+                    app:titleTextColor="?attr/colorPrimary" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.AddMedsActivity
@@ -20,6 +19,8 @@ import com.example.vitalarmapp.models.Medication
 import com.example.vitalarmapp.models.Patient
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.SessionManager
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialFadeThrough
 import java.util.Calendar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,6 +30,15 @@ class HomeTabFragment : Fragment() {
 
     private var _binding: FragmentHomeTabBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val fadeThrough = MaterialFadeThrough()
+        enterTransition = fadeThrough
+        reenterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
+        returnTransition = MaterialFadeThrough()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -251,7 +261,8 @@ class HomeTabFragment : Fragment() {
     private fun logoutUser() {
         FirebaseManager.logout()
         SessionManager.setKeepSession(requireContext(), false)
-        Toast.makeText(requireContext(), getString(R.string.profile_logout_message), Toast.LENGTH_SHORT)
+        Snackbar.make(binding.root, getString(R.string.profile_logout_message), Snackbar.LENGTH_SHORT)
+            .setAnchorView(binding.btnCerrarSesion)
             .show()
         startActivity(Intent(requireContext(), MainActivity::class.java))
         requireActivity().finish()

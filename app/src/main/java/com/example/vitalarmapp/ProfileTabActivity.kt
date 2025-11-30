@@ -3,7 +3,6 @@ package com.example.vitalarmapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +10,7 @@ import com.example.vitalarmapp.databinding.ActivityProfileTabBinding
 import com.example.vitalarmapp.navigation.BottomNavigationHelper
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.SessionManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -74,7 +74,9 @@ class ProfileTabActivity : AppCompatActivity() {
     private fun logoutUser() {
         FirebaseManager.logout()
         SessionManager.setKeepSession(this, false)
-        Toast.makeText(this, getString(R.string.profile_logout_message), Toast.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, getString(R.string.profile_logout_message), Snackbar.LENGTH_SHORT)
+            .setAnchorView(binding.btnProfileLogout)
+            .show()
         startActivity(Intent(this, MainActivity::class.java))
         finishAffinity()
     }

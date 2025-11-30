@@ -23,9 +23,12 @@
                 style="?attr/collapsingToolbarLayoutLargeStyle"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
+                android:background="?attr/colorSurface"
                 app:expandedTitleGravity="bottom|start"
                 app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineMedium.Emphasized"
-                app:expandedTitleTextColor="?attr/colorOnPrimaryContainer">
+                app:expandedTitleTextColor="?attr/colorOnPrimaryContainer"
+                app:contentScrim="?attr/colorSurface"
+                app:statusBarScrim="?attr/colorSurface">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/main_toolbar"

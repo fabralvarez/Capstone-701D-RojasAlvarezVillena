@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -15,6 +14,7 @@ import com.example.vitalarmapp.adapters.MedicationSearchAdapter
 import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.databinding.ActivityAddMedsBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -84,11 +84,9 @@ class AddMedsActivity : AppCompatActivity() {
                 allMedications.addAll(medications)
                 filterResults(binding.searchView.query?.toString())
             } catch (error: Exception) {
-                Toast.makeText(
-                    this@AddMedsActivity,
-                    getString(R.string.add_meds_load_error),
-                    Toast.LENGTH_SHORT
-                ).show()
+                Snackbar.make(binding.root, getString(R.string.add_meds_load_error), Snackbar.LENGTH_SHORT)
+                    .setAnchorView(binding.topAppBar)
+                    .show()
                 adapter.updateData(emptyList())
             } finally {
                 toggleLoading(false)
@@ -111,7 +109,9 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun onMedicationSelected(item: MedicationSearchItem) {
         val message = getString(R.string.add_meds_selected_format, item.name)
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+            .setAnchorView(binding.topAppBar)
+            .show()
     }
 
     private fun toggleLoading(isLoading: Boolean) {

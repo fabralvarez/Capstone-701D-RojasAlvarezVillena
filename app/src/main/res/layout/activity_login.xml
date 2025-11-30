@@ -24,13 +24,18 @@
                 style="?attr/collapsingToolbarLayoutMediumStyle"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+                android:background="?attr/colorSurface"
                 app:expandedSubtitleTextAppearance="@style/TextAppearance.Material3.BodyMedium"
-                app:expandedTitleGravity="bottom|center_horizontal">
+                app:expandedTitleGravity="bottom|center_horizontal"
+                app:expandedTitleTextColor="?attr/colorPrimary"
+                app:contentScrim="?attr/colorSurface"
+                app:statusBarScrim="?attr/colorSurface">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/login_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorSurface"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/outline_arrow_back_24"

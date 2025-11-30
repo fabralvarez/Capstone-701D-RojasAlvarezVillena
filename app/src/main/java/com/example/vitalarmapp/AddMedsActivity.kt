@@ -49,26 +49,32 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     private fun setupSearch() {
-        binding.searchInputLayout.setStartIconOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-
-        binding.searchBarEditText.apply {
-            doOnTextChanged { text, _, _, _ ->
-                filterResults(text?.toString())
-                binding.addMedicationButton.isEnabled = !text.isNullOrBlank() && binding.progressBar.isVisible.not()
-            }
-
-            setOnEditorActionListener { v, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    filterResults(text?.toString())
-                    v.clearFocus()
-                    true
-                } else {
-                    false
-                }
+        binding.searchBar.setNavigationOnClickListener {
+            if (binding.searchView.isShowing) {
+                binding.searchView.hide()
+            } else {
+                onBackPressedDispatcher.onBackPressed()
             }
         }
+
+        binding.searchView.setupWithSearchBar(binding.searchBar)
+
+        binding.searchView.editText.doOnTextChanged { text, _, _, _ ->
+            filterResults(text?.toString())
+            updateAddMedicationState()
+        }
+
+        binding.searchView.editText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                filterResults(binding.searchView.editText.text?.toString())
+                binding.searchView.hide()
+                true
+            } else {
+                false
+            }
+        }
+
+        updateAddMedicationState()
     }
 
     private fun loadBaseMedications() {
@@ -87,7 +93,7 @@ class AddMedsActivity : AppCompatActivity() {
 
                 allMedications.clear()
                 allMedications.addAll(medications)
-                filterResults(binding.searchBarEditText.text?.toString())
+                filterResults(binding.searchView.editText.text?.toString())
             } catch (error: Exception) {
                 Snackbar.make(binding.root, getString(R.string.add_meds_load_error), Snackbar.LENGTH_SHORT)
                     .setAnchorView(binding.rvMedications)
@@ -121,10 +127,16 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun toggleLoading(isLoading: Boolean) {
         binding.progressBar.isVisible = isLoading
-        binding.searchInputLayout.isEnabled = !isLoading
-        binding.searchBarEditText.isEnabled = !isLoading
-        binding.addMedicationButton.isEnabled = !isLoading && !binding.searchBarEditText.text.isNullOrBlank()
+        binding.searchBar.isEnabled = !isLoading
+        binding.searchView.isEnabled = !isLoading
+        binding.searchView.editText.isEnabled = !isLoading
+        binding.addMedicationButton.isEnabled = !isLoading && !binding.searchView.editText.text.isNullOrBlank()
         binding.rvMedications.isVisible = !isLoading
+    }
+
+    private fun updateAddMedicationState() {
+        binding.addMedicationButton.isEnabled = binding.progressBar.isVisible.not() &&
+            binding.searchView.editText.text.isNullOrBlank().not()
     }
 
     companion object {

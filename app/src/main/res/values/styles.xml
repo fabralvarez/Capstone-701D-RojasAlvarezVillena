@@ -1,0 +1,7 @@
+<resources>
+    <style name="TextAppearance.App.ToolbarHeadline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+</resources>

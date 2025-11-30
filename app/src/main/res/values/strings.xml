@@ -136,6 +136,7 @@
     <string name="add_main_card_patient_subtitle">Agrega y Registra un Nuevo Paciente a la Base de Datos de Vitalarm</string>
     <string name="add_main_card_medication_title">Medicamentos</string>
     <string name="add_main_card_medication_subtitle">Agrega uno o más medicamentos a la lista desde la Base de Datos de Vitalarm</string>
+    <string name="add_main_toolbar_title">¿Qué deseas agregar?</string>
     <string name="add_alarm_title">Agregar alarmas</string>
     <string name="add_alarm_description">Programa los recordatorios para tus pacientes. Puedes añadir varios horarios y los mantendremos ordenados.</string>
     <string name="add_alarm_add_time">Agregar horario</string>
@@ -162,6 +163,8 @@
     <string name="add_meds_load_error">No se pudo cargar el catálogo de medicamentos</string>
     <string name="add_meds_selected_format">%1$s seleccionado</string>
     <string name="profile_tab_title">Perfil</string>
+    <string name="notifications_action_label">Notificaciones</string>
+    <string name="settings_action_label">Configuración</string>
     <string name="profile_greeting_format">Bienvenido, %1$s</string>
     <string name="profile_unknown_email">Correo no disponible</string>
     <string name="profile_logout_message">Sesión cerrada</string>

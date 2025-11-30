@@ -34,7 +34,6 @@
                     android:background="@color/md_theme_surface"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
-                    app:menu="@menu/menu_settings_actions"
                     app:navigationIcon="@drawable/outline_arrow_back_24"
                     app:title="@string/settings_title"
                     app:titleCentered="false"

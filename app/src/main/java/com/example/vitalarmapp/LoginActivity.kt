@@ -4,6 +4,8 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Patterns
+import android.view.Menu
+import android.view.MenuItem
 import android.view.autofill.AutofillManager
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -51,16 +53,20 @@ class LoginActivity : AppCompatActivity() {
         binding.loginToolbar.setNavigationOnClickListener {
             navigateBackToMain()
         }
-        binding.loginToolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.action_more_options -> {
-                    showOverflowMenu()
-                    true
-                }
+    }
 
-                else -> false
-            }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_login_actions, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_more_options -> {
+            showOverflowMenu()
+            true
         }
+
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun isNightModeActive(): Boolean {
@@ -213,7 +219,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showOverflowMenu() {
-        val anchor = binding.loginToolbar.findViewById<View>(R.id.action_more_options) ?: return
+        val anchor = binding.loginToolbar.findViewById<View>(R.id.action_more_options)
+            ?: run {
+                startActivity(SettingsActivity.intent(this))
+                return
+            }
         PopupMenu(this, anchor).apply {
             menuInflater.inflate(R.menu.menu_login_overflow, menu)
             setOnMenuItemClickListener { menuItem ->

@@ -4,13 +4,13 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityAddPatsBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -75,26 +75,21 @@ class AddPatsActivity : AppCompatActivity() {
                     FirebaseManager.addPerson(name, birthDate.ifEmpty { null })
                 }
 
-                if (isSuccessful) {
-                    Toast.makeText(
-                        this@AddPatsActivity,
-                        getString(R.string.add_patient_success),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    finish()
+                val message = if (isSuccessful) {
+                    R.string.add_patient_success
                 } else {
-                    Toast.makeText(
-                        this@AddPatsActivity,
-                        getString(R.string.add_patient_failure),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    R.string.add_patient_failure
                 }
+
+                Snackbar.make(binding.root, getString(message), Snackbar.LENGTH_SHORT)
+                    .setAnchorView(binding.btnSavePerson)
+                    .show()
+
+                if (isSuccessful) finish()
             } catch (error: Exception) {
-                Toast.makeText(
-                    this@AddPatsActivity,
-                    getString(R.string.add_patient_failure),
-                    Toast.LENGTH_SHORT
-                ).show()
+                Snackbar.make(binding.root, getString(R.string.add_patient_failure), Snackbar.LENGTH_SHORT)
+                    .setAnchorView(binding.btnSavePerson)
+                    .show()
             } finally {
                 toggleLoading(false)
             }

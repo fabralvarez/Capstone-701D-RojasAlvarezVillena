@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.graphics.Bitmap
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.MainActivity
@@ -14,7 +15,11 @@ import com.example.vitalarmapp.SettingsActivity
 import com.example.vitalarmapp.databinding.FragmentProfileTabBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.SessionManager
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialFadeThrough
 import com.google.firebase.auth.FirebaseAuth
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -23,6 +28,15 @@ class ProfileTabFragment : Fragment() {
 
     private var _binding: FragmentProfileTabBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val fadeThrough = MaterialFadeThrough()
+        enterTransition = fadeThrough
+        reenterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
+        returnTransition = MaterialFadeThrough()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +60,11 @@ class ProfileTabFragment : Fragment() {
 
     private fun setupActions() {
         binding.btnProfileLogout.setOnClickListener { logoutUser() }
+        binding.btnEditProfile.setOnClickListener {
+            Snackbar.make(binding.root, getString(R.string.profile_edit_action), Snackbar.LENGTH_SHORT)
+                .setAnchorView(binding.btnProfileLogout)
+                .show()
+        }
 
         binding.topAppBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -61,21 +80,58 @@ class ProfileTabFragment : Fragment() {
 
     private fun loadProfile() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val name = withContext(Dispatchers.IO) { FirebaseManager.getCurrentUserName() }
-            val email = FirebaseAuth.getInstance().currentUser?.email
+            val profile = withContext(Dispatchers.IO) { FirebaseManager.getCurrentUserProfile() }
+            val name = profile?.name?.ifBlank { null }
+                ?: getString(R.string.home_greeting_fallback)
+            val rut = profile?.rut?.ifBlank { null }
+                ?: getString(R.string.profile_rut_placeholder)
+            val email = profile?.email
+                ?: FirebaseAuth.getInstance().currentUser?.email
                 ?: getString(R.string.profile_unknown_email)
 
-            binding.tvProfileName.text = getString(R.string.profile_greeting_format, name)
+            binding.tvProfileName.text = name
+            binding.tvProfileRut.text = rut
             binding.tvProfileEmail.text = email
+            renderQrCode(name, rut)
         }
     }
 
     private fun logoutUser() {
         FirebaseManager.logout()
         SessionManager.setKeepSession(requireContext(), false)
-        Toast.makeText(requireContext(), getString(R.string.profile_logout_message), Toast.LENGTH_SHORT)
+        Snackbar.make(binding.root, getString(R.string.profile_logout_message), Snackbar.LENGTH_SHORT)
+            .setAnchorView(binding.btnProfileLogout)
             .show()
         startActivity(Intent(requireContext(), MainActivity::class.java))
         requireActivity().finish()
+    }
+
+    private fun renderQrCode(name: String, rut: String) {
+        try {
+            val size = resources.getDimensionPixelSize(R.dimen.profile_qr_size)
+            val qrContent = "Nombre: $name\nRUT: $rut"
+            val matrix = QRCodeWriter().encode(qrContent, BarcodeFormat.QR_CODE, size, size)
+            val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+            val backgroundColor = resolveThemeColor(com.google.android.material.R.attr.colorSurface)
+            val foregroundColor = resolveThemeColor(com.google.android.material.R.attr.colorOnSurface)
+            bitmap.eraseColor(backgroundColor)
+
+            for (x in 0 until size) {
+                for (y in 0 until size) {
+                    bitmap.setPixel(x, y, if (matrix[x, y]) foregroundColor else backgroundColor)
+                }
+            }
+            binding.imgProfileQr.setImageBitmap(bitmap)
+        } catch (_: Exception) {
+            Snackbar.make(binding.root, getString(R.string.profile_qr_error), Snackbar.LENGTH_SHORT)
+                .setAnchorView(binding.btnProfileLogout)
+                .show()
+        }
+    }
+
+    private fun resolveThemeColor(attr: Int): Int {
+        val typedValue = TypedValue()
+        requireContext().theme.resolveAttribute(attr, typedValue, true)
+        return typedValue.data
     }
 }

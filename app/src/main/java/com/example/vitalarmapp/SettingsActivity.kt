@@ -3,13 +3,13 @@ package com.example.vitalarmapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivitySettingsBinding
 import com.example.vitalarmapp.utils.local.SessionManager
 import com.example.vitalarmapp.utils.local.ThemeManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -48,15 +48,18 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setupSwitches() {
         binding.switchMaterialYou.isChecked = SessionManager.isMaterialYouEnabled(this)
+        updateMaterialYouCopy(binding.switchMaterialYou.isChecked)
         binding.switchMaterialYou.setOnCheckedChangeListener { _, isChecked ->
             SessionManager.setMaterialYouEnabled(this, isChecked)
-            Toast.makeText(
-                this,
-                if (isChecked) getString(R.string.settings_material_you_enabled) else getString(
-                    R.string.settings_material_you_disabled
-                ),
-                Toast.LENGTH_SHORT
-            ).show()
+            updateMaterialYouCopy(isChecked)
+            val message = if (isChecked) {
+                getString(R.string.settings_material_you_enabled)
+            } else {
+                getString(R.string.settings_material_you_disabled)
+            }
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+                .setAnchorView(binding.switchMaterialYou)
+                .show()
             ThemeManager.notifyThemeChanged(this)
         }
 
@@ -70,9 +73,21 @@ class SettingsActivity : AppCompatActivity() {
                 } else {
                     R.string.settings_cache_clear_failed
                 }
-                Toast.makeText(this@SettingsActivity, getString(message), Toast.LENGTH_SHORT)
+                Snackbar.make(binding.root, getString(message), Snackbar.LENGTH_SHORT)
+                    .setAnchorView(binding.layoutClearCache)
                     .show()
             }
+        }
+    }
+
+    private fun updateMaterialYouCopy(isEnabled: Boolean) {
+        if (isEnabled) {
+            binding.tvMaterialYouTitle.text = getString(R.string.settings_material_you_title_default)
+            binding.tvMaterialYouSubtitle.text =
+                getString(R.string.settings_material_you_default_subtitle)
+        } else {
+            binding.tvMaterialYouTitle.text = getString(R.string.settings_material_you_title)
+            binding.tvMaterialYouSubtitle.text = getString(R.string.settings_material_you_subtitle)
         }
     }
 

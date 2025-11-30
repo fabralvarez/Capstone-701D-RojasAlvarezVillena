@@ -2,12 +2,12 @@ package com.example.vitalarmapp
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.adapters.PeopleAdapter
 import com.example.vitalarmapp.databinding.ActivityPersonListBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -74,7 +74,9 @@ class PersonListActivity : AppCompatActivity() {
 
             } catch (e: Exception) {
                 Log.e("PersonList", "Error cargando personas: ${e.message}")
-                Toast.makeText(this@PersonListActivity, "Error al cargar personas", Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, "Error al cargar personas", Snackbar.LENGTH_SHORT)
+                    .setAnchorView(binding.btnAddPerson)
+                    .show()
             } finally {
                 binding.progressBar.visibility = android.view.View.GONE
             }
@@ -92,17 +94,23 @@ class PersonListActivity : AppCompatActivity() {
                 if (success) {
                     peopleList.removeAt(position)
                     peopleAdapter.notifyItemRemoved(position)
-                    Toast.makeText(this@PersonListActivity, "Persona eliminada", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "Persona eliminada", Snackbar.LENGTH_SHORT)
+                        .setAnchorView(binding.btnAddPerson)
+                        .show()
 
                     if (peopleList.isEmpty()) {
                         binding.tvEmptyState.visibility = android.view.View.VISIBLE
                     }
                 } else {
-                    Toast.makeText(this@PersonListActivity, "Error al eliminar persona", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "Error al eliminar persona", Snackbar.LENGTH_SHORT)
+                        .setAnchorView(binding.btnAddPerson)
+                        .show()
                 }
             } catch (e: Exception) {
                 Log.e("PersonList", "Error eliminando persona: ${e.message}")
-                Toast.makeText(this@PersonListActivity, "Error al eliminar persona", Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, "Error al eliminar persona", Snackbar.LENGTH_SHORT)
+                    .setAnchorView(binding.btnAddPerson)
+                    .show()
             }
         }
     }

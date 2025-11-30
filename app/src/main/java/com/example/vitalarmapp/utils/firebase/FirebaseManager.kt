@@ -309,6 +309,31 @@ object FirebaseManager {
         }
     }
 
+    suspend fun getCurrentUserProfile(): User? {
+        return try {
+            val userId = getCurrentUserId() ?: return null
+            val document = db.collection(COLLECTION_USERS)
+                .document(userId)
+                .get()
+                .await()
+
+            if (document.exists()) {
+                User(
+                    id = document.getString("id") ?: userId,
+                    name = document.getString("name") ?: "",
+                    rut = document.getString("rut") ?: "",
+                    email = document.getString("email") ?: "",
+                    createdAt = (document.getLong("createdAt") ?: 0L)
+                )
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error obteniendo perfil: ${e.message}")
+            null
+        }
+    }
+
     private const val COLLECTION_BASE_MEDICATIONS = "base_medications"
 
     suspend fun addBaseMedication(name: String, description: String? = null): Boolean {

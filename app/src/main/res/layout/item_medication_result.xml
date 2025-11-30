@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            android:textColor="@color/md_theme_onSurface"
+            android:textColor="?attr/colorOnSurface"
             tools:text="Amoxicilina" />
 
         <TextView
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@color/md_theme_onSurfaceVariant"
+            android:textColor="?attr/colorOnSurfaceVariant"
             tools:text="Antibiótico de amplio espectro" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

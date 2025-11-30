@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_theme_background"
+    android:background="?attr/colorSurface"
     android:orientation="vertical"
     tools:context=".PersonListActivity">
 
@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
-        android:background="@color/md_theme_primary"
+        android:background="?attr/colorPrimary"
         android:text="Personas a Cuidado"
-        android:textColor="@color/md_theme_onPrimary"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="22sp"
         android:textStyle="bold"
         android:gravity="center" />
@@ -47,7 +47,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="No hay personas agregadas\n\nPresiona el botón de abajo para agregar una persona"
-            android:textColor="@color/md_theme_onBackground"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="16sp"
             android:visibility="gone" />
 
@@ -58,9 +58,9 @@
         android:id="@+id/btnAddPerson"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/md_theme_primary"
+        android:background="?attr/colorPrimary"
         android:text="Agregar Persona"
-        android:textColor="@color/md_theme_onPrimary"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="18sp" />
 
 </LinearLayout>

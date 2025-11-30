@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.MainActivity
 import com.example.vitalarmapp.R
+import com.example.vitalarmapp.SettingsActivity
 import com.example.vitalarmapp.databinding.FragmentProfileTabBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.SessionManager
@@ -45,6 +46,17 @@ class ProfileTabFragment : Fragment() {
 
     private fun setupActions() {
         binding.btnProfileLogout.setOnClickListener { logoutUser() }
+
+        binding.topAppBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_settings -> {
+                    startActivity(SettingsActivity.intent(requireContext()))
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 
     private fun loadProfile() {

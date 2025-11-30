@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_theme_background"
+    android:background="?attr/colorSurface"
     tools:context=".ui.add.AddMainTabFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -25,14 +25,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
                 app:expandedTitleGravity="bottom|start"
-                app:expandedTitleTextColor="@color/md_theme_primary"
+                app:expandedTitleTextColor="?attr/colorPrimary"
                 app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineMedium.Emphasized">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/topAppBar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/md_theme_surface"
+                    android:background="?attr/colorSurface"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
                     app:menu="@menu/menu_top_actions"
@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/add_main_card_alarm_title"
                         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                        android:textColor="@color/md_theme_onSurface" />
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                         android:minLines="2"
                         android:text="@string/add_main_card_alarm_subtitle"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                        android:textColor="@color/md_theme_onSurfaceVariant" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -113,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/add_main_card_patient_title"
                         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                        android:textColor="@color/md_theme_onSurface" />
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -124,7 +124,7 @@
                         android:minLines="2"
                         android:text="@string/add_main_card_patient_subtitle"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                        android:textColor="@color/md_theme_onSurfaceVariant" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -145,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/add_main_card_medication_title"
                         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                        android:textColor="@color/md_theme_onSurface" />
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -156,7 +156,7 @@
                         android:minLines="2"
                         android:text="@string/add_main_card_medication_subtitle"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                        android:textColor="@color/md_theme_onSurfaceVariant" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

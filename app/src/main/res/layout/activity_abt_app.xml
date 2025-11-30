@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_theme_background"
+    android:background="?attr/colorSurface"
     tools:context=".AbtAppActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -31,7 +31,7 @@
                     android:id="@+id/topAppBar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/md_theme_surface"
+                    android:background="?attr/colorSurface"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/outline_arrow_back_24"
@@ -73,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/about_app_headline"
                         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-                        android:textColor="@color/md_theme_onSurface" />
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:id="@+id/tvVersion"
@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                        android:textColor="@color/md_theme_onSurfaceVariant"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         tools:text="Version 0.0.0" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

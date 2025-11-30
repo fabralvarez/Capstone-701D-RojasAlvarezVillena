@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_theme_background"
+    android:background="?attr/colorSurface"
     android:orientation="vertical"
     tools:context=".LanMenuActivity">
 
@@ -19,9 +19,9 @@
         android:id="@+id/lanMenuBottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/md_theme_surface"
-        app:itemIconTint="@color/md_theme_onSurfaceVariant"
-        app:itemRippleColor="@color/md_theme_secondaryContainer"
-        app:itemTextColor="@color/md_theme_onSurfaceVariant"
+        android:background="?attr/colorSurface"
+        app:itemIconTint="?attr/colorOnSurfaceVariant"
+        app:itemRippleColor="?attr/colorSecondaryContainer"
+        app:itemTextColor="?attr/colorOnSurfaceVariant"
         app:menu="@menu/menu_lan_bottom_nav" />
 </LinearLayout>

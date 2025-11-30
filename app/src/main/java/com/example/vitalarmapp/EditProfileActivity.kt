@@ -122,9 +122,11 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun navigateBackToProfile() {
-        startActivity(ProfileTabActivity.intent(this))
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        startActivity(intent)
+        val profileIntent = ProfileTabActivity.intent(this).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }
+
+        startActivity(profileIntent)
         finish()
     }
 

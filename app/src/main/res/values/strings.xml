@@ -132,7 +132,7 @@
     <string name="add_main_tab_subtitle">Gestiona alarmas, pacientes y medicamentos desde un solo lugar.</string>
     <string name="add_main_card_alarm_title">Alarmas</string>
     <string name="add_main_card_alarm_subtitle">Agrega Alarmas para uno o más pacientes registrados</string>
-    <string name="add_main_card_patient_title">Lleva Pacientes</string>
+    <string name="add_main_card_patient_title">Agrega Pacientes</string>
     <string name="add_main_card_patient_subtitle">Agrega y Registra un Nuevo Paciente a la Base de Datos de Vitalarm</string>
     <string name="add_main_card_medication_title">Medicamentos</string>
     <string name="add_main_card_medication_subtitle">Agrega uno o más medicamentos a la lista desde la Base de Datos de Vitalarm</string>

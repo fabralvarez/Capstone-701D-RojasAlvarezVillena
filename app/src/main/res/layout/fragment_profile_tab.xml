@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_theme_background"
+    android:background="?attr/colorSurface"
     tools:context=".ui.profile.ProfileTabFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -25,14 +25,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
                 app:expandedTitleGravity="bottom|start"
-                app:expandedTitleTextColor="@color/md_theme_primary"
+                app:expandedTitleTextColor="?attr/colorPrimary"
                 app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineMedium.Emphasized">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/topAppBar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/md_theme_surface"
+                    android:background="?attr/colorSurface"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
                     app:menu="@menu/menu_top_actions"
@@ -77,7 +77,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                        android:textColor="@color/md_theme_onSurface"
+                        android:textColor="?attr/colorOnSurface"
                         tools:text="Bienvenido, Usuario" />
 
                     <TextView
@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                        android:textColor="@color/md_theme_onSurfaceVariant"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         tools:text="usuario@correo.com" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/logout"
-                android:textColor="@color/md_theme_onPrimary"
+                android:textColor="?attr/colorOnPrimary"
                 tools:ignore="VisualLintButtonSize" />
         </LinearLayout>
     </ScrollView>

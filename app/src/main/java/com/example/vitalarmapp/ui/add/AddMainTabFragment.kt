@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import com.example.vitalarmapp.AddAlarmActivity
 import com.example.vitalarmapp.AddMedsActivity
 import com.example.vitalarmapp.AddPatsActivity
+import com.example.vitalarmapp.R
+import com.example.vitalarmapp.SettingsActivity
 import com.example.vitalarmapp.databinding.FragmentAddMainTabBinding
 
 class AddMainTabFragment : Fragment() {
@@ -45,6 +47,17 @@ class AddMainTabFragment : Fragment() {
 
         binding.cardAddMedication.setOnClickListener {
             startActivity(AddMedsActivity.intent(requireContext()))
+        }
+
+        binding.topAppBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_settings -> {
+                    startActivity(SettingsActivity.intent(requireContext()))
+                    true
+                }
+
+                else -> false
+            }
         }
     }
 }

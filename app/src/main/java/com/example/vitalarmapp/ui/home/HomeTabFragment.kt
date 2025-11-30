@@ -62,7 +62,6 @@ class HomeTabFragment : Fragment() {
 
     fun refreshContent() {
         if (view == null) return
-        loadUserName()
         loadNextMedication()
     }
 
@@ -89,19 +88,6 @@ class HomeTabFragment : Fragment() {
         binding.tvMedicamentoNombre.setOnClickListener(openAddTab)
         binding.tvHoraAdministracion.setOnClickListener(openAddTab)
         binding.tvPersonaAdministrar.setOnClickListener(openAddTab)
-    }
-
-    private fun loadUserName() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                val userName = withContext(Dispatchers.IO) {
-                    FirebaseManager.getCurrentUserName()
-                }
-                binding.tvBienvenida.text = getString(R.string.home_greeting, userName)
-            } catch (_: Exception) {
-                binding.tvBienvenida.text = getString(R.string.home_greeting_fallback)
-            }
-        }
     }
 
     private fun loadNextMedication() {

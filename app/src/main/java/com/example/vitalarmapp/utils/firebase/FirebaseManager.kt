@@ -334,6 +334,20 @@ object FirebaseManager {
         }
     }
 
+    suspend fun updateCurrentUserName(newName: String): Boolean {
+        return try {
+            val userId = getCurrentUserId() ?: return false
+            db.collection(COLLECTION_USERS)
+                .document(userId)
+                .update("name", newName)
+                .await()
+            true
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error actualizando nombre de usuario: ${e.message}", e)
+            false
+        }
+    }
+
     private const val COLLECTION_BASE_MEDICATIONS = "base_medications"
 
     suspend fun addBaseMedication(name: String, description: String? = null): Boolean {

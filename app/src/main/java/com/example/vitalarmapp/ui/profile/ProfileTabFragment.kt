@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.vitalarmapp.EditProfileActivity
 import com.example.vitalarmapp.MainActivity
 import com.example.vitalarmapp.R
 import com.example.vitalarmapp.SettingsActivity
 import com.example.vitalarmapp.databinding.FragmentProfileTabBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.SessionManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.zxing.BarcodeFormat
@@ -59,11 +61,9 @@ class ProfileTabFragment : Fragment() {
     }
 
     private fun setupActions() {
-        binding.btnProfileLogout.setOnClickListener { logoutUser() }
+        binding.btnProfileLogout.setOnClickListener { showLogoutDialog() }
         binding.btnEditProfile.setOnClickListener {
-            Snackbar.make(binding.root, getString(R.string.profile_edit_action), Snackbar.LENGTH_SHORT)
-                .setAnchorView(binding.btnProfileLogout)
-                .show()
+            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
 
         binding.topAppBar.setOnMenuItemClickListener { item ->
@@ -91,12 +91,23 @@ class ProfileTabFragment : Fragment() {
         }
     }
 
+    private fun showLogoutDialog() {
+        MaterialAlertDialogBuilder(
+            requireContext(),
+            com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog
+        )
+            .setTitle(getString(R.string.profile_logout_dialog_title))
+            .setMessage(getString(R.string.profile_logout_dialog_supporting))
+            .setNegativeButton(getString(R.string.profile_logout_dialog_confirm)) { _, _ ->
+                logoutUser()
+            }
+            .setPositiveButton(getString(R.string.profile_logout_dialog_cancel), null)
+            .show()
+    }
+
     private fun logoutUser() {
         FirebaseManager.logout()
         SessionManager.setKeepSession(requireContext(), false)
-        Snackbar.make(binding.root, getString(R.string.profile_logout_message), Snackbar.LENGTH_SHORT)
-            .setAnchorView(binding.btnProfileLogout)
-            .show()
         startActivity(Intent(requireContext(), MainActivity::class.java))
         requireActivity().finish()
     }

@@ -10,7 +10,7 @@ import com.example.vitalarmapp.databinding.ActivityProfileTabBinding
 import com.example.vitalarmapp.navigation.BottomNavigationHelper
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.SessionManager
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,7 +42,7 @@ class ProfileTabActivity : AppCompatActivity() {
     }
 
     private fun setupActions() {
-        binding.btnProfileLogout.setOnClickListener { logoutUser() }
+        binding.btnProfileLogout.setOnClickListener { showLogoutDialog() }
     }
 
     private fun setupTopActions() {
@@ -71,12 +71,23 @@ class ProfileTabActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLogoutDialog() {
+        MaterialAlertDialogBuilder(
+            this,
+            com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog
+        )
+            .setTitle(getString(R.string.profile_logout_dialog_title))
+            .setMessage(getString(R.string.profile_logout_dialog_supporting))
+            .setNegativeButton(getString(R.string.profile_logout_dialog_confirm)) { _, _ ->
+                logoutUser()
+            }
+            .setPositiveButton(getString(R.string.profile_logout_dialog_cancel), null)
+            .show()
+    }
+
     private fun logoutUser() {
         FirebaseManager.logout()
         SessionManager.setKeepSession(this, false)
-        Snackbar.make(binding.root, getString(R.string.profile_logout_message), Snackbar.LENGTH_SHORT)
-            .setAnchorView(binding.btnProfileLogout)
-            .show()
         startActivity(Intent(this, MainActivity::class.java))
         finishAffinity()
     }

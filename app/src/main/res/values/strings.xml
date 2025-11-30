@@ -168,4 +168,16 @@
     <string name="profile_greeting_format">Bienvenido, %1$s</string>
     <string name="profile_unknown_email">Correo no disponible</string>
     <string name="profile_logout_message">Sesión cerrada</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_material_you_title">Activar Material You</string>
+    <string name="settings_material_you_subtitle">El color estará basado en tu wallpaper</string>
+    <string name="settings_material_you_enabled">Material You activado.</string>
+    <string name="settings_material_you_disabled">Material You desactivado.</string>
+    <string name="settings_clear_cache_title">Limpiar Cache</string>
+    <string name="settings_clear_cache_subtitle">Para optimizar la app</string>
+    <string name="settings_cache_cleared">Caché limpiada correctamente.</string>
+    <string name="settings_cache_clear_failed">No se pudo limpiar la caché.</string>
+    <string name="about_app_title">Acerca de la App</string>
+    <string name="about_app_headline">Vitalarm App</string>
+    <string name="about_app_version">Versión %1$s</string>
 </resources>

@@ -29,6 +29,7 @@ class ProfileTabActivity : AppCompatActivity() {
         setupNavigation()
         setupActions()
         loadProfile()
+        setupTopActions()
     }
 
     private fun setupNavigation() {
@@ -42,6 +43,19 @@ class ProfileTabActivity : AppCompatActivity() {
 
     private fun setupActions() {
         binding.btnProfileLogout.setOnClickListener { logoutUser() }
+    }
+
+    private fun setupTopActions() {
+        binding.topAppBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_settings -> {
+                    startActivity(SettingsActivity.intent(this))
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 
     private fun loadProfile() {

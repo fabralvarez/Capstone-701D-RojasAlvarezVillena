@@ -5,8 +5,10 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Patterns
 import android.view.autofill.AutofillManager
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.credentials.CredentialManager
@@ -48,6 +50,16 @@ class LoginActivity : AppCompatActivity() {
         }
         binding.loginToolbar.setNavigationOnClickListener {
             navigateBackToMain()
+        }
+        binding.loginToolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_more_options -> {
+                    showOverflowMenu()
+                    true
+                }
+
+                else -> false
+            }
         }
     }
 
@@ -198,6 +210,24 @@ class LoginActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         startActivity(intent)
         finish()
+    }
+
+    private fun showOverflowMenu() {
+        val anchor = binding.loginToolbar.findViewById<View>(R.id.action_more_options) ?: return
+        PopupMenu(this, anchor).apply {
+            menuInflater.inflate(R.menu.menu_login_overflow, menu)
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.action_open_settings -> {
+                        startActivity(SettingsActivity.intent(this@LoginActivity))
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            show()
+        }
     }
 
     private fun navigateToHome() {

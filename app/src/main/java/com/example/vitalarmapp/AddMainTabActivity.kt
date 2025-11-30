@@ -19,6 +19,7 @@ class AddMainTabActivity : AppCompatActivity() {
 
         setupNavigation()
         setupActions()
+        setupTopActions()
     }
 
     private fun setupNavigation() {
@@ -31,6 +32,19 @@ class AddMainTabActivity : AppCompatActivity() {
             onItemSelected = ::handleNavigation,
             onItemReselected = ::handleNavigation
         )
+    }
+
+    private fun setupTopActions() {
+        binding.topAppBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_settings -> {
+                    startActivity(SettingsActivity.intent(this))
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 
     private fun setupActions() {

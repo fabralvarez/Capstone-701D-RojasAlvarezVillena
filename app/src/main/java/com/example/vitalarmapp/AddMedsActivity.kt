@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.adapters.MedicationSearchAdapter
@@ -49,20 +49,25 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     private fun setupSearch() {
-        binding.searchView.apply {
-            imeOptions = EditorInfo.IME_ACTION_DONE
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    filterResults(query)
-                    clearFocus()
-                    return true
-                }
+        binding.searchInputLayout.setStartIconOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    filterResults(newText)
-                    return true
+        binding.searchBarEditText.apply {
+            doOnTextChanged { text, _, _, _ ->
+                filterResults(text?.toString())
+                binding.addMedicationButton.isEnabled = !text.isNullOrBlank() && binding.progressBar.isVisible.not()
+            }
+
+            setOnEditorActionListener { v, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    filterResults(text?.toString())
+                    v.clearFocus()
+                    true
+                } else {
+                    false
                 }
-            })
+            }
         }
     }
 
@@ -82,7 +87,7 @@ class AddMedsActivity : AppCompatActivity() {
 
                 allMedications.clear()
                 allMedications.addAll(medications)
-                filterResults(binding.searchView.query?.toString())
+                filterResults(binding.searchBarEditText.text?.toString())
             } catch (error: Exception) {
                 Snackbar.make(binding.root, getString(R.string.add_meds_load_error), Snackbar.LENGTH_SHORT)
                     .setAnchorView(binding.rvMedications)
@@ -116,7 +121,9 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun toggleLoading(isLoading: Boolean) {
         binding.progressBar.isVisible = isLoading
-        binding.searchView.isEnabled = !isLoading
+        binding.searchInputLayout.isEnabled = !isLoading
+        binding.searchBarEditText.isEnabled = !isLoading
+        binding.addMedicationButton.isEnabled = !isLoading && !binding.searchBarEditText.text.isNullOrBlank()
         binding.rvMedications.isVisible = !isLoading
     }
 

@@ -158,6 +158,8 @@
     <string name="add_meds_title">Medicamentos</string>
     <string name="add_meds_description">Busca medicamentos existentes y selecciónalos para añadirlos a tu flujo de trabajo.</string>
     <string name="add_meds_search_hint">Buscar medicamentos</string>
+    <string name="add_meds_search_placeholder">Ingresa el medicamento</string>
+    <string name="add_meds_add_action">Agregar</string>
     <string name="add_meds_empty_description">Sin descripción disponible</string>
     <string name="add_meds_unknown">Medicamento sin nombre</string>
     <string name="add_meds_load_error">No se pudo cargar el catálogo de medicamentos</string>

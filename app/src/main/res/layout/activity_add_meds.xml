@@ -29,7 +29,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="12dp"
         android:hint="@string/add_meds_search_placeholder"
-        android:navigationIcon="@drawable/outline_arrow_back_24"
+        app:navigationIcon="@drawable/outline_arrow_back_24"
         app:menu="@menu/menu_add_meds_search_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

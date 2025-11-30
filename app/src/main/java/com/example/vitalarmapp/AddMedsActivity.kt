@@ -58,6 +58,7 @@ class AddMedsActivity : AppCompatActivity() {
         }
 
         binding.searchView.setupWithSearchBar(binding.searchBar)
+        binding.searchView.editText.hint = getString(R.string.add_meds_search_placeholder)
 
         binding.searchView.editText.doOnTextChanged { text, _, _, _ ->
             filterResults(text?.toString())

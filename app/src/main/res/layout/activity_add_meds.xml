@@ -30,7 +30,6 @@
         android:layout_marginTop="12dp"
         android:hint="@string/add_meds_search_placeholder"
         android:navigationIcon="@drawable/outline_arrow_back_24"
-        app:defaultNavigationOnClickListener="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topAppBar" />
@@ -51,7 +50,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
-        app:hintText="@string/add_meds_search_placeholder"
         app:layout_anchor="@id/searchBar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

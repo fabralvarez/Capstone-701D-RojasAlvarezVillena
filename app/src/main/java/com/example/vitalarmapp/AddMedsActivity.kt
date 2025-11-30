@@ -85,7 +85,7 @@ class AddMedsActivity : AppCompatActivity() {
                 filterResults(binding.searchView.query?.toString())
             } catch (error: Exception) {
                 Snackbar.make(binding.root, getString(R.string.add_meds_load_error), Snackbar.LENGTH_SHORT)
-                    .setAnchorView(binding.topAppBar)
+                    .setAnchorView(binding.rvMedications)
                     .show()
                 adapter.updateData(emptyList())
             } finally {
@@ -110,7 +110,7 @@ class AddMedsActivity : AppCompatActivity() {
     private fun onMedicationSelected(item: MedicationSearchItem) {
         val message = getString(R.string.add_meds_selected_format, item.name)
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-            .setAnchorView(binding.topAppBar)
+            .setAnchorView(binding.rvMedications)
             .show()
     }
 

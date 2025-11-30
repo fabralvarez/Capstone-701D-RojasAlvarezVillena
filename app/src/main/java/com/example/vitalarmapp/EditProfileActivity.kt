@@ -1,6 +1,5 @@
 package com.example.vitalarmapp
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -122,11 +121,6 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun navigateBackToProfile() {
-        val profileIntent = ProfileTabActivity.intent(this).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        }
-
-        startActivity(profileIntent)
         finish()
     }
 

@@ -25,7 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
                 app:expandedTitleGravity="bottom|start"
-                app:expandedTitleTextAppearance="@style/TextAppearance.App.ToolbarHeadline">
+                app:expandedTitleTextColor="@color/md_theme_primary"
+                app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineMedium.Emphasized">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/topAppBar"
@@ -55,14 +56,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:orientation="vertical"
             android:padding="24dp">
 
             <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.Material3.CardView.Filled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                style="@style/Widget.Material3.CardView.Filled">
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"

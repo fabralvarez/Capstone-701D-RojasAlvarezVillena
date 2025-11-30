@@ -1,5 +1,6 @@
 package com.example.vitalarmapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -122,11 +123,14 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun navigateBackToProfile() {
         startActivity(ProfileTabActivity.intent(this))
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
         finish()
     }
 
     private fun setLoadingState(isLoading: Boolean) {
-        binding.btnResetName.isEnabled = !isLoading && binding.nameEditText.text?.isNotBlank() == true
+        binding.btnResetName.isEnabled =
+            !isLoading && binding.nameEditText.text?.isNotBlank() == true
         binding.btnCancelOperation.isEnabled = !isLoading
     }
 

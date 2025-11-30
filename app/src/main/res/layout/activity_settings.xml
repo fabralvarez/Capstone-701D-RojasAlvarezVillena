@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
                 app:expandedTitleGravity="bottom|start"
-                app:expandedTitleTextAppearance="@style/TextAppearance.App.ToolbarHeadline">
+                app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineMedium.Emphasized">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/topAppBar"
@@ -45,8 +45,8 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
         android:layout_marginTop="8dp"
+        android:fillViewport="true"
         android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -117,24 +117,26 @@
                         android:paddingEnd="16dp"
                         app:dividerColor="?attr/colorOutlineVariant" />
 
-                      <LinearLayout
-                          android:id="@+id/layoutClearCache"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:clickable="true"
-                          android:focusable="true"
-                          android:foreground="?attr/selectableItemBackground"
-                          android:minHeight="72dp"
-                          android:orientation="horizontal"
-                          android:paddingHorizontal="16dp"
-                          android:paddingVertical="12dp">
+                    <LinearLayout
+                        android:id="@+id/layoutClearCache"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:minHeight="72dp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp">
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            tools:ignore="UselessParent">
 
                             <TextView
                                 android:layout_width="wrap_content"

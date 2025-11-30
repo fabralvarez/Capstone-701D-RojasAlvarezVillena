@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
                 app:expandedTitleGravity="bottom|start"
-                app:expandedTitleTextAppearance="@style/TextAppearance.App.ToolbarHeadline">
+                app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineMedium.Emphasized">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/topAppBar"
@@ -45,8 +45,8 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
         android:layout_marginTop="8dp"
+        android:fillViewport="true"
         android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

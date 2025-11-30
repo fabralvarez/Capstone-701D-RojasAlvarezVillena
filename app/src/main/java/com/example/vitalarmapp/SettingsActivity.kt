@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivitySettingsBinding
 import com.example.vitalarmapp.utils.local.SessionManager
+import com.example.vitalarmapp.utils.local.ThemeManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -56,31 +57,21 @@ class SettingsActivity : AppCompatActivity() {
                 ),
                 Toast.LENGTH_SHORT
             ).show()
-            recreate()
+            ThemeManager.notifyThemeChanged(this)
         }
 
-        binding.switchClearCache.isChecked = SessionManager.isAutoClearCacheEnabled(this)
-        binding.switchClearCache.setOnCheckedChangeListener { _, isChecked ->
-            SessionManager.setAutoClearCacheEnabled(this, isChecked)
-            if (isChecked) {
-                lifecycleScope.launch {
-                    val cleaned = withContext(Dispatchers.IO) {
-                        SessionManager.clearAppCache(this@SettingsActivity)
-                    }
-                    val message = if (cleaned) {
-                        R.string.settings_cache_cleared
-                    } else {
-                        R.string.settings_cache_clear_failed
-                    }
-                    Toast.makeText(this@SettingsActivity, getString(message), Toast.LENGTH_SHORT)
-                        .show()
+        binding.layoutClearCache.setOnClickListener {
+            lifecycleScope.launch {
+                val cleaned = withContext(Dispatchers.IO) {
+                    SessionManager.clearAppCache(this@SettingsActivity)
                 }
-            } else {
-                Toast.makeText(
-                    this,
-                    getString(R.string.settings_cache_autoclear_disabled),
-                    Toast.LENGTH_SHORT
-                ).show()
+                val message = if (cleaned) {
+                    R.string.settings_cache_cleared
+                } else {
+                    R.string.settings_cache_clear_failed
+                }
+                Toast.makeText(this@SettingsActivity, getString(message), Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

@@ -3,6 +3,7 @@ package com.example.vitalarmapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.EditorInfo
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -57,6 +58,15 @@ class AddMedsActivity : AppCompatActivity() {
             }
         }
 
+        binding.searchBar.setOnMenuItemClickListener { menuItem ->
+            if (menuItem.itemId == R.id.action_search) {
+                openSearchView()
+                true
+            } else {
+                false
+            }
+        }
+
         binding.searchView.setupWithSearchBar(binding.searchBar)
         binding.searchView.editText.hint = getString(R.string.add_meds_search_placeholder)
 
@@ -76,6 +86,17 @@ class AddMedsActivity : AppCompatActivity() {
         }
 
         updateAddMedicationState()
+    }
+
+    private fun openSearchView() {
+        if (!binding.searchView.isShowing) {
+            binding.searchView.show()
+        }
+        binding.searchView.editText.requestFocus()
+        binding.searchView.editText.post {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(binding.searchView.editText, InputMethodManager.SHOW_IMPLICIT)
+        }
     }
 
     private fun loadBaseMedications() {

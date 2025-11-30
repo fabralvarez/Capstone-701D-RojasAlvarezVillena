@@ -24,14 +24,12 @@
             app:contentScrim="?attr/colorSurface"
             app:expandedSubtitleTextAppearance="@style/TextAppearance.AppCompat.Small"
             app:expandedTitleGravity="bottom|center_horizontal"
-            app:expandedTitleTextColor="?attr/colorPrimary"
             app:statusBarScrim="?attr/colorSurface">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/signup_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorSurface"
                 android:elevation="0dp"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/outline_arrow_back_24"

@@ -35,7 +35,6 @@
                     android:id="@+id/topAppBar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorSurface"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
                     app:menu="@menu/menu_top_actions"
@@ -80,15 +79,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/profile_caregiver_label"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                        android:textColor="?attr/colorPrimary" />
+                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
                     <TextView
                         android:id="@+id/tvProfileName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="?attr/colorOnSurface"
                         tools:text="Bienvenido, Usuario" />
 
@@ -98,26 +96,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="@string/profile_rut_label"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                        android:textColor="?attr/colorPrimary" />
+                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
                     <TextView
                         android:id="@+id/tvProfileRut"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="?attr/colorOnSurface"
                         tools:text="12.345.678-9" />
-
-                    <TextView
-                        android:id="@+id/tvProfileEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        tools:text="usuario@correo.com" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -149,7 +137,8 @@
                     app:icon="@drawable/outline_edit_24"
                     app:iconGravity="textStart"
                     app:iconPadding="8dp"
-                    app:iconTint="?attr/colorOnSecondaryContainer" />
+                    app:iconTint="?attr/colorOnSecondaryContainer"
+                    tools:ignore="VisualLintButtonSize" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnProfileLogout"

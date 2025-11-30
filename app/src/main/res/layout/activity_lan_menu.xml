@@ -38,7 +38,6 @@
                     android:id="@+id/lanMenuToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorSurface"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
                     app:menu="@menu/menu_top_actions"
@@ -71,5 +70,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_lan_bottom_nav" />
+        app:menu="@menu/menu_lan_bottom_nav"
+        tools:ignore="VisualLintBottomNav" />
 </androidx.constraintlayout.widget.ConstraintLayout>

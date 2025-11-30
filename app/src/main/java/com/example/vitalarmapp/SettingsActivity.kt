@@ -31,6 +31,8 @@ class SettingsActivity : AppCompatActivity() {
         binding.topAppBar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+        binding.topAppBar.menu.clear()
+        binding.topAppBar.inflateMenu(R.menu.menu_settings_actions)
         binding.topAppBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_about -> {
@@ -73,6 +75,12 @@ class SettingsActivity : AppCompatActivity() {
                     Toast.makeText(this@SettingsActivity, getString(message), Toast.LENGTH_SHORT)
                         .show()
                 }
+            } else {
+                Toast.makeText(
+                    this,
+                    getString(R.string.settings_cache_autoclear_disabled),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

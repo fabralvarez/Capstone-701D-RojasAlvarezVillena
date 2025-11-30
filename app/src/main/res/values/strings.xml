@@ -177,6 +177,7 @@
     <string name="settings_clear_cache_subtitle">Para optimizar la app</string>
     <string name="settings_cache_cleared">Caché limpiada correctamente.</string>
     <string name="settings_cache_clear_failed">No se pudo limpiar la caché.</string>
+    <string name="settings_cache_autoclear_disabled">Limpieza automática desactivada.</string>
     <string name="about_app_title">Acerca de la App</string>
     <string name="about_app_headline">Vitalarm App</string>
     <string name="about_app_version">Versión %1$s</string>

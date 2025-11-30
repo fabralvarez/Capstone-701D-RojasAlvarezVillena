@@ -35,6 +35,8 @@ class AddMainTabActivity : AppCompatActivity() {
     }
 
     private fun setupTopActions() {
+        binding.topAppBar.menu.clear()
+        binding.topAppBar.inflateMenu(R.menu.menu_top_actions)
         binding.topAppBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_settings -> {

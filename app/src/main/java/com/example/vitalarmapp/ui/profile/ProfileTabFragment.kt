@@ -15,6 +15,7 @@ import com.example.vitalarmapp.SettingsActivity
 import com.example.vitalarmapp.databinding.FragmentProfileTabBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.SessionManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
@@ -129,8 +130,10 @@ class ProfileTabFragment : Fragment() {
             }
             binding.imgProfileQr.setImageBitmap(bitmap)
         } catch (_: Exception) {
+            val bottomNavigation =
+                activity?.findViewById<BottomNavigationView>(R.id.lanMenuBottomNavigation)
             Snackbar.make(binding.root, getString(R.string.profile_qr_error), Snackbar.LENGTH_SHORT)
-                .setAnchorView(binding.btnProfileLogout)
+                .setAnchorView(bottomNavigation)
                 .show()
         }
     }

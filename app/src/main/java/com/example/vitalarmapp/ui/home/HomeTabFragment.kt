@@ -19,6 +19,7 @@ import com.example.vitalarmapp.models.Medication
 import com.example.vitalarmapp.models.Patient
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.SessionManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import java.util.Calendar
@@ -247,8 +248,10 @@ class HomeTabFragment : Fragment() {
     private fun logoutUser() {
         FirebaseManager.logout()
         SessionManager.setKeepSession(requireContext(), false)
+        val bottomNavigation =
+            requireActivity().findViewById<BottomNavigationView>(R.id.lanMenuBottomNavigation)
         Snackbar.make(binding.root, getString(R.string.profile_logout_message), Snackbar.LENGTH_SHORT)
-            .setAnchorView(binding.btnCerrarSesion)
+            .setAnchorView(bottomNavigation)
             .show()
         startActivity(Intent(requireContext(), MainActivity::class.java))
         requireActivity().finish()

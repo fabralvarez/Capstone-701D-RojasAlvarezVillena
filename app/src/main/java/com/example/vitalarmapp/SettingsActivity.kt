@@ -58,7 +58,6 @@ class SettingsActivity : AppCompatActivity() {
                 getString(R.string.settings_material_you_disabled)
             }
             Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-                .setAnchorView(binding.switchMaterialYou)
                 .show()
             ThemeManager.notifyThemeChanged(this)
         }
@@ -74,7 +73,6 @@ class SettingsActivity : AppCompatActivity() {
                     R.string.settings_cache_clear_failed
                 }
                 Snackbar.make(binding.root, getString(message), Snackbar.LENGTH_SHORT)
-                    .setAnchorView(binding.layoutClearCache)
                     .show()
             }
         }

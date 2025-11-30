@@ -101,7 +101,9 @@ class PassRecActivity : AppCompatActivity() {
                     else -> getString(R.string.pass_rec_error_generic)
                 }
                 binding.passRecEmailInputLayout.error = message
-                Snackbar.make(binding.passRecCoordinator, message, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.passRecCoordinator, message, Snackbar.LENGTH_LONG)
+                    .setAnchorView(binding.passRecConfirmBtn)
+                    .show()
             }
         }
     }

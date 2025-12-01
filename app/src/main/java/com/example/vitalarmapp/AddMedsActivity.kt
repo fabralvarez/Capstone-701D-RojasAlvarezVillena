@@ -194,10 +194,9 @@ class AddMedsActivity : AppCompatActivity() {
 
     private suspend fun searchMedications(query: String) {
         showLoading(true, getString(R.string.add_meds_search_loading))
-        val translatedQuery = translateText(query, "es", "en")?.takeIf { it.isNotBlank() } ?: query
 
         val result = withContext(Dispatchers.IO) {
-            runCatching { fetchMedications(translatedQuery) }
+            runCatching { fetchMedications(query) }
         }
 
         showLoading(false)

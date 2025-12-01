@@ -207,8 +207,7 @@ class AddMedsActivity : AppCompatActivity() {
             } else {
                 showStatusMessage(null)
             }
-            val translatedItems = translateItems(items)
-            searchAdapter.updateData(translatedItems)
+            searchAdapter.updateData(items)
         }.onFailure {
             showStatusMessage(getString(R.string.add_meds_search_error))
             searchAdapter.updateData(emptyList())
@@ -382,26 +381,6 @@ class AddMedsActivity : AppCompatActivity() {
             ?: openFda?.route?.firstOrNull()
     }
 
-    private suspend fun translateItems(items: List<MedicationSearchItem>): List<MedicationSearchItem> {
-        return items.map { item ->
-            val translatedName = translateText(item.name, "en", "es")?.let { capitalizeName(it) }
-                ?: capitalizeName(item.name)
-            val translatedIndication = item.indication?.let { translateText(it, "en", "es") ?: it }
-            val translatedPharmacology =
-                item.pharmacology?.let { translateText(it, "en", "es") ?: it }
-            val translatedRoute = item.route?.let { translateText(it, "en", "es") ?: it }
-            val translatedSubstance = item.substance?.let { translateText(it, "en", "es") ?: it }
-
-            item.copy(
-                name = translatedName,
-                indication = translatedIndication,
-                pharmacology = translatedPharmacology,
-                route = translatedRoute,
-                substance = translatedSubstance
-            )
-        }
-    }
-
     private fun capitalizeName(text: String): String {
         return text.lowercase().replaceFirstChar { char ->
             if (char.isLowerCase() || char.isUpperCase()) char.titlecase() else char.toString()
@@ -439,45 +418,6 @@ class AddMedsActivity : AppCompatActivity() {
             .show()
     }
 
-    private suspend fun translateText(
-        text: String,
-        sourceLang: String,
-        targetLang: String
-    ): String? {
-        if (text.isBlank()) return text
-
-        return withContext(Dispatchers.IO) {
-            runCatching { requestTranslation(text, sourceLang, targetLang) }.getOrNull()
-        }
-    }
-
-    private fun requestTranslation(text: String, sourceLang: String, targetLang: String): String? {
-        val encodedText = URLEncoder.encode(text, StandardCharsets.UTF_8.toString())
-        val url =
-            URL("https://api.mymemory.translated.net/get?q=$encodedText&langpair=$sourceLang|$targetLang")
-        val connection = url.openConnection() as HttpURLConnection
-        connection.requestMethod = "GET"
-        connection.connectTimeout = 10000
-        connection.readTimeout = 10000
-
-        return try {
-            val responseStream = if (connection.responseCode in 200..299) {
-                connection.inputStream
-            } else {
-                throw IllegalStateException("Translation error ${connection.responseCode}")
-            }
-
-            val response = responseStream.bufferedReader().use { reader ->
-                gson.fromJson(reader, TranslationResponse::class.java)
-            }
-
-            response.responseData?.translatedText?.takeIf { it.isNotBlank() }
-                ?: response.matches.orEmpty()
-                    .firstOrNull { !it.translation.isNullOrBlank() }?.translation
-        } finally {
-            connection.disconnect()
-        }
-    }
 }
 
 private data class OpenFdaResponse(
@@ -505,17 +445,4 @@ private data class OpenFdaDetails(
     @SerializedName("route") val route: List<String>?,
     @SerializedName("pharm_class_epc") val pharmClassEpc: List<String>?,
     @SerializedName("pharm_class_moa") val pharmClassMoa: List<String>?,
-)
-
-private data class TranslationResponse(
-    @SerializedName("responseData") val responseData: TranslationData?,
-    val matches: List<TranslationMatch>?,
-)
-
-private data class TranslationData(
-    @SerializedName("translatedText") val translatedText: String?,
-)
-
-private data class TranslationMatch(
-    val translation: String?,
 )

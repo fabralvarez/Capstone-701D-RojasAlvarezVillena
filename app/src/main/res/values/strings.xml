@@ -163,6 +163,10 @@
     <string name="add_meds_empty_description">Sin descripción disponible</string>
     <string name="add_meds_unknown">Medicamento sin nombre</string>
     <string name="add_meds_load_error">No se pudo cargar el catálogo de medicamentos</string>
+    <string name="add_meds_search_loading">Buscando medicamentos…</string>
+    <string name="add_meds_search_error">No pudimos obtener los medicamentos. Inténtalo nuevamente.</string>
+    <string name="add_meds_search_no_results">No encontramos resultados para “%1$s”.</string>
+    <string name="add_meds_search_start">Escribe el nombre de un medicamento para empezar.</string>
     <string name="add_meds_selected_format">%1$s seleccionado</string>
     <string name="edit_profile_title">Edita tu Perfil</string>
     <string name="edit_profile_subtitle">Mantén tus datos actualizados en la plataforma</string>

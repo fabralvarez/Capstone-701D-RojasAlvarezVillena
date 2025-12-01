@@ -3,11 +3,13 @@ package com.example.vitalarmapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.vitalarmapp.databinding.ActivityAddMedsBinding
+import com.google.android.material.search.SearchView
 
 class AddMedsActivity : AppCompatActivity() {
 
@@ -19,13 +21,14 @@ class AddMedsActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
+        binding.searchBar.visibility = View.VISIBLE
+        binding.searchView.visibility = View.GONE
+
         setupSearchBar()
         setupSearch()
     }
 
     private fun setupSearchBar() {
-        binding.searchBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
-
         binding.searchBar.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.action_search) {
                 openSearchView()
@@ -38,15 +41,31 @@ class AddMedsActivity : AppCompatActivity() {
 
 
     private fun setupSearch() {
-        binding.searchBar.setOnClickListener {
-            openSearchView()
-        }
+        binding.searchBar.setOnClickListener { openSearchView() }
 
         binding.searchBar.setNavigationOnClickListener {
             if (binding.searchView.isShowing) {
                 binding.searchView.hide()
             } else {
                 onBackPressedDispatcher.onBackPressed()
+            }
+        }
+
+        binding.searchView.setNavigationOnClickListener { binding.searchView.hide() }
+
+        binding.searchView.addTransitionListener { _, _, newState ->
+            when (newState) {
+                SearchView.TransitionState.HIDDEN -> {
+                    binding.searchBar.visibility = View.VISIBLE
+                    binding.searchView.visibility = View.GONE
+                }
+
+                SearchView.TransitionState.SHOWN, SearchView.TransitionState.SHOWING -> {
+                    binding.searchBar.visibility = View.GONE
+                    binding.searchView.visibility = View.VISIBLE
+                }
+
+                else -> Unit
             }
         }
         binding.searchView.editText.hint = getString(R.string.add_meds_search_placeholder)

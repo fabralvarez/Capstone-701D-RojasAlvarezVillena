@@ -7,7 +7,6 @@ import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.EditorInfo
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
@@ -40,8 +39,15 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        binding.topAppBar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+        binding.topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            if (menuItem.itemId == R.id.action_search) {
+                openSearchView()
+                true
+            } else {
+                false
+            }
         }
     }
 
@@ -51,25 +57,6 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     private fun setupSearch() {
-        binding.searchBar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.outline_arrow_back_24)
-
-        binding.searchBar.setNavigationOnClickListener {
-            if (binding.searchView.isShowing) {
-                binding.searchView.hide()
-            } else {
-                onBackPressedDispatcher.onBackPressed()
-            }
-        }
-
-        binding.searchBar.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == R.id.action_search) {
-                openSearchView()
-                true
-            } else {
-                false
-            }
-        }
-
         binding.searchBar.setOnClickListener {
             openSearchView()
         }

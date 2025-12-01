@@ -15,19 +15,6 @@
         app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.AppBarWithSearch"
         app:statusBarForeground="?attr/colorSurface">
 
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/searchBar"
-            style="@style/Widget.Material3Expressive.SearchBar.CenteredText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:hint="@string/add_meds_search_placeholder"
-            app:menu="@menu/menu_add_meds_search_bar"
-            app:navigationIcon="@drawable/outline_arrow_back_24" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,18 +33,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvMedications"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="16dp"
-            android:paddingBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@id/addMedicationButtonContainer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/progressBar"
-            tools:listitem="@layout/item_medication_result" />
 
         <LinearLayout
             android:id="@+id/addMedicationButtonContainer"
@@ -93,5 +68,20 @@
         android:visibility="gone"
         app:hideNavigationIcon="false"
         app:layout_anchor="@id/searchBar" />
+
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/searchBar"
+        style="@style/Widget.Material3Expressive.SearchBar.CenteredText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="16dp"
+        android:hint="@string/add_meds_search_placeholder"
+        app:layout_anchor="@+id/appBarLayout"
+        app:layout_anchorGravity="center"
+        app:menu="@menu/menu_add_meds_search_bar"
+        app:navigationIcon="@drawable/outline_arrow_back_24"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

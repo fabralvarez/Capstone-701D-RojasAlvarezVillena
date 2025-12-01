@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import com.example.vitalarmapp.databinding.ActivityAddMedsBinding
 import com.google.android.material.search.SearchView
 
+
 class AddMedsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddMedsBinding
@@ -50,8 +51,6 @@ class AddMedsActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
             }
         }
-
-        binding.searchView.setNavigationOnClickListener { binding.searchView.hide() }
 
         binding.searchView.addTransitionListener { _, _, newState ->
             when (newState) {

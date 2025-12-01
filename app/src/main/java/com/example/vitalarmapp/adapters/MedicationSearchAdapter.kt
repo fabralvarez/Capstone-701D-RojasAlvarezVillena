@@ -7,7 +7,10 @@ import com.example.vitalarmapp.databinding.ItemMedicationResultBinding
 
 data class MedicationSearchItem(
     val name: String,
-    val description: String?
+    val indication: String?,
+    val pharmacology: String?,
+    val route: String?,
+    val substance: String?
 )
 
 class MedicationSearchAdapter(
@@ -40,7 +43,11 @@ class MedicationSearchAdapter(
 
         fun bind(item: MedicationSearchItem) {
             binding.tvMedicationName.text = item.name
-            binding.tvMedicationDescription.text = item.description?.takeIf { it.isNotBlank() }
+            val summary = item.indication
+                ?: item.pharmacology
+                ?: item.route
+                ?: item.substance
+            binding.tvMedicationDescription.text = summary?.takeIf { it.isNotBlank() }
                 ?: binding.root.context.getString(com.example.vitalarmapp.R.string.add_meds_empty_description)
 
             binding.root.setOnClickListener { onClick(item) }

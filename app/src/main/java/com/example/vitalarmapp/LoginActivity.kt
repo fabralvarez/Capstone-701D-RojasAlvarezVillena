@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Patterns
+import android.view.ContextThemeWrapper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.autofill.AutofillManager
@@ -224,7 +225,8 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(SettingsActivity.intent(this))
                 return
             }
-        PopupMenu(this, anchor).apply {
+        val popupContext = ContextThemeWrapper(this, R.style.ThemeOverlay_Vitalarm.PopupMenu)
+        PopupMenu(popupContext, anchor).apply {
             menuInflater.inflate(R.menu.menu_login_overflow, menu)
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
@@ -236,6 +238,7 @@ class LoginActivity : AppCompatActivity() {
                     else -> false
                 }
             }
+            setForceShowIcon(true)
             show()
         }
     }

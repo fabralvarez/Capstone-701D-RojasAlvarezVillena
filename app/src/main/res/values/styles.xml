@@ -4,4 +4,12 @@
         <item name="android:textColor">?attr/colorPrimary</item>
         <item name="android:textStyle">normal</item>
     </style>
+
+    <style name="ThemeOverlay.Vitalarm.PopupMenu" parent="">
+        <item name="popupMenuStyle">@style/Widget.Vitalarm.PopupMenu</item>
+    </style>
+
+    <style name="Widget.Vitalarm.PopupMenu" parent="@style/Widget.Material3.PopupMenu">
+        <item name="android:popupBackground">@drawable/bg_login_overflow_menu</item>
+    </style>
 </resources>

@@ -225,7 +225,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(SettingsActivity.intent(this))
                 return
             }
-        val popupContext = ContextThemeWrapper(this, R.style.ThemeOverlay_Vitalarm.PopupMenu)
+        val popupContext = ContextThemeWrapper(this, R.style.ThemeOverlay_Vitalarm_PopupMenu)
         PopupMenu(popupContext, anchor).apply {
             menuInflater.inflate(R.menu.menu_login_overflow, menu)
             setOnMenuItemClickListener { menuItem ->

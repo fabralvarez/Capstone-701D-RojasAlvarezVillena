@@ -10,24 +10,30 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.adapters.MedicationSearchAdapter
 import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.databinding.ActivityAddMedsBinding
+import com.example.vitalarmapp.BuildConfig
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.search.SearchView
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import java.util.LinkedHashMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
+import android.content.Context.MODE_PRIVATE
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 
 class AddMedsActivity : AppCompatActivity() {
 
@@ -36,27 +42,6 @@ class AddMedsActivity : AppCompatActivity() {
     private var searchJob: Job? = null
     private lateinit var searchAdapter: MedicationSearchAdapter
     private var selectedMedication: MedicationSearchItem? = null
-    private val medicationTranslations: Map<String, String> = mapOf(
-        "acetaminophen" to "Paracetamol",
-        "ibuprofen" to "Ibuprofeno",
-        "aspirin" to "Aspirina",
-        "amoxicillin" to "Amoxicilina",
-        "omeprazole" to "Omeprazol",
-        "metformin" to "Metformina",
-        "atorvastatin" to "Atorvastatina",
-        "simvastatin" to "Simvastatina",
-        "losartan" to "Losartán",
-        "lisinopril" to "Lisinopril",
-        "hydrochlorothiazide" to "Hidroclorotiazida",
-        "albuterol" to "Salbutamol",
-        "doxycycline" to "Doxiciclina",
-        "clopidogrel" to "Clopidogrel",
-        "warfarin" to "Warfarina",
-        "furosemide" to "Furosemida",
-        "levothyroxine" to "Levotiroxina",
-        "insulin" to "Insulina",
-        "prednisone" to "Prednisona"
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +51,8 @@ class AddMedsActivity : AppCompatActivity() {
 
         setupSearchBar()
         setupSearch()
+        setupSelectionAppBar()
+        setupAddAction()
     }
 
     private fun setupSearchBar() {
@@ -78,7 +65,6 @@ class AddMedsActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun setupSearch() {
         binding.searchView.setupWithSearchBar(binding.searchBar)
@@ -115,6 +101,12 @@ class AddMedsActivity : AppCompatActivity() {
         binding.rvMedicationResults.apply {
             layoutManager = LinearLayoutManager(this@AddMedsActivity)
             adapter = searchAdapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@AddMedsActivity,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
 
         binding.searchView.editText.addTextChangedListener { editable ->
@@ -122,6 +114,47 @@ class AddMedsActivity : AppCompatActivity() {
         }
 
         updateAddMedicationState()
+    }
+
+    private fun setupAddAction() {
+        binding.addMedicationButton.setOnClickListener {
+            val medication = selectedMedication ?: return@setOnClickListener
+            val saved = saveMedicationLocally(medication)
+            if (saved) {
+                showAddConfirmationDialog()
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    R.string.add_meds_save_error,
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun setupSelectionAppBar() {
+        binding.selectionTopAppBar.setNavigationOnClickListener {
+            exitSelectionMode()
+        }
+
+        binding.selectionTopAppBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_delete_selection -> {
+                    removeSelectedMedication()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        binding.selectedMedicationCard.setOnLongClickListener {
+            if (selectedMedication != null) {
+                enterSelectionMode()
+                true
+            } else {
+                false
+            }
+        }
     }
 
     private fun openSearchView() {
@@ -159,8 +192,10 @@ class AddMedsActivity : AppCompatActivity() {
 
     private suspend fun searchMedications(query: String) {
         showLoading(true, getString(R.string.add_meds_search_loading))
+        val translatedQuery = translateText(query, "es", "en")?.takeIf { it.isNotBlank() } ?: query
+
         val result = withContext(Dispatchers.IO) {
-            runCatching { fetchMedications(query) }
+            runCatching { fetchMedications(translatedQuery) }
         }
 
         showLoading(false)
@@ -171,7 +206,8 @@ class AddMedsActivity : AppCompatActivity() {
             } else {
                 showStatusMessage(null)
             }
-            searchAdapter.updateData(items)
+            val translatedItems = translateItems(items)
+            searchAdapter.updateData(translatedItems)
         }.onFailure {
             showStatusMessage(getString(R.string.add_meds_search_error))
             searchAdapter.updateData(emptyList())
@@ -220,7 +256,21 @@ class AddMedsActivity : AppCompatActivity() {
         binding.searchView.editText.setText(item.name)
         binding.searchView.hide()
         hideKeyboard()
+        showSelectedMedicationCard(item)
         updateAddMedicationState()
+    }
+
+    private fun showSelectedMedicationCard(item: MedicationSearchItem) {
+        binding.selectedMedicationCard.isVisible = true
+        binding.selectedMedicationName.text = item.name
+        binding.selectedMedicationIndication.text = item.indication
+            ?: getString(R.string.add_meds_empty_description)
+        binding.selectedMedicationPathology.text = item.pharmacology
+            ?: getString(R.string.add_meds_empty_description)
+        binding.selectedMedicationRoute.text = item.route
+            ?: getString(R.string.add_meds_empty_route)
+        binding.selectedMedicationSubstance.text = item.substance
+            ?: getString(R.string.add_meds_empty_composition)
     }
 
     private fun showLoading(isLoading: Boolean, status: String? = null) {
@@ -242,10 +292,42 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     private fun updateAddMedicationState() {
-        val hasSelectionOrText = selectedMedication != null ||
-                binding.searchView.editText.text.isNullOrBlank().not()
-        binding.addMedicationButton.isEnabled = binding.progressBar.isVisible.not() &&
-                hasSelectionOrText
+        val hasSelection = selectedMedication != null
+        binding.addMedicationButton.isEnabled = binding.progressBar.isVisible.not() && hasSelection
+        binding.selectedMedicationCard.isVisible = hasSelection
+    }
+
+    private fun enterSelectionMode() {
+        binding.searchBar.visibility = View.GONE
+        binding.selectionTopAppBar.visibility = View.VISIBLE
+        binding.selectionTopAppBar.title = getString(R.string.add_meds_selection_count, 1)
+    }
+
+    private fun exitSelectionMode() {
+        binding.selectionTopAppBar.visibility = View.GONE
+        binding.searchBar.visibility = View.VISIBLE
+    }
+
+    private fun removeSelectedMedication() {
+        val removedMedicationName = selectedMedication?.name
+        selectedMedication = null
+        binding.selectedMedicationName.text = null
+        binding.selectedMedicationIndication.text = null
+        binding.selectedMedicationPathology.text = null
+        binding.selectedMedicationRoute.text = null
+        binding.selectedMedicationSubstance.text = null
+        binding.selectedMedicationCard.isVisible = false
+        binding.searchBar.text = null
+        exitSelectionMode()
+        updateAddMedicationState()
+
+        removedMedicationName?.let { name ->
+            Snackbar.make(
+                binding.root,
+                getString(R.string.add_meds_selection_removed_message, name),
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
     }
 
     override fun onDestroy() {
@@ -262,22 +344,21 @@ class AddMedsActivity : AppCompatActivity() {
 
         this?.results.orEmpty().forEach { result ->
             result.patient?.drug.orEmpty().forEach { drug ->
-                val rawName = drug.displayName() ?: return@forEach
-                val translatedName = translateMedicationName(rawName)
-                val displayName = if (translatedName.equals(rawName, ignoreCase = true)) {
-                    rawName
-                } else {
-                    "$translatedName ($rawName)"
-                }
-                val description = translateDescription(
-                    drug.drugIndication?.takeIf { it.isNotBlank() }
-                        ?: drug.openFda?.pharmClassEpc?.firstOrNull()
-                        ?: drug.openFda?.pharmClassMoa?.firstOrNull()
-                        ?: drug.openFda?.route?.firstOrNull()
-                )
+                val rawName = drug.displayName()?.trim()?.takeIf { it.isNotBlank() } ?: return@forEach
+                val normalizedName = capitalizeName(rawName)
+                val indication = drug.drugIndication?.trim().takeIf { it?.isNotBlank() == true }
+                val pharmacology = drug.bestDescription()
+                val route = drug.openFda?.route?.firstOrNull()?.trim()
+                val substance = drug.openFda?.substanceName?.firstOrNull()?.trim()
 
-                if (!uniqueItems.containsKey(displayName)) {
-                    uniqueItems[displayName] = MedicationSearchItem(displayName, description)
+                if (!uniqueItems.containsKey(rawName.lowercase())) {
+                    uniqueItems[rawName.lowercase()] = MedicationSearchItem(
+                        normalizedName,
+                        indication,
+                        pharmacology,
+                        route,
+                        substance
+                    )
                 }
             }
         }
@@ -292,42 +373,119 @@ class AddMedsActivity : AppCompatActivity() {
             ?: medicinalProduct
     }
 
-    private fun translateMedicationName(name: String): String {
-        val normalized = name.lowercase()
-        val translated = medicationTranslations.entries.firstOrNull { (english, _) ->
-            normalized.contains(english)
-        }?.value
-
-        return translated ?: name
+    private fun Drug.bestDescription(): String? {
+        return openFda?.pharmClassEpc?.firstOrNull()
+            ?: openFda?.pharmClassMoa?.firstOrNull()
+            ?: drugIndication?.takeIf { it.isNotBlank() }
+            ?: openFda?.route?.firstOrNull()
     }
 
-    private fun translateDescription(description: String?): String? {
-        if (description.isNullOrBlank()) return description
+    private suspend fun translateItems(items: List<MedicationSearchItem>): List<MedicationSearchItem> {
+        return items.map { item ->
+            val translatedName = translateText(item.name, "en", "es")?.let { capitalizeName(it) }
+                ?: capitalizeName(item.name)
+            val translatedIndication = item.indication?.let { translateText(it, "en", "es") ?: it }
+            val translatedPharmacology = item.pharmacology?.let { translateText(it, "en", "es") ?: it }
+            val translatedRoute = item.route?.let { translateText(it, "en", "es") ?: it }
+            val translatedSubstance = item.substance?.let { translateText(it, "en", "es") ?: it }
 
-        var translated = description
-        medicationTranslations.forEach { (english, spanish) ->
-            translated = translated.replace(english, spanish, ignoreCase = true)
+            item.copy(
+                name = translatedName,
+                indication = translatedIndication,
+                pharmacology = translatedPharmacology,
+                route = translatedRoute,
+                substance = translatedSubstance
+            )
         }
-        return translated
+    }
+
+    private fun capitalizeName(text: String): String {
+        return text.lowercase().replaceFirstChar { char ->
+            if (char.isLowerCase() || char.isUpperCase()) char.titlecase() else char.toString()
+        }
+    }
+
+    private fun saveMedicationLocally(item: MedicationSearchItem): Boolean {
+        return runCatching {
+            val prefs = getSharedPreferences("medications_prefs", MODE_PRIVATE)
+            val type = object : TypeToken<MutableList<MedicationSearchItem>>() {}.type
+            val storedJson = prefs.getString("medications_list", "[]")
+            val currentList: MutableList<MedicationSearchItem> = runCatching {
+                gson.fromJson<MutableList<MedicationSearchItem>>(storedJson, type)
+            }.getOrDefault(mutableListOf())
+
+            currentList.add(item)
+            prefs.edit().putString("medications_list", gson.toJson(currentList)).apply()
+        }.isSuccess
+    }
+
+    private fun showAddConfirmationDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.add_meds_dialog_title))
+            .setMessage(getString(R.string.add_meds_dialog_body))
+            .setNegativeButton(getString(R.string.add_meds_dialog_add_another)) { _, _ ->
+                val restartIntent = Intent(this, AddMedsActivity::class.java).addFlags(FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(restartIntent)
+                finish()
+            }
+            .setPositiveButton(getString(R.string.add_meds_dialog_return)) { _, _ ->
+                startActivity(AddMainTabActivity.intent(this).addFlags(FLAG_ACTIVITY_CLEAR_TOP))
+                finish()
+            }
+            .show()
+    }
+
+    private suspend fun translateText(text: String, sourceLang: String, targetLang: String): String? {
+        if (text.isBlank()) return text
+
+        return withContext(Dispatchers.IO) {
+            runCatching { requestTranslation(text, sourceLang, targetLang) }.getOrNull()
+        }
+    }
+
+    private fun requestTranslation(text: String, sourceLang: String, targetLang: String): String? {
+        val encodedText = URLEncoder.encode(text, StandardCharsets.UTF_8.toString())
+        val url = URL("https://api.mymemory.translated.net/get?q=$encodedText&langpair=$sourceLang|$targetLang")
+        val connection = url.openConnection() as HttpURLConnection
+        connection.requestMethod = "GET"
+        connection.connectTimeout = 10000
+        connection.readTimeout = 10000
+
+        return try {
+            val responseStream = if (connection.responseCode in 200..299) {
+                connection.inputStream
+            } else {
+                throw IllegalStateException("Translation error ${connection.responseCode}")
+            }
+
+            val response = responseStream.bufferedReader().use { reader ->
+                gson.fromJson(reader, TranslationResponse::class.java)
+            }
+
+            response.responseData?.translatedText?.takeIf { it.isNotBlank() }
+                ?: response.matches.orEmpty().firstOrNull { !it.translation.isNullOrBlank() }?.translation
+        } finally {
+            connection.disconnect()
+        }
     }
 }
 
 private data class OpenFdaResponse(
-    val results: List<DrugEvent>?
+    val results: List<DrugEvent>?,
 )
 
 private data class DrugEvent(
-    val patient: PatientInfo?
+    val patient: PatientInfo?,
 )
 
 private data class PatientInfo(
-    val drug: List<Drug>?
+    val drug: List<Drug>?,
 )
 
 private data class Drug(
     @SerializedName("medicinalproduct") val medicinalProduct: String?,
     @SerializedName("drugindication") val drugIndication: String?,
-    @SerializedName("openfda") val openFda: OpenFdaDetails?
+    @SerializedName("openfda") val openFda: OpenFdaDetails?,
 )
 
 private data class OpenFdaDetails(
@@ -336,5 +494,18 @@ private data class OpenFdaDetails(
     @SerializedName("substance_name") val substanceName: List<String>?,
     @SerializedName("route") val route: List<String>?,
     @SerializedName("pharm_class_epc") val pharmClassEpc: List<String>?,
-    @SerializedName("pharm_class_moa") val pharmClassMoa: List<String>?
+    @SerializedName("pharm_class_moa") val pharmClassMoa: List<String>?,
+)
+
+private data class TranslationResponse(
+    @SerializedName("responseData") val responseData: TranslationData?,
+    val matches: List<TranslationMatch>?,
+)
+
+private data class TranslationData(
+    @SerializedName("translatedText") val translatedText: String?,
+)
+
+private data class TranslationMatch(
+    val translation: String?,
 )

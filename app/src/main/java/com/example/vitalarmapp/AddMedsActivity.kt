@@ -62,6 +62,13 @@ class AddMedsActivity : AppCompatActivity() {
         }
 
         binding.searchView.setupWithSearchBar(binding.searchBar)
+        binding.searchView.setNavigationOnClickListener {
+            if (binding.searchView.isShowing) {
+                binding.searchView.hide()
+            } else {
+                onBackPressedDispatcher.onBackPressed()
+            }
+        }
         binding.searchView.editText.hint = getString(R.string.add_meds_search_placeholder)
 
         binding.searchView.editText.doOnTextChanged { text, _, _, _ ->

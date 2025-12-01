@@ -205,8 +205,10 @@
     <string name="profile_caregiver_label">Nombre del Cuidador:</string>
     <string name="profile_rut_label">Rut:</string>
     <string name="profile_rut_placeholder">Rut no disponible</string>
+    <string name="profile_qr_title">Tu código QR personal</string>
     <string name="profile_qr_description">Código QR con tus datos de contacto</string>
     <string name="profile_qr_error">No se pudo generar el código QR</string>
+    <string name="profile_qr_supporting">Comparte este código con tu equipo médico para acceder rápidamente a tus datos.</string>
     <string name="profile_edit_action">Editar perfil</string>
     <string name="profile_logout_message">Sesión cerrada</string>
     <string name="profile_logout_dialog_title">¿Estás seguro de cerrar sesión?</string>

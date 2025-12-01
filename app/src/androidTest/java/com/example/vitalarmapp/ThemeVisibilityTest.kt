@@ -1,3 +1,5 @@
+@file:Suppress("SameParameterValue")
+
 package com.example.vitalarmapp
 
 import android.graphics.Color

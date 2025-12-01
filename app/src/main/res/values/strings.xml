@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Vitalarm</string>
     <string name="login">Login</string>
     <string name="sign_in">Inicia Sesión</string>
@@ -36,8 +36,8 @@
     <string name="home_next_time">⏰ %1$s</string>
     <string name="home_person_and_dosage">👤 %1$s\n💊 %2$s\n%3$s</string>
     <string name="home_now">¡Ahora!</string>
-    <string name="home_minutes_format">%1$d minutos</string>
-    <string name="home_hours_format">%1$d horas</string>
+    <string name="home_minutes_format" tools:ignore="PluralsCandidate">%1$d minutos</string>
+    <string name="home_hours_format" tools:ignore="PluralsCandidate">%1$d horas</string>
     <string name="home_hours_minutes_format">%1$d h %2$d min</string>
     <string name="home_next_label">Próximo</string>
     <string name="home_no_medications_title">💊 No hay medicamentos</string>
@@ -108,7 +108,7 @@
     <string name="sign_up_rut_placeholder">11.111.111–1</string>
     <string name="confirm_email">Confirmar Email</string>
     <string name="pass_rec_info_card_header">Información Importante</string>
-    <string name="pass_rec_info_card_subhead">Asegurate de ingresar un email valido y previamente registrado en la plataforma, de lo contrario puedes registrarte desde la pantalla de inicio.</string>
+    <string name="pass_rec_info_card_subhead">Asegurate de ingresar un email válido y previamente registrado en la plataforma, de lo contrario puedes registrarte desde la pantalla de inicio.</string>
     <string name="pass_rec_invalid_email">Ingresa un email válido para continuar.</string>
     <string name="pass_rec_error_user_not_found">No encontramos una cuenta con ese correo. Verifica el email o regístrate.</string>
     <string name="pass_rec_error_generic">No pudimos enviar el correo de recuperación. Inténtalo nuevamente en unos instantes.</string>
@@ -173,7 +173,7 @@
     <string name="add_meds_selected_title">Medicamento seleccionado</string>
     <string name="add_meds_route_label">Vía</string>
     <string name="add_meds_substance_label">Composición</string>
-    <string name="add_meds_selection_count">%1$d seleccionado</string>
+    <string name="add_meds_selection_count" tools:ignore="PluralsCandidate">%1$d seleccionado</string>
     <string name="add_meds_delete_selection">Eliminar selección</string>
     <string name="add_meds_selection_removed_message">%1$s eliminado exitosamente</string>
     <string name="add_meds_save_error">Error al agregar el medicamento seleccionado</string>
@@ -186,12 +186,12 @@
     <string name="edit_profile_name_label">Nombre Completo</string>
     <string name="edit_profile_name_placeholder">Jane Doe</string>
     <string name="edit_profile_cancel_action">Cancelar Operación</string>
-    <string name="edit_profile_reset_action">Reestablecer Nombre</string>
+    <string name="edit_profile_reset_action">Restablecer Nombre</string>
     <string name="edit_profile_cancel_title">¿Desea cancelar la operación?</string>
     <string name="edit_profile_cancel_supporting">Tus datos continuarán siendo los mismos y se mantendrán sin cambios</string>
     <string name="edit_profile_cancel_confirm">Sí</string>
     <string name="edit_profile_cancel_dismiss">No</string>
-    <string name="edit_profile_success_title">Nombre reestablecido exitosamente</string>
+    <string name="edit_profile_success_title">Nombre restablecido exitosamente</string>
     <string name="edit_profile_success_supporting">Ya has modificado tu nombre de manera exitosa</string>
     <string name="edit_profile_success_action">Volver</string>
     <string name="edit_profile_error_title">No pudimos cambiar tu nombre</string>

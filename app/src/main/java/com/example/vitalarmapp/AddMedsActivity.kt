@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package com.example.vitalarmapp
 
 import android.content.Context
@@ -15,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.adapters.MedicationSearchAdapter
 import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.databinding.ActivityAddMedsBinding
-import com.example.vitalarmapp.BuildConfig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.search.SearchView
@@ -32,8 +33,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
+import androidx.core.content.edit
 
 class AddMedsActivity : AppCompatActivity() {
 
@@ -143,6 +144,7 @@ class AddMedsActivity : AppCompatActivity() {
                     removeSelectedMedication()
                     true
                 }
+
                 else -> false
             }
         }
@@ -252,7 +254,7 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun onMedicationSelected(item: MedicationSearchItem) {
         selectedMedication = item
-        binding.searchBar.text = getString(R.string.add_meds_selected_format, item.name)
+        binding.searchBar.setText(getString(R.string.add_meds_selected_format, item.name))
         binding.searchView.editText.setText(item.name)
         binding.searchView.hide()
         hideKeyboard()
@@ -317,7 +319,7 @@ class AddMedsActivity : AppCompatActivity() {
         binding.selectedMedicationRoute.text = null
         binding.selectedMedicationSubstance.text = null
         binding.selectedMedicationCard.isVisible = false
-        binding.searchBar.text = null
+        binding.searchBar.setText("")
         exitSelectionMode()
         updateAddMedicationState()
 
@@ -344,7 +346,8 @@ class AddMedsActivity : AppCompatActivity() {
 
         this?.results.orEmpty().forEach { result ->
             result.patient?.drug.orEmpty().forEach { drug ->
-                val rawName = drug.displayName()?.trim()?.takeIf { it.isNotBlank() } ?: return@forEach
+                val rawName =
+                    drug.displayName()?.trim()?.takeIf { it.isNotBlank() } ?: return@forEach
                 val normalizedName = capitalizeName(rawName)
                 val indication = drug.drugIndication?.trim().takeIf { it?.isNotBlank() == true }
                 val pharmacology = drug.bestDescription()
@@ -385,7 +388,8 @@ class AddMedsActivity : AppCompatActivity() {
             val translatedName = translateText(item.name, "en", "es")?.let { capitalizeName(it) }
                 ?: capitalizeName(item.name)
             val translatedIndication = item.indication?.let { translateText(it, "en", "es") ?: it }
-            val translatedPharmacology = item.pharmacology?.let { translateText(it, "en", "es") ?: it }
+            val translatedPharmacology =
+                item.pharmacology?.let { translateText(it, "en", "es") ?: it }
             val translatedRoute = item.route?.let { translateText(it, "en", "es") ?: it }
             val translatedSubstance = item.substance?.let { translateText(it, "en", "es") ?: it }
 
@@ -415,7 +419,7 @@ class AddMedsActivity : AppCompatActivity() {
             }.getOrDefault(mutableListOf())
 
             currentList.add(item)
-            prefs.edit().putString("medications_list", gson.toJson(currentList)).apply()
+            prefs.edit { putString("medications_list", gson.toJson(currentList)) }
         }.isSuccess
     }
 
@@ -424,7 +428,8 @@ class AddMedsActivity : AppCompatActivity() {
             .setTitle(getString(R.string.add_meds_dialog_title))
             .setMessage(getString(R.string.add_meds_dialog_body))
             .setNegativeButton(getString(R.string.add_meds_dialog_add_another)) { _, _ ->
-                val restartIntent = Intent(this, AddMedsActivity::class.java).addFlags(FLAG_ACTIVITY_CLEAR_TOP)
+                val restartIntent =
+                    Intent(this, AddMedsActivity::class.java).addFlags(FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(restartIntent)
                 finish()
             }
@@ -435,7 +440,11 @@ class AddMedsActivity : AppCompatActivity() {
             .show()
     }
 
-    private suspend fun translateText(text: String, sourceLang: String, targetLang: String): String? {
+    private suspend fun translateText(
+        text: String,
+        sourceLang: String,
+        targetLang: String
+    ): String? {
         if (text.isBlank()) return text
 
         return withContext(Dispatchers.IO) {
@@ -445,7 +454,8 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun requestTranslation(text: String, sourceLang: String, targetLang: String): String? {
         val encodedText = URLEncoder.encode(text, StandardCharsets.UTF_8.toString())
-        val url = URL("https://api.mymemory.translated.net/get?q=$encodedText&langpair=$sourceLang|$targetLang")
+        val url =
+            URL("https://api.mymemory.translated.net/get?q=$encodedText&langpair=$sourceLang|$targetLang")
         val connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = "GET"
         connection.connectTimeout = 10000
@@ -463,7 +473,8 @@ class AddMedsActivity : AppCompatActivity() {
             }
 
             response.responseData?.translatedText?.takeIf { it.isNotBlank() }
-                ?: response.matches.orEmpty().firstOrNull { !it.translation.isNullOrBlank() }?.translation
+                ?: response.matches.orEmpty()
+                    .firstOrNull { !it.translation.isNullOrBlank() }?.translation
         } finally {
             connection.disconnect()
         }

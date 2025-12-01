@@ -21,7 +21,9 @@
         android:minSdkVersion="31"
         android:targetSdkVersion="36"
         android:theme="@style/AppTheme"
-        tools:targetApi="36">
+        android:supportsRtl="true"
+        tools:targetApi="36"
+        tools:ignore="CredManMissingDal">
         <activity
             android:name=".PassResetWaitingActivity"
             android:exported="false" />

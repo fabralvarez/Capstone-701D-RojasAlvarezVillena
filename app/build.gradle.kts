@@ -14,7 +14,7 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.8.724"
+        versionName = "0.8.73"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val localProperties = Properties().apply {
@@ -35,11 +35,13 @@ android {
         val smtpPort: String = readSecret("SMTP_PORT")
         val smtpUsername: String = readSecret("SMTP_USERNAME")
         val smtpPassword: String = readSecret("SMTP_PASSWORD")
+        val openFdaApiKey: String = readSecret("OPEN_FDA_API_KEY")
 
         buildConfigField("String", "SMTP_HOST", "\"$smtpHost\"")
         buildConfigField("String", "SMTP_PORT", "\"$smtpPort\"")
         buildConfigField("String", "SMTP_USERNAME", "\"$smtpUsername\"")
         buildConfigField("String", "SMTP_PASSWORD", "\"$smtpPassword\"")
+        buildConfigField("String", "OPEN_FDA_API_KEY", "\"$openFdaApiKey\"")
     }
     buildTypes {
         release {

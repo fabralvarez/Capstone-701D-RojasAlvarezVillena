@@ -32,16 +32,16 @@ class AddMedsActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        setupToolbar()
+        setupSearchBar()
         setupRecycler()
         setupSearch()
         loadBaseMedications()
     }
 
-    private fun setupToolbar() {
-        binding.topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+    private fun setupSearchBar() {
+        binding.searchBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
-        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+        binding.searchBar.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.action_search) {
                 openSearchView()
                 true

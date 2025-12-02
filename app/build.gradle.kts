@@ -14,8 +14,11 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.8.808"
+        versionName = "0.8.81"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Único locale soportado actualmente
+        resourceConfigurations += listOf("es-rUS")
 
         val localProperties = Properties().apply {
             val localFile = rootProject.file("local.properties")

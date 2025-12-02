@@ -121,13 +121,20 @@ object FirebaseManager {
         auth.signOut()
     }
 
-    suspend fun addPerson(name: String, birthDate: String? = null): Boolean {
+    suspend fun addPerson(
+        name: String,
+        birthDate: String? = null,
+        gender: String? = null,
+        notes: String? = null
+    ): Boolean {
         val userId = getCurrentUserId() ?: return false
 
         return try {
             val personData = hashMapOf(
                 "name" to name,
                 "birthDate" to birthDate,
+                "gender" to gender,
+                "notes" to notes,
                 "userId" to userId,
                 "createdAt" to System.currentTimeMillis()
             )

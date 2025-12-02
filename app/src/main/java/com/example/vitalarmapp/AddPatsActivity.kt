@@ -1,28 +1,28 @@
 package com.example.vitalarmapp
 
-import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityAddPatsBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.Date
 import java.util.Locale
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class AddPatsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddPatsBinding
-    private val calendar = Calendar.getInstance()
-    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,71 +35,123 @@ class AddPatsActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        binding.topAppBar.setNavigationOnClickListener {
+        setSupportActionBar(binding.patientToolbar)
+        binding.patientToolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }
 
     private fun setupListeners() {
-        binding.etBirthDate.setOnClickListener { showDatePicker() }
-        binding.btnSavePerson.setOnClickListener { savePatient() }
-        binding.btnCancel.setOnClickListener { finish() }
-    }
-
-    private fun showDatePicker() {
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
-            calendar.set(selectedYear, selectedMonth, selectedDay)
-            binding.etBirthDate.setText(dateFormat.format(calendar.time))
-        }, year, month, day).apply {
-            datePicker.maxDate = System.currentTimeMillis()
-        }.show()
-    }
-
-    private fun savePatient() {
-        val name = binding.etPersonName.text?.toString()?.trim().orEmpty()
-        val birthDate = binding.etBirthDate.text?.toString()?.trim().orEmpty()
-
-        if (name.isEmpty()) {
-            binding.etPersonName.error = getString(R.string.add_patient_name_error)
-            return
+        binding.patientBirthDateInputLayout.isEndIconVisible = false
+        binding.patientBirthDateTf.setOnClickListener { showBirthDatePicker() }
+        binding.patientBirthDateTf.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) showBirthDatePicker()
+        }
+        binding.patientBirthDateInputLayout.setEndIconOnClickListener { clearBirthDate() }
+        binding.patientContinueBtn.setOnClickListener {
+            savePatient()
         }
 
-        lifecycleScope.launch {
-            toggleLoading(true)
-            try {
-                val isSuccessful = withContext(Dispatchers.IO) {
-                    FirebaseManager.addPerson(name, birthDate.ifEmpty { null })
-                }
+        binding.patientNameInputLayout.setEndIconOnClickListener { binding.patientNameTf.text = null }
+        binding.patientGenderInputLayout.setEndIconOnClickListener { binding.patientGenderTf.text = null }
+        binding.patientNotesInputLayout.setEndIconOnClickListener { binding.patientNotesTf.text = null }
 
-                val message = if (isSuccessful) {
-                    R.string.add_patient_success
-                } else {
-                    R.string.add_patient_failure
-                }
+        binding.patientNameTf.doAfterTextChanged {
+            binding.patientNameInputLayout.error = null
+        }
 
-                Snackbar.make(binding.root, getString(message), Snackbar.LENGTH_SHORT)
-                    .setAnchorView(binding.btnSavePerson)
-                    .show()
-
-                if (isSuccessful) finish()
-            } catch (error: Exception) {
-                Snackbar.make(binding.root, getString(R.string.add_patient_failure), Snackbar.LENGTH_SHORT)
-                    .setAnchorView(binding.btnSavePerson)
-                    .show()
-            } finally {
-                toggleLoading(false)
+        binding.patientBirthDateTf.doAfterTextChanged {
+            if (it.isNullOrEmpty()) {
+                binding.patientBirthDateInputLayout.isEndIconVisible = false
+            } else {
+                binding.patientBirthDateInputLayout.isEndIconVisible = true
             }
         }
     }
 
-    private fun toggleLoading(isLoading: Boolean) {
-        binding.progressBar.isVisible = isLoading
-        binding.btnSavePerson.isEnabled = !isLoading
-        binding.btnCancel.isEnabled = !isLoading
+    private fun savePatient() {
+        val name = binding.patientNameTf.text?.toString()?.trim().orEmpty()
+        val gender = binding.patientGenderTf.text?.toString()?.trim().orEmpty().ifEmpty { null }
+        val birthDate = binding.patientBirthDateTf.text?.toString()?.trim().orEmpty().ifEmpty { null }
+        val notes = binding.patientNotesTf.text?.toString()?.trim().orEmpty().ifEmpty { null }
+
+        if (name.isBlank()) {
+            binding.patientNameInputLayout.error = getString(R.string.add_patient_name_error)
+            return
+        } else {
+            binding.patientNameInputLayout.error = null
+        }
+
+        binding.patientContinueBtn.isEnabled = false
+
+        lifecycleScope.launch {
+            val success = FirebaseManager.addPerson(
+                name = name,
+                birthDate = birthDate,
+                gender = gender,
+                notes = notes
+            )
+
+            binding.patientContinueBtn.isEnabled = true
+
+            if (success) {
+                showSuccessDialog()
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    R.string.add_patient_error_snackbar,
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun showSuccessDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.add_patient_success_dialog_title)
+            .setMessage(R.string.add_patient_success_dialog_message)
+            .setNegativeButton(R.string.add_patient_success_add_another) { dialog, _ ->
+                resetForm()
+                dialog.dismiss()
+            }
+            .setPositiveButton(R.string.add_patient_success_back) { _, _ ->
+                startActivity(Intent(this, AddMainTabActivity::class.java))
+                finish()
+            }
+            .show()
+    }
+
+    private fun resetForm() {
+        binding.patientNameTf.text = null
+        binding.patientGenderTf.text = null
+        binding.patientNotesTf.text = null
+        clearBirthDate()
+    }
+
+    private fun showBirthDatePicker() {
+        val constraints = CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointBackward.now())
+            .build()
+
+        val picker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText(getString(R.string.add_patient_birthdate_placeholder))
+            .setCalendarConstraints(constraints)
+            .build()
+
+        picker.addOnPositiveButtonClickListener { selection ->
+            val formattedDate = selection?.let { dateFormatter.format(Date(it)) }.orEmpty()
+            binding.patientBirthDateTf.setText(formattedDate)
+        }
+
+        picker.addOnNegativeButtonClickListener { clearBirthDate() }
+        picker.addOnCancelListener { clearBirthDate() }
+
+        picker.show(supportFragmentManager, "patient_birth_date_picker")
+    }
+
+    private fun clearBirthDate() {
+        binding.patientBirthDateTf.text = null
+        binding.patientBirthDateInputLayout.isEndIconVisible = false
     }
 
     companion object {

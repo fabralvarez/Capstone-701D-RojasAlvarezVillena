@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Vitalarm</string>
-    <string name="login">Login</string>
+    <string name="login">Inicio de sesión</string>
     <string name="sign_in">Inicia Sesión</string>
     <string name="sign_in_subtitle">Con tu cuenta Vitalarm</string>
     <string name="sign_up">Registrate</string>
@@ -24,7 +24,7 @@
     <string name="medication_name">Medicamento</string>
     <string name="time">Hora</string>
     <string name="person">Persona</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Cerrar sesión</string>
     <string name="home_greeting">Bienvenido, %1$s!</string>
     <string name="home_greeting_fallback">Bienvenido, Usuario</string>
     <string name="home_no_people">No hay personas agregadas</string>
@@ -47,10 +47,10 @@
     <string name="register_title">Registro</string>
     <string name="register_action">Registrarse</string>
     <string name="login_toolbar_navigation_description">Regresar al inicio</string>
-    <string name="email_label">Email</string>
-    <string name="email_placeholder">example@email.com</string>
-    <string name="login_password_label">Password</string>
-    <string name="login_password_placeholder">Password</string>
+    <string name="email_label">Correo electrónico</string>
+    <string name="email_placeholder">correo@ejemplo.com</string>
+    <string name="login_password_label">Contraseña</string>
+    <string name="login_password_placeholder">Contraseña</string>
     <string name="login_action">Iniciar sesión</string>
     <string name="login_forgot_password">¿Olvidaste tu password?</string>
     <string name="login_loading">Iniciando…</string>
@@ -69,13 +69,13 @@
     <string name="login_save_session_dismiss">Ahora no</string>
     <string name="login_save_session_accept">Aceptar</string>
     <string name="sign_up_name_label">Nombre Completo</string>
-    <string name="sign_up_name_placeholder">John Doe</string>
-    <string name="sign_up_email_label">Email</string>
-    <string name="sign_up_email_placeholder">example@email.com</string>
-    <string name="sign_up_password_label">Password</string>
-    <string name="sign_up_password_placeholder">Password</string>
-    <string name="sign_up_confirm_password_label">Confirmar Password</string>
-    <string name="sign_up_confirm_password_placeholder">Confirmar Password</string>
+    <string name="sign_up_name_placeholder">Juan Pérez</string>
+    <string name="sign_up_email_label">Correo electrónico</string>
+    <string name="sign_up_email_placeholder">correo@ejemplo.com</string>
+    <string name="sign_up_password_label">Contraseña</string>
+    <string name="sign_up_password_placeholder">Contraseña</string>
+    <string name="sign_up_confirm_password_label">Confirmar contraseña</string>
+    <string name="sign_up_confirm_password_placeholder">Confirmar contraseña</string>
     <string name="sign_up_error_empty_name">Ingresa tu nombre completo.</string>
     <string name="sign_up_error_invalid_email">Ingresa un correo válido.</string>
     <string name="sign_up_error_invalid_rut">Ingresa un RUT válido.</string>
@@ -218,11 +218,11 @@
     <string name="settings_title">Ajustes</string>
     <string name="settings_material_you_title">Activar Material You</string>
     <string name="settings_material_you_subtitle">El color estará basado en tu wallpaper</string>
-    <string name="settings_material_you_title_default">Activar Tema Default</string>
+    <string name="settings_material_you_title_default">Activar tema predeterminado</string>
     <string name="settings_material_you_default_subtitle">Vuelve a la paleta base de Vitalarm</string>
     <string name="settings_material_you_enabled">Material You activado.</string>
     <string name="settings_material_you_disabled">Material You desactivado.</string>
-    <string name="settings_clear_cache_title">Limpiar Cache</string>
+    <string name="settings_clear_cache_title">Limpiar caché</string>
     <string name="settings_clear_cache_subtitle">Para optimizar la app</string>
     <string name="settings_cache_cleared">Caché limpiada correctamente.</string>
     <string name="settings_cache_clear_failed">No se pudo limpiar la caché.</string>
@@ -230,6 +230,6 @@
     <string name="about_app_title">Acerca de la App</string>
     <string name="about_app_headline">Vitalarm App</string>
     <string name="about_app_version">Versión %1$s</string>
-    <string name="medication_pathology">Patologia Asociada:</string>
+    <string name="medication_pathology">Patología asociada:</string>
     <string name="medication_indication">Uso común en pacientes con:</string>
 </resources>

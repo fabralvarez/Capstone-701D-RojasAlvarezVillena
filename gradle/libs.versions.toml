@@ -26,7 +26,7 @@ credentials = "1.5.0"
 activityVersion = "1.12.0"
 androidMail = "1.6.8"
 androidActivation = "1.6.8"
-mlkitTranslate = "17.0.2"
+mlkitTranslate = "17.0.4"
 mlkitLanguageId = "17.0.6"
 
 [libraries]

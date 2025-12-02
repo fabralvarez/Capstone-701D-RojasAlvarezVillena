@@ -229,24 +229,31 @@ class AddMedsActivity : AppCompatActivity() {
     private suspend fun searchMedications(query: String) {
         showLoading(true, getString(R.string.add_meds_search_loading))
 
-        val result = withContext(Dispatchers.IO) {
-            runCatching { fetchMedications(query) }
+        val items = try {
+            withContext(Dispatchers.IO) { fetchMedications(query) }
+        } catch (_: Exception) {
+            showLoading(false)
+            showStatusMessage(getString(R.string.add_meds_search_error))
+            searchAdapter.updateData(emptyList())
+            Snackbar.make(binding.root, R.string.add_meds_search_error, Snackbar.LENGTH_LONG).show()
+            updateAddMedicationState()
+            return
+        }
+
+        val displayItems = if (shouldTranslateToSpanishUnitedStates()) {
+            translateMedications(items)
+        } else {
+            items
         }
 
         showLoading(false)
 
-        result.onSuccess { items ->
-            if (items.isEmpty()) {
-                showStatusMessage(getString(R.string.add_meds_search_no_results, query))
-            } else {
-                showStatusMessage(null)
-            }
-            searchAdapter.updateData(items)
-        }.onFailure {
-            showStatusMessage(getString(R.string.add_meds_search_error))
-            searchAdapter.updateData(emptyList())
-            Snackbar.make(binding.root, R.string.add_meds_search_error, Snackbar.LENGTH_LONG).show()
+        if (displayItems.isEmpty()) {
+            showStatusMessage(getString(R.string.add_meds_search_no_results, query))
+        } else {
+            showStatusMessage(null)
         }
+        searchAdapter.updateData(displayItems)
 
         updateAddMedicationState()
     }
@@ -589,6 +596,13 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun saveMedicationLocally(item: MedicationSearchItem): Boolean {
         return runCatching {
+            val simplifiedItem = MedicationSearchItem(
+                name = item.name,
+                indication = null,
+                pharmacology = item.pharmacology,
+                route = item.route,
+                substance = null
+            )
             val prefs = getSharedPreferences("medications_prefs", MODE_PRIVATE)
             val type = object : TypeToken<MutableList<MedicationSearchItem>>() {}.type
             val storedJson = prefs.getString("medications_list", "[]")
@@ -596,12 +610,32 @@ class AddMedsActivity : AppCompatActivity() {
                 gson.fromJson<MutableList<MedicationSearchItem>>(storedJson, type)
             }.getOrDefault(mutableListOf())
 
-            currentList.add(item)
+            currentList.add(simplifiedItem)
             val editor = prefs.edit()
             editor.putString("medications_list", gson.toJson(currentList))
             val committed = editor.commit()
             if (!committed) error("Failed to persist medication locally")
         }.isSuccess
+    }
+
+    private suspend fun translateMedications(
+        items: List<MedicationSearchItem>
+    ): List<MedicationSearchItem> {
+        return items.map { item ->
+            val translatedName = translateText(item.name)
+            val translatedIndication = translateText(item.indication)
+            val translatedPharmacology = translateText(item.pharmacology)
+            val translatedRoute = translateText(item.route)
+            val translatedSubstance = translateText(item.substance)
+
+            MedicationSearchItem(
+                translatedName ?: formatCardText(item.name) ?: item.name,
+                translatedIndication,
+                translatedPharmacology,
+                translatedRoute,
+                translatedSubstance
+            )
+        }
     }
 
     private fun showAddConfirmationDialog() {

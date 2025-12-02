@@ -80,10 +80,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:hint="@string/add_patient_gender_placeholder"
             app:boxBackgroundMode="outline"
             app:endIconDrawable="@drawable/outline_cancel_24"
             app:endIconMode="clear_text"
-            app:placeholderText="@string/add_patient_gender_placeholder">
+            app:placeholderText="@string/add_patient_gender_placeholder"
+            app:startIconDrawable="@drawable/outline_people_outline_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/patient_gender_tf"
@@ -103,10 +105,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:hint="@string/add_patient_birthdate_placeholder"
             app:boxBackgroundMode="outline"
             app:endIconDrawable="@drawable/outline_cancel_24"
             app:endIconMode="clear_text"
-            app:placeholderText="@string/add_patient_birthdate_placeholder">
+            app:placeholderText="@string/add_patient_birthdate_placeholder"
+            app:startIconDrawable="@drawable/outline_calendar_month_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/patient_birth_date_tf"
@@ -129,8 +133,9 @@
             app:boxBackgroundMode="outline"
             app:endIconDrawable="@drawable/outline_cancel_24"
             app:endIconMode="clear_text"
+            app:helperText="@string/add_patient_notes_supporting"
             app:placeholderText="@string/add_patient_notes_placeholder"
-            app:helperText="@string/add_patient_notes_supporting">
+            app:startIconDrawable="@drawable/outline_notes_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/patient_notes_tf"

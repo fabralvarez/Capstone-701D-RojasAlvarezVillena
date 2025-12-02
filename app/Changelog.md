@@ -1,3 +1,22 @@
+## [0.9.0] - 2025-12-02
+
+### Added
+
+- **Interfaz de Usuario (UI):**
+    - Implementacion de elementos graficos de Material 3 Expressive.
+    - Implementacion de Fragments para mejorar rendimiento y navegabilidad a traves de la app.
+    - Animaciones de Transicion entre Fragments para asegurar visuales más pulidas.
+    - Implementacion de Configuraciones a nivel global de la app, incorporando la opcion de
+      habilitar el tema de Material You.
+
+### Changed
+
+- **Interfaz de Usuario (UI):**
+    - Actualización de las Activities del proyecto para adoptar el tema de
+      Material 3 Expressive de forma paulatina.
+    - Eliminacion de Toasts en favor del uso de Snackbars.
+    - Overhaul de LanMenuActivity para mejorar la experiencia del usuario.
+
 ## [0.8.640] - 2025-11-28
 
 ### Changed

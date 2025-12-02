@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import java.util.Properties
 
 plugins {
@@ -14,11 +16,8 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.8.81"
+        versionName = "0.8.810"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        // Único locale soportado actualmente
-        resourceConfigurations += listOf("es-rUS")
 
         val localProperties = Properties().apply {
             val localFile = rootProject.file("local.properties")
@@ -45,6 +44,9 @@ android {
         buildConfigField("String", "SMTP_USERNAME", "\"$smtpUsername\"")
         buildConfigField("String", "SMTP_PASSWORD", "\"$smtpPassword\"")
         buildConfigField("String", "OPEN_FDA_API_KEY", "\"$openFdaApiKey\"")
+    }
+    androidResources {
+        localeFilters.addAll(listOf("es-rUS"))
     }
     buildTypes {
         release {

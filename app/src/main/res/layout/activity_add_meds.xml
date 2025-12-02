@@ -20,9 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            app:menu="@menu/menu_add_meds_selection"
             app:navigationIcon="@drawable/outline_cancel_24"
-            app:titleCentered="true"
-            app:menu="@menu/menu_add_meds_selection" />
+            app:titleCentered="true" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -39,9 +39,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="@dimen/add_meds_card_margin_with_search"
-            android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:visibility="gone"
             app:cardCornerRadius="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/add_meds_selected_title"
-                    android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium.Emphasized"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
                 <TextView
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge.Emphasized"
                     android:textColor="?attr/colorOnSurface" />
 
                 <TextView
@@ -76,7 +76,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:text="@string/medication_indication"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge.Emphasized"
                     android:textColor="?attr/colorOnSurface" />
 
                 <TextView
@@ -84,6 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:text="@string/medication_pathology"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -100,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:text="@string/add_meds_route_label"
-                        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
                     <TextView
@@ -108,7 +110,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                         android:textColor="?attr/colorOnSurface" />
                 </LinearLayout>
 
@@ -125,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:text="@string/add_meds_substance_label"
-                        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
                     <TextView
@@ -133,7 +135,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                         android:textColor="?attr/colorOnSurface" />
                 </LinearLayout>
             </LinearLayout>
@@ -179,9 +181,9 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingBottom="24dp"
             android:paddingHorizontal="24dp"
-            android:paddingTop="16dp">
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp">
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/progressBar"

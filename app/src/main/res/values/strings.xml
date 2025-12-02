@@ -171,8 +171,8 @@
     <string name="add_meds_search_start">Escribe el nombre de un medicamento para empezar.</string>
     <string name="add_meds_selected_format">%1$s seleccionado</string>
     <string name="add_meds_selected_title">Medicamento seleccionado</string>
-    <string name="add_meds_route_label">Vía</string>
-    <string name="add_meds_substance_label">Composición</string>
+    <string name="add_meds_route_label">Vía: </string>
+    <string name="add_meds_substance_label">Composición: </string>
     <string name="add_meds_selection_count" tools:ignore="PluralsCandidate">%1$d seleccionado</string>
     <string name="add_meds_delete_selection">Eliminar selección</string>
     <string name="add_meds_selection_removed_message">%1$s eliminado exitosamente</string>
@@ -230,4 +230,6 @@
     <string name="about_app_title">Acerca de la App</string>
     <string name="about_app_headline">Vitalarm App</string>
     <string name="about_app_version">Versión %1$s</string>
+    <string name="medication_pathology">Patologia Asociada:</string>
+    <string name="medication_indication">Uso común en pacientes con:</string>
 </resources>

@@ -27,6 +27,9 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.languageid.IdentifiedLanguage
+import com.google.mlkit.nl.languageid.LanguageIdentification
+import com.google.mlkit.nl.languageid.LanguageIdentificationOptions
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
@@ -57,13 +60,13 @@ class AddMedsActivity : AppCompatActivity() {
     }
     private var searchJob: Job? = null
     private var translationJob: Job? = null
-    private val translationClient: Translator by lazy {
-        val options = TranslatorOptions.Builder()
-            .setSourceLanguage(TranslateLanguage.ENGLISH)
-            .setTargetLanguage(TranslateLanguage.SPANISH)
+    private val languageIdClient by lazy {
+        val options = LanguageIdentificationOptions.Builder()
+            .setConfidenceThreshold(0.5f)
             .build()
-        Translation.getClient(options)
+        LanguageIdentification.getClient(options)
     }
+    private val translatorCache = mutableMapOf<String, Translator>()
     private lateinit var searchAdapter: MedicationSearchAdapter
     private var selectedMedication: MedicationSearchItem? = null
     private var displayedMedication: MedicationSearchItem? = null
@@ -335,10 +338,6 @@ class AddMedsActivity : AppCompatActivity() {
 
         translationJob?.cancel()
         translationJob = lifecycleScope.launch {
-            val downloadResult = runCatching { ensureTranslatorReady() }
-
-            if (downloadResult.isFailure || selectedMedication != item) return@launch
-
             val translatedName = translateText(item.name)
             val translatedIndication = translateText(item.indication)
             val translatedPharmacology = translateText(item.pharmacology)
@@ -383,18 +382,55 @@ class AddMedsActivity : AppCompatActivity() {
             locale.country.equals("US", ignoreCase = true)
     }
 
-    private suspend fun ensureTranslatorReady() {
-        withContext(Dispatchers.IO) {
+    private suspend fun ensureTranslatorReady(sourceLanguage: String): Translator {
+        translatorCache[sourceLanguage]?.let { return it }
+
+        return withContext(Dispatchers.IO) {
+            val options = TranslatorOptions.Builder()
+                .setSourceLanguage(sourceLanguage)
+                .setTargetLanguage(TranslateLanguage.SPANISH)
+                .build()
+            val translator = Translation.getClient(options)
             val conditions = DownloadConditions.Builder().build()
-            translationClient.downloadModelIfNeeded(conditions).await()
+            translator.downloadModelIfNeeded(conditions).await()
+            translatorCache[sourceLanguage] = translator
+            translator
         }
     }
 
     private suspend fun translateText(value: String?): String? {
         val normalized = value?.trim()?.takeIf { it.isNotBlank() } ?: return null
-        return runCatching { translationClient.translate(normalized).await() }
+        val detectedLanguage = detectLanguage(normalized) ?: return null
+
+        if (detectedLanguage.equals(TranslateLanguage.SPANISH, ignoreCase = true)) {
+            return formatCardText(normalized)
+        }
+
+        val sourceLanguage = TranslateLanguage.fromLanguageTag(detectedLanguage) ?: return null
+
+        return runCatching {
+            val translator = ensureTranslatorReady(sourceLanguage)
+            translator.translate(normalized).await()
+        }.getOrNull()?.let { formatCardText(it) }
+    }
+
+    private suspend fun detectLanguage(text: String): String? {
+        val primary = runCatching { languageIdClient.identifyLanguage(text).await() }
             .getOrNull()
-            ?.let { formatCardText(it) }
+            ?.takeUnless { it.equals("und", ignoreCase = true) }
+        if (primary != null) return primary
+
+        val possibleLanguages = runCatching { languageIdClient.identifyPossibleLanguages(text).await() }
+            .getOrNull()
+            .orEmpty()
+        return selectBestLanguage(possibleLanguages)
+    }
+
+    private fun selectBestLanguage(possibleLanguages: List<IdentifiedLanguage>): String? {
+        return possibleLanguages
+            .filterNot { it.languageTag.equals("und", ignoreCase = true) }
+            .maxByOrNull { it.confidence }
+            ?.languageTag
     }
 
     private fun showLoading(isLoading: Boolean, status: String? = null) {
@@ -470,7 +506,8 @@ class AddMedsActivity : AppCompatActivity() {
     override fun onDestroy() {
         searchJob?.cancel()
         translationJob?.cancel()
-        translationClient.close()
+        translatorCache.values.forEach { it.close() }
+        translatorCache.clear()
         super.onDestroy()
     }
 

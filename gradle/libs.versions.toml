@@ -27,6 +27,7 @@ activityVersion = "1.12.0"
 androidMail = "1.6.8"
 androidActivation = "1.6.8"
 mlkitTranslate = "17.0.2"
+mlkitLanguageId = "17.0.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -71,6 +72,7 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 com-sun-mail-android-mail = { group = "com.sun.mail", name = "android-mail", version.ref = "androidMail" }
 com-sun-mail-android-activation = { group = "com.sun.mail", name = "android-activation", version.ref = "androidActivation" }
 mlkit-translate = { module = "com.google.mlkit:translate", version.ref = "mlkitTranslate" }
+mlkit-languageid = { module = "com.google.mlkit:language-id", version.ref = "mlkitLanguageId" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

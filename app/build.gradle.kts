@@ -16,7 +16,7 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.8.812"
+        versionName = "0.8.814"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val localProperties = Properties().apply {
@@ -97,6 +97,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.core)
     implementation(libs.mlkit.translate)
+    implementation(libs.mlkit.languageid)
 
     // Envío de correos vía SMTP
     implementation(libs.com.sun.mail.android.mail)

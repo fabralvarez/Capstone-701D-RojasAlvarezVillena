@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +41,12 @@ class AddMedsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddMedsBinding
     private val gson: Gson by lazy { Gson() }
+    private val defaultCardTopMargin by lazy {
+        resources.getDimensionPixelSize(R.dimen.add_meds_card_margin_with_search)
+    }
+    private val selectionCardTopMargin by lazy {
+        resources.getDimensionPixelSize(R.dimen.add_meds_card_margin_with_selection)
+    }
     private var searchJob: Job? = null
     private lateinit var searchAdapter: MedicationSearchAdapter
     private var selectedMedication: MedicationSearchItem? = null
@@ -55,6 +62,7 @@ class AddMedsActivity : AppCompatActivity() {
         setupSearch()
         setupSelectionAppBar()
         setupAddAction()
+        updateSelectedMedicationCardSpacing(false)
     }
 
     private fun setupSearchBar() {
@@ -271,15 +279,24 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun showSelectedMedicationCard(item: MedicationSearchItem) {
         binding.selectedMedicationCard.isVisible = true
-        binding.selectedMedicationName.text = item.name
-        binding.selectedMedicationIndication.text = item.indication
-            ?: getString(R.string.add_meds_empty_description)
-        binding.selectedMedicationPathology.text = item.pharmacology
-            ?: getString(R.string.add_meds_empty_description)
-        binding.selectedMedicationRoute.text = item.route
-            ?: getString(R.string.add_meds_empty_route)
-        binding.selectedMedicationSubstance.text = item.substance
-            ?: getString(R.string.add_meds_empty_composition)
+        binding.selectedMedicationName.text = formatCardText(item.name).orEmpty()
+        updateSelectedMedicationCardSpacing(false)
+
+        val indicationText = formatCardText(item.indication)
+        binding.selectedMedicationIndication.isVisible = indicationText != null
+        binding.selectedMedicationIndication.text = indicationText ?: ""
+
+        val pathologyText = formatCardText(item.pharmacology)
+        binding.selectedMedicationPathology.isVisible = pathologyText != null
+        binding.selectedMedicationPathology.text = pathologyText ?: ""
+
+        val routeText = formatCardText(item.route)
+        binding.selectedMedicationRouteContainer.isVisible = routeText != null
+        binding.selectedMedicationRoute.text = routeText ?: ""
+
+        val substanceText = formatCardText(item.substance)
+        binding.selectedMedicationSubstanceContainer.isVisible = substanceText != null
+        binding.selectedMedicationSubstance.text = substanceText ?: ""
     }
 
     private fun showLoading(isLoading: Boolean, status: String? = null) {
@@ -306,15 +323,27 @@ class AddMedsActivity : AppCompatActivity() {
         binding.selectedMedicationCard.isVisible = hasSelection
     }
 
+    private fun updateSelectedMedicationCardSpacing(isSelectionMode: Boolean) {
+        val newTopMargin = if (isSelectionMode) selectionCardTopMargin else defaultCardTopMargin
+        val layoutParams = binding.selectedMedicationCard.layoutParams as ConstraintLayout.LayoutParams
+
+        if (layoutParams.topMargin != newTopMargin) {
+            layoutParams.topMargin = newTopMargin
+            binding.selectedMedicationCard.layoutParams = layoutParams
+        }
+    }
+
     private fun enterSelectionMode() {
         binding.searchBar.visibility = View.GONE
         binding.selectionTopAppBar.visibility = View.VISIBLE
         binding.selectionTopAppBar.title = getString(R.string.add_meds_selection_count, 1)
+        updateSelectedMedicationCardSpacing(true)
     }
 
     private fun exitSelectionMode() {
         binding.selectionTopAppBar.visibility = View.GONE
         binding.searchBar.visibility = View.VISIBLE
+        updateSelectedMedicationCardSpacing(false)
     }
 
     private fun removeSelectedMedication() {
@@ -392,6 +421,13 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun capitalizeName(text: String): String {
         return text.lowercase().replaceFirstChar { char ->
+            if (char.isLowerCase() || char.isUpperCase()) char.titlecase() else char.toString()
+        }
+    }
+
+    private fun formatCardText(value: String?): String? {
+        val normalized = value?.trim()?.takeIf { it.isNotBlank() }?.lowercase()
+        return normalized?.replaceFirstChar { char ->
             if (char.isLowerCase() || char.isUpperCase()) char.titlecase() else char.toString()
         }
     }

@@ -14,7 +14,7 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.8.806"
+        versionName = "0.8.807"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val localProperties = Properties().apply {

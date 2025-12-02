@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="@dimen/add_meds_card_margin_with_search"
             android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                     android:textColor="?attr/colorOnSurface" />
 
                 <TextView
@@ -76,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     android:textColor="?attr/colorOnSurface" />
 
                 <TextView
@@ -84,10 +84,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
                 <LinearLayout
+                    android:id="@+id/selectedMedicationRouteContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -112,6 +113,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/selectedMedicationSubstanceContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"

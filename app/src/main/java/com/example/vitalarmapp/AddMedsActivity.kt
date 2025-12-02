@@ -4,12 +4,14 @@ package com.example.vitalarmapp
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -18,12 +20,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.adapters.MedicationSearchAdapter
 import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.databinding.ActivityAddMedsBinding
+import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.search.SearchView
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.Translator
+import com.google.mlkit.nl.translate.TranslatorOptions
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
@@ -33,9 +41,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
-import androidx.core.content.edit
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 class AddMedsActivity : AppCompatActivity() {
 
@@ -48,8 +57,17 @@ class AddMedsActivity : AppCompatActivity() {
         resources.getDimensionPixelSize(R.dimen.add_meds_card_margin_with_selection)
     }
     private var searchJob: Job? = null
+    private var translationJob: Job? = null
+    private val translationClient: Translator by lazy {
+        val options = TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.ENGLISH)
+            .setTargetLanguage(TranslateLanguage.SPANISH)
+            .build()
+        Translation.getClient(options)
+    }
     private lateinit var searchAdapter: MedicationSearchAdapter
     private var selectedMedication: MedicationSearchItem? = null
+    private var displayedMedication: MedicationSearchItem? = null
     private var ignoreQueryChanges: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,7 +150,7 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun setupAddAction() {
         binding.addMedicationButton.setOnClickListener {
-            val medication = selectedMedication ?: return@setOnClickListener
+            val medication = displayedMedication ?: return@setOnClickListener
             val saved = saveMedicationLocally(medication)
             if (saved) {
                 showAddConfirmationDialog()
@@ -189,6 +207,7 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun onQueryChanged(query: String) {
         selectedMedication = null
+        displayedMedication = null
         searchJob?.cancel()
         showLoading(false)
 
@@ -266,6 +285,7 @@ class AddMedsActivity : AppCompatActivity() {
     private fun onMedicationSelected(item: MedicationSearchItem) {
         ignoreQueryChanges = true
         selectedMedication = item
+        displayedMedication = item
         binding.searchView.editText.setText("")
         binding.searchBar.setText("")
         binding.searchView.hide()
@@ -279,7 +299,8 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun showSelectedMedicationCard(item: MedicationSearchItem) {
         binding.selectedMedicationCard.isVisible = true
-        binding.selectedMedicationName.text = formatCardText(item.name).orEmpty()
+        val formattedName = formatCardText(item.name)
+        binding.selectedMedicationName.text = formattedName.orEmpty()
         updateSelectedMedicationCardSpacing(false)
 
         val indicationText = formatCardText(item.indication)
@@ -297,6 +318,84 @@ class AddMedsActivity : AppCompatActivity() {
         val substanceText = formatCardText(item.substance)
         binding.selectedMedicationSubstanceContainer.isVisible = substanceText != null
         binding.selectedMedicationSubstance.text = substanceText ?: ""
+
+        updateDisplayedMedication(
+            item,
+            formattedName,
+            indicationText,
+            pathologyText,
+            routeText,
+            substanceText
+        )
+
+        translateSelectedMedicationCard(item)
+    }
+
+    private fun translateSelectedMedicationCard(item: MedicationSearchItem) {
+        if (!shouldTranslateToSpanishUnitedStates()) return
+
+        translationJob?.cancel()
+        translationJob = lifecycleScope.launch {
+            val downloadResult = runCatching { ensureTranslatorReady() }
+
+            if (downloadResult.isFailure || selectedMedication != item) return@launch
+
+            val translatedName = translateText(item.name)
+            val translatedIndication = translateText(item.indication)
+            val translatedPharmacology = translateText(item.pharmacology)
+            val translatedRoute = translateText(item.route)
+            val translatedSubstance = translateText(item.substance)
+
+            if (selectedMedication != item) return@launch
+
+            val finalName = translatedName ?: binding.selectedMedicationName.text?.toString()
+            binding.selectedMedicationName.text = finalName
+
+            val indicationText = translatedIndication ?: formatCardText(item.indication)
+            binding.selectedMedicationIndication.isVisible = indicationText != null
+            binding.selectedMedicationIndication.text = indicationText ?: ""
+
+            val pathologyText = translatedPharmacology ?: formatCardText(item.pharmacology)
+            binding.selectedMedicationPathology.isVisible = pathologyText != null
+            binding.selectedMedicationPathology.text = pathologyText ?: ""
+
+            val routeText = translatedRoute ?: formatCardText(item.route)
+            binding.selectedMedicationRouteContainer.isVisible = routeText != null
+            binding.selectedMedicationRoute.text = routeText ?: ""
+
+            val substanceText = translatedSubstance ?: formatCardText(item.substance)
+            binding.selectedMedicationSubstanceContainer.isVisible = substanceText != null
+            binding.selectedMedicationSubstance.text = substanceText ?: ""
+
+            updateDisplayedMedication(
+                item,
+                finalName,
+                indicationText,
+                pathologyText,
+                routeText,
+                substanceText
+            )
+        }
+    }
+
+    private fun shouldTranslateToSpanishUnitedStates(): Boolean {
+        val locale = resources.configuration.locales.get(0)
+        return locale.language.equals("es", ignoreCase = true) &&
+            locale.country.equals("US", ignoreCase = true)
+    }
+
+    private suspend fun ensureTranslatorReady() {
+        withContext(Dispatchers.IO) {
+            val conditions = DownloadConditions.Builder().build()
+            translationClient.downloadModelIfNeeded(conditions).await()
+        }
+    }
+
+    private suspend fun translateText(value: String?): String? {
+        val normalized = value?.trim()?.takeIf { it.isNotBlank() } ?: return null
+        return runCatching { translationClient.translate(normalized).await() }
+            .getOrNull()
+            ?.let { formatCardText(it) }
     }
 
     private fun showLoading(isLoading: Boolean, status: String? = null) {
@@ -318,7 +417,7 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     private fun updateAddMedicationState() {
-        val hasSelection = selectedMedication != null
+        val hasSelection = displayedMedication != null
         binding.addMedicationButton.isEnabled = binding.progressBar.isVisible.not() && hasSelection
         binding.selectedMedicationCard.isVisible = hasSelection
     }
@@ -349,6 +448,7 @@ class AddMedsActivity : AppCompatActivity() {
     private fun removeSelectedMedication() {
         val removedMedicationName = selectedMedication?.name
         selectedMedication = null
+        displayedMedication = null
         binding.selectedMedicationName.text = null
         binding.selectedMedicationIndication.text = null
         binding.selectedMedicationPathology.text = null
@@ -370,6 +470,8 @@ class AddMedsActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         searchJob?.cancel()
+        translationJob?.cancel()
+        translationClient.close()
         super.onDestroy()
     }
 
@@ -432,6 +534,23 @@ class AddMedsActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateDisplayedMedication(
+        base: MedicationSearchItem,
+        name: String?,
+        indication: String?,
+        pharmacology: String?,
+        route: String?,
+        substance: String?
+    ) {
+        displayedMedication = MedicationSearchItem(
+            name?.takeIf { it.isNotBlank() } ?: base.name,
+            indication,
+            pharmacology,
+            route,
+            substance
+        )
+    }
+
     private fun saveMedicationLocally(item: MedicationSearchItem): Boolean {
         return runCatching {
             val prefs = getSharedPreferences("medications_prefs", MODE_PRIVATE)
@@ -442,7 +561,10 @@ class AddMedsActivity : AppCompatActivity() {
             }.getOrDefault(mutableListOf())
 
             currentList.add(item)
-            prefs.edit { putString("medications_list", gson.toJson(currentList)) }
+            val editor = prefs.edit()
+            editor.putString("medications_list", gson.toJson(currentList))
+            val committed = editor.commit()
+            if (!committed) error("Failed to persist medication locally")
         }.isSuccess
     }
 
@@ -461,6 +583,16 @@ class AddMedsActivity : AppCompatActivity() {
                 finish()
             }
             .show()
+    }
+
+    private suspend fun <T> Task<T>.await(): T = suspendCancellableCoroutine { continuation ->
+        addOnSuccessListener { result ->
+            continuation.resume(result)
+        }.addOnFailureListener { exception ->
+            continuation.resumeWithException(exception)
+        }.addOnCanceledListener {
+            continuation.cancel()
+        }
     }
 
 }

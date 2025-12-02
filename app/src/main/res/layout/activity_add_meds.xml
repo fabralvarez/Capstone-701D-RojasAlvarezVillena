@@ -24,6 +24,31 @@
             app:navigationIcon="@drawable/outline_cancel_24"
             app:titleCentered="true" />
 
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/summaryCollapsingToolbar"
+            style="?attr/collapsingToolbarLayoutMediumStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            android:background="?attr/colorSurface"
+            android:visibility="gone"
+            app:contentScrim="?attr/colorSurface"
+            app:expandedSubtitleTextAppearance="@style/TextAppearance.Material3.BodyMedium"
+            app:expandedTitleGravity="bottom|center_horizontal"
+            app:statusBarScrim="?attr/colorSurface">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/summaryTopAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/outline_arrow_back_24"
+                app:subtitle="@string/add_meds_summary_subtitle"
+                app:subtitleCentered="true"
+                app:title="@string/add_meds_summary_title"
+                app:titleCentered="true" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -185,13 +210,12 @@
             android:paddingTop="16dp"
             android:paddingBottom="24dp">
 
-            <com.google.android.material.progressindicator.CircularProgressIndicator
+            <com.google.android.material.loadingindicator.LoadingIndicator
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:visibility="gone"
-                app:indicatorSize="48dp" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tvSearchStatus"

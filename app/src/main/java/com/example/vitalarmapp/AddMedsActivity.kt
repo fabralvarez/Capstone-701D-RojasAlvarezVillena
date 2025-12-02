@@ -16,6 +16,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.vitalarmapp.AddMainTabActivity
 import com.example.vitalarmapp.adapters.MedicationSearchAdapter
 import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.databinding.ActivityAddMedsBinding
@@ -71,6 +72,7 @@ class AddMedsActivity : AppCompatActivity() {
     private var selectedMedication: MedicationSearchItem? = null
     private var displayedMedication: MedicationSearchItem? = null
     private var ignoreQueryChanges: Boolean = false
+    private var isSelectionMode: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +83,7 @@ class AddMedsActivity : AppCompatActivity() {
         setupSearchBar()
         setupSearch()
         setupSelectionAppBar()
+        setupSummaryAppBar()
         setupAddAction()
         updateSelectedMedicationCardSpacing(false)
     }
@@ -111,16 +114,18 @@ class AddMedsActivity : AppCompatActivity() {
         binding.searchView.addTransitionListener { _, _, newState ->
             when (newState) {
                 SearchView.TransitionState.HIDDEN -> {
-                    binding.searchBar.visibility = View.VISIBLE
                     binding.searchView.visibility = View.GONE
                     if (selectedMedication != null) {
                         binding.selectedMedicationCard.isVisible = true
                     }
+                    showAppropriateTopBar()
                 }
 
                 SearchView.TransitionState.SHOWN, SearchView.TransitionState.SHOWING -> {
+                    binding.summaryCollapsingToolbar.visibility = View.GONE
                     binding.searchBar.visibility = View.GONE
                     binding.searchView.visibility = View.VISIBLE
+                    binding.selectedMedicationCard.isVisible = false
                 }
 
                 else -> Unit
@@ -192,6 +197,10 @@ class AddMedsActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupSummaryAppBar() {
+        binding.summaryTopAppBar.setNavigationOnClickListener { showCancelSummaryDialog() }
+    }
+
     private fun openSearchView() {
         if (!binding.searchView.isShowing) {
             binding.searchView.show()
@@ -216,6 +225,7 @@ class AddMedsActivity : AppCompatActivity() {
         if (query.length < 2) {
             searchAdapter.updateData(emptyList())
             showStatusMessage(getString(R.string.add_meds_search_start))
+            showAppropriateTopBar()
             updateAddMedicationState()
             return
         }
@@ -240,20 +250,14 @@ class AddMedsActivity : AppCompatActivity() {
             return
         }
 
-        val displayItems = if (shouldTranslateToSpanishUnitedStates()) {
-            translateMedications(items)
-        } else {
-            items
-        }
-
         showLoading(false)
 
-        if (displayItems.isEmpty()) {
+        if (items.isEmpty()) {
             showStatusMessage(getString(R.string.add_meds_search_no_results, query))
         } else {
             showStatusMessage(null)
         }
-        searchAdapter.updateData(displayItems)
+        searchAdapter.updateData(items)
 
         updateAddMedicationState()
     }
@@ -338,6 +342,7 @@ class AddMedsActivity : AppCompatActivity() {
         )
 
         translateSelectedMedicationCard(item)
+        showAppropriateTopBar()
     }
 
     private fun translateSelectedMedicationCard(item: MedicationSearchItem) {
@@ -462,6 +467,7 @@ class AddMedsActivity : AppCompatActivity() {
         val hasSelection = displayedMedication != null
         binding.addMedicationButton.isEnabled = binding.progressBar.isVisible.not() && hasSelection
         binding.selectedMedicationCard.isVisible = hasSelection
+        showAppropriateTopBar()
     }
 
     private fun updateSelectedMedicationCardSpacing(isSelectionMode: Boolean) {
@@ -475,15 +481,18 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     private fun enterSelectionMode() {
+        isSelectionMode = true
         binding.searchBar.visibility = View.GONE
+        binding.summaryCollapsingToolbar.visibility = View.GONE
         binding.selectionTopAppBar.visibility = View.VISIBLE
         binding.selectionTopAppBar.title = getString(R.string.add_meds_selection_count, 1)
         updateSelectedMedicationCardSpacing(true)
     }
 
     private fun exitSelectionMode() {
+        isSelectionMode = false
         binding.selectionTopAppBar.visibility = View.GONE
-        binding.searchBar.visibility = View.VISIBLE
+        showAppropriateTopBar()
         updateSelectedMedicationCardSpacing(false)
     }
 
@@ -618,26 +627,6 @@ class AddMedsActivity : AppCompatActivity() {
         }.isSuccess
     }
 
-    private suspend fun translateMedications(
-        items: List<MedicationSearchItem>
-    ): List<MedicationSearchItem> {
-        return items.map { item ->
-            val translatedName = translateText(item.name)
-            val translatedIndication = translateText(item.indication)
-            val translatedPharmacology = translateText(item.pharmacology)
-            val translatedRoute = translateText(item.route)
-            val translatedSubstance = translateText(item.substance)
-
-            MedicationSearchItem(
-                translatedName ?: formatCardText(item.name) ?: item.name,
-                translatedIndication,
-                translatedPharmacology,
-                translatedRoute,
-                translatedSubstance
-            )
-        }
-    }
-
     private fun showAddConfirmationDialog() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.add_meds_dialog_title))
@@ -655,6 +644,22 @@ class AddMedsActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun showCancelSummaryDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.add_meds_summary_cancel_title))
+            .setMessage(getString(R.string.add_meds_summary_cancel_message))
+            .setNegativeButton(getString(R.string.add_meds_summary_cancel_confirm)) { _, _ ->
+                startActivity(
+                    AddMainTabActivity.intent(this).addFlags(FLAG_ACTIVITY_CLEAR_TOP)
+                )
+                finish()
+            }
+            .setPositiveButton(getString(R.string.add_meds_summary_cancel_dismiss)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
     private suspend fun <T> Task<T>.await(): T = suspendCancellableCoroutine { continuation ->
         addOnSuccessListener { result ->
             continuation.resume(result)
@@ -663,6 +668,24 @@ class AddMedsActivity : AppCompatActivity() {
         }.addOnCanceledListener {
             continuation.cancel()
         }
+    }
+
+    private fun showAppropriateTopBar() {
+        if (isSelectionMode) {
+            binding.searchBar.visibility = View.GONE
+            binding.summaryCollapsingToolbar.visibility = View.GONE
+            return
+        }
+
+        if (binding.searchView.isShowing) {
+            binding.searchBar.visibility = View.GONE
+            binding.summaryCollapsingToolbar.visibility = View.GONE
+            return
+        }
+
+        val hasSelection = displayedMedication != null
+        binding.summaryCollapsingToolbar.visibility = if (hasSelection) View.VISIBLE else View.GONE
+        binding.searchBar.visibility = if (hasSelection) View.GONE else View.VISIBLE
     }
 
 }

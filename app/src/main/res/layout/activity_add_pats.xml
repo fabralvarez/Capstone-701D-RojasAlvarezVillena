@@ -1,104 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".AddPatsActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
-        style="@style/Widget.Material3.Toolbar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/patient_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:navigationIcon="@drawable/outline_arrow_back_24"
-        android:title="@string/add_patient_title"
-        android:titleTextColor="?attr/colorOnSurface" />
+        android:fitsSystemWindows="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ScrollView
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/patient_collapsing_toolbar"
+            style="?attr/collapsingToolbarLayoutMediumStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            android:background="?attr/colorSurface"
+            app:contentScrim="?attr/colorSurface"
+            app:expandedSubtitleTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:expandedTitleGravity="bottom|center_horizontal"
+            app:statusBarScrim="?attr/colorSurface">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/patient_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/outline_arrow_back_24"
+                app:navigationIconTint="?attr/colorOnSurface"
+                app:subtitle="@string/add_patient_subheading"
+                app:title="@string/add_patient_heading" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="24dp"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="48dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patient_appbar">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/patientNameInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginBottom="16dp"
+            android:hint="@string/add_patient_full_name_label"
+            app:boxBackgroundMode="outline"
+            app:endIconDrawable="@drawable/outline_cancel_24"
+            app:endIconMode="clear_text"
+            app:placeholderText="@string/sign_up_name_placeholder"
+            app:startIconDrawable="@drawable/outline_person_24">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/patient_name_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:text="@string/add_patient_description"
-                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                android:textColor="?attr/colorOnBackground" />
+                android:autofillHints="name"
+                android:importantForAutofill="yes"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/patientGenderInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:boxBackgroundMode="outline"
+            app:endIconDrawable="@drawable/outline_cancel_24"
+            app:endIconMode="clear_text"
+            app:placeholderText="@string/add_patient_gender_placeholder">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/patient_gender_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/add_patient_name_hint"
-                app:helperText="@string/add_patient_name_helper">
+                android:autofillHints="gender"
+                android:importantForAutofill="yes"
+                android:inputType="textCapWords"
+                android:maxLines="1"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPersonName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/patientBirthDateInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:boxBackgroundMode="outline"
+            app:endIconDrawable="@drawable/outline_cancel_24"
+            app:endIconMode="clear_text"
+            app:placeholderText="@string/add_patient_birthdate_placeholder">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/patient_birth_date_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/add_patient_birthdate_hint">
+                android:focusable="false"
+                android:inputType="none"
+                android:maxLines="1"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                tools:text="12/10/1992" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etBirthDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:inputType="none"
-                    tools:text="12/10/1992" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/patientNotesInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:hint="@string/add_patient_notes_label"
+            app:boxBackgroundMode="outline"
+            app:endIconDrawable="@drawable/outline_cancel_24"
+            app:endIconMode="clear_text"
+            app:placeholderText="@string/add_patient_notes_placeholder"
+            app:helperText="@string/add_patient_notes_supporting">
 
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/progressBar"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp"
-                android:visibility="gone"
-                app:indicatorSize="48dp" />
-
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/patient_notes_tf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:inputType="textCapSentences"
+                android:maxLines="3"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCancel"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/common_cancel" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSavePerson"
-                    style="@style/Widget.Material3.Button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/add_patient_save"
-                    android:textColor="?attr/colorOnPrimary" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/patient_continue_btn"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="60dp"
+            android:paddingVertical="20dp"
+            android:text="@string/add_patient_continue"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:cornerRadius="36dp"
+            tools:ignore="VisualLintButtonSize" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

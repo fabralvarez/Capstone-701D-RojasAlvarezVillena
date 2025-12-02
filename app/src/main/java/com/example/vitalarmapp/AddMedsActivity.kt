@@ -43,6 +43,7 @@ class AddMedsActivity : AppCompatActivity() {
     private var searchJob: Job? = null
     private lateinit var searchAdapter: MedicationSearchAdapter
     private var selectedMedication: MedicationSearchItem? = null
+    private var ignoreQueryChanges: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +85,9 @@ class AddMedsActivity : AppCompatActivity() {
                 SearchView.TransitionState.HIDDEN -> {
                     binding.searchBar.visibility = View.VISIBLE
                     binding.searchView.visibility = View.GONE
+                    if (selectedMedication != null) {
+                        binding.selectedMedicationCard.isVisible = true
+                    }
                 }
 
                 SearchView.TransitionState.SHOWN, SearchView.TransitionState.SHOWING -> {
@@ -111,6 +115,7 @@ class AddMedsActivity : AppCompatActivity() {
         }
 
         binding.searchView.editText.addTextChangedListener { editable ->
+            if (ignoreQueryChanges) return@addTextChangedListener
             onQueryChanged(editable?.toString().orEmpty())
         }
 
@@ -251,11 +256,15 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     private fun onMedicationSelected(item: MedicationSearchItem) {
+        ignoreQueryChanges = true
         selectedMedication = item
-        binding.searchBar.setText(getString(R.string.add_meds_selected_format, item.name))
-        binding.searchView.editText.setText(item.name)
+        binding.searchView.editText.setText("")
+        binding.searchBar.setText("")
         binding.searchView.hide()
+        binding.searchView.editText.clearFocus()
+        binding.searchBar.clearFocus()
         hideKeyboard()
+        ignoreQueryChanges = false
         showSelectedMedicationCard(item)
         updateAddMedicationState()
     }

@@ -6,8 +6,8 @@
 
     <com.google.android.material.loadingindicator.LoadingIndicator
         android:id="@+id/fullscreen_loading_indicator"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
         android:layout_margin="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

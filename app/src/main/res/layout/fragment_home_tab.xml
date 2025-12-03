@@ -10,8 +10,8 @@
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/homeLoadingIndicator"
         style="@style/Widget.Material3Expressive.CircularProgressIndicator.Wavy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
         android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,10 +37,146 @@
             android:paddingVertical="16dp"
             tools:ignore="SpeakableTextPresentCheck">
 
-            <Space
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    android:id="@+id/upcomingAlarmsHeadline"
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/home_section_upcoming_alarms"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@null"
+                    android:tint="?attr/colorOnSurfaceVariant"
+                    app:srcCompat="@drawable/ic_arrow_right_24" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/upcomingAlarmsRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="8dp"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_upcoming_alarm" />
+
+            <TextView
+                android:id="@+id/upcomingAlarmsEmpty"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="@string/home_section_empty_alarms"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    android:id="@+id/registeredPatientsHeadline"
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/home_section_registered_patients"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@null"
+                    android:tint="?attr/colorOnSurfaceVariant"
+                    app:srcCompat="@drawable/ic_arrow_right_24" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/registeredPatientsRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="8dp"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_registered_patient" />
+
+            <TextView
+                android:id="@+id/registeredPatientsEmpty"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="@string/home_section_empty_patients"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    android:id="@+id/registeredMedicationsHeadline"
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/home_section_registered_medications"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@null"
+                    android:tint="?attr/colorOnSurfaceVariant"
+                    app:srcCompat="@drawable/ic_arrow_right_24" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/registeredMedicationsRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="8dp"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_registered_medication" />
+
+            <TextView
+                android:id="@+id/registeredMedicationsEmpty"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="@string/home_section_empty_medications"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:visibility="gone" />
+
         </LinearLayout>
     </ScrollView>
 

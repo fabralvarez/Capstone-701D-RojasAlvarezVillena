@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:background="@drawable/bg_filled_card_circle"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:padding="18dp">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:contentDescription="@null"
+            android:tint="?attr/colorOnSecondaryContainer"
+            app:srcCompat="@drawable/outline_medication_24" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/medicationName"
+        style="@style/TextAppearance.Material3.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:maxLines="1"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnSurface"
+        tools:text="Ibuprofeno" />
+
+</LinearLayout>

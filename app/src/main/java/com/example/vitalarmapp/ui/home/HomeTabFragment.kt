@@ -1,18 +1,38 @@
 package com.example.vitalarmapp.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.vitalarmapp.R
+import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.databinding.FragmentHomeTabBinding
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.google.android.material.transition.MaterialFadeThrough
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeTabFragment : Fragment() {
 
     private var _binding: FragmentHomeTabBinding? = null
     private val binding get() = _binding!!
+
+    private val gson: Gson by lazy { Gson() }
+    private val upcomingAlarmsAdapter = UpcomingAlarmAdapter()
+    private val patientsAdapter = RegisteredPatientsAdapter()
+    private val medicationsAdapter = RegisteredMedicationsAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +46,7 @@ class HomeTabFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentHomeTabBinding.inflate(inflater, container, false)
         return binding.root
@@ -35,6 +55,7 @@ class HomeTabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUserNameLoading(true)
+        setupRecyclerViews()
         refreshContent()
     }
 
@@ -45,6 +66,11 @@ class HomeTabFragment : Fragment() {
 
     fun refreshContent() {
         if (view == null) return
+        viewLifecycleOwner.lifecycleScope.launch {
+            loadRegisteredPatients()
+            loadRegisteredMedications()
+            loadUpcomingAlarms()
+        }
     }
 
     fun setUserNameLoading(isLoading: Boolean) {
@@ -56,5 +82,66 @@ class HomeTabFragment : Fragment() {
     fun onUserNameLoaded() {
         setUserNameLoading(false)
         refreshContent()
+    }
+
+    private fun setupRecyclerViews() {
+        binding.upcomingAlarmsRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = upcomingAlarmsAdapter
+        }
+
+        binding.registeredPatientsRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = patientsAdapter
+        }
+
+        binding.registeredMedicationsRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = medicationsAdapter
+        }
+    }
+
+    private suspend fun loadRegisteredPatients() {
+        val patients = withContext(Dispatchers.IO) { FirebaseManager.getPeople() }
+        val summaries = patients.map { patient ->
+            val ageText = calculateAge(patient.birthDate)
+                ?.let { getString(R.string.home_patient_age_format, it) }
+                ?: getString(R.string.home_patient_age_unknown)
+            PatientSummaryUiModel(
+                name = patient.name,
+                ageLabel = ageText,
+            )
+        }
+        patientsAdapter.submitList(summaries)
+        binding.registeredPatientsEmpty.isVisible = summaries.isEmpty()
+    }
+
+    private fun calculateAge(birthDate: String?): Int? {
+        if (birthDate.isNullOrBlank()) return null
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+        return runCatching {
+            val birth = LocalDate.parse(birthDate, formatter)
+            val today = LocalDate.now()
+            Period.between(birth, today).years
+        }.getOrNull()?.takeIf { it >= 0 }
+    }
+
+    private fun loadRegisteredMedications() {
+        val context = context ?: return
+        val prefs = context.getSharedPreferences("medications_prefs", Context.MODE_PRIVATE)
+        val storedJson = prefs.getString("medications_list", "[]")
+        val type = object : TypeToken<List<MedicationSearchItem>>() {}.type
+        val meds = runCatching {
+            gson.fromJson<List<MedicationSearchItem>>(storedJson, type)
+        }.getOrDefault(emptyList())
+
+        medicationsAdapter.submitList(meds)
+        binding.registeredMedicationsEmpty.isVisible = meds.isEmpty()
+    }
+
+    private suspend fun loadUpcomingAlarms() {
+        val alarms: List<UpcomingAlarmUiModel> = emptyList()
+        upcomingAlarmsAdapter.submitList(alarms)
+        binding.upcomingAlarmsEmpty.isVisible = alarms.isEmpty()
     }
 }

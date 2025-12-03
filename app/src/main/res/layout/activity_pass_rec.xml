@@ -125,13 +125,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.loadingindicator.LoadingIndicator
-            android:id="@+id/pass_rec_progress_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pass_rec_confirm_btn"
             style="@style/Widget.Material3.Button"
@@ -146,5 +139,18 @@
             app:cornerRadius="36dp"
             tools:ignore="VisualLintButtonSize" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/pass_rec_loading_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#59000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

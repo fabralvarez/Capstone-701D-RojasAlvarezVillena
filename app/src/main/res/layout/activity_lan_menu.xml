@@ -71,4 +71,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_lan_bottom_nav"
         tools:ignore="VisualLintBottomNav" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/lanMenuContentGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="lanMenuCoordinator,fragmentContainer,lanMenuBottomNavigation" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/lanMenuLoadingIndicator"
+        style="@style/Widget.Material3Expressive.CircularProgressIndicator.Wavy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

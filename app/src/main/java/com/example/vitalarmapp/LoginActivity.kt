@@ -13,10 +13,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.credentials.CredentialManager
 import androidx.credentials.CreatePasswordRequest
 import androidx.credentials.exceptions.CreateCredentialException
+import androidx.fragment.app.commit
 import com.example.vitalarmapp.databinding.ActivityLoginBinding
 import com.example.vitalarmapp.databinding.LoginBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -203,8 +205,17 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setLoadingState(isLoading: Boolean) {
         binding.loginLoginBtn.isEnabled = !isLoading
+        binding.emailEditText.isEnabled = !isLoading
+        binding.passwordEditText.isEnabled = !isLoading
+        binding.loginForgotPassBtn.isEnabled = !isLoading
         binding.loginLoginBtn.text =
             if (isLoading) getString(R.string.login_loading) else getString(R.string.login_action)
+
+        if (isLoading) {
+            showLoadingOverlay()
+        } else {
+            hideLoadingOverlay()
+        }
     }
 
     private fun requestAutofillSupport() {
@@ -246,5 +257,28 @@ class LoginActivity : AppCompatActivity() {
     private fun navigateToHome() {
         startActivity(Intent(this, LanMenuActivity::class.java))
         finish()
+    }
+
+    private fun showLoadingOverlay() {
+        binding.loginLoadingContainer.isVisible = true
+        if (supportFragmentManager.findFragmentByTag(LoadingIndicatorFragment.TAG) == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add(
+                    binding.loginLoadingContainer.id,
+                    LoadingIndicatorFragment(),
+                    LoadingIndicatorFragment.TAG
+                )
+            }
+        }
+    }
+
+    private fun hideLoadingOverlay() {
+        binding.loginLoadingContainer.isVisible = false
+        supportFragmentManager.findFragmentByTag(LoadingIndicatorFragment.TAG)?.let { fragment ->
+            supportFragmentManager.commit {
+                remove(fragment)
+            }
+        }
     }
 }

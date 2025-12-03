@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.commit
 import com.example.vitalarmapp.databinding.ActivityPassRecBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -125,8 +126,32 @@ class PassRecActivity : AppCompatActivity() {
     private fun setLoading(isLoading: Boolean) {
         binding.passRecConfirmBtn.isEnabled = !isLoading
         binding.passRecEmailTv.isEnabled = !isLoading
-        binding.passRecProgressIndicator.isVisible = isLoading
         binding.passRecConfirmBtn.text =
             getString(if (isLoading) R.string.pass_rec_sending_email else R.string.confirm_email)
+
+        if (isLoading) {
+            showLoadingOverlay()
+        } else {
+            hideLoadingOverlay()
+        }
+    }
+
+    private fun showLoadingOverlay() {
+        binding.passRecLoadingContainer.isVisible = true
+        if (supportFragmentManager.findFragmentByTag(LoadingIndicatorFragment.TAG) == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add(binding.passRecLoadingContainer.id, LoadingIndicatorFragment(), LoadingIndicatorFragment.TAG)
+            }
+        }
+    }
+
+    private fun hideLoadingOverlay() {
+        binding.passRecLoadingContainer.isVisible = false
+        supportFragmentManager.findFragmentByTag(LoadingIndicatorFragment.TAG)?.let { fragment ->
+            supportFragmentManager.commit {
+                remove(fragment)
+            }
+        }
     }
 }

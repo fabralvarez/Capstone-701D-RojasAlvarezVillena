@@ -287,6 +287,22 @@ object FirebaseManager {
         }
     }
 
+    suspend fun updateMedicationAlarmTimes(
+        medicationId: String,
+        alarmTimes: List<String>,
+    ): Boolean {
+        return try {
+            db.collection(COLLECTION_MEDICATIONS)
+                .document(medicationId)
+                .update("alarmTimes", alarmTimes.sorted())
+                .await()
+            true
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error actualizando alarmas del medicamento: ${e.message}", e)
+            false
+        }
+    }
+
     suspend fun getCurrentUserName(): String {
         return try {
             val userId = getCurrentUserId()

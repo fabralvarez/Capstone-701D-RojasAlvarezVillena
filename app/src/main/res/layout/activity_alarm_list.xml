@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AlarmListActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/alarmListAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/alarmSelectionToolbar"
+            style="@style/Widget.Material3.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:menu="@menu/menu_add_meds_selection"
+            app:navigationIcon="@drawable/outline_cancel_24"
+            app:titleCentered="true" />
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/alarmListCollapsingToolbar"
+            style="?attr/collapsingToolbarLayoutMediumStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            android:background="?attr/colorSurface"
+            app:contentScrim="?attr/colorSurface"
+            app:expandedTitleGravity="bottom|start"
+            app:expandedTitleTextAppearance="@style/TextAppearance.App.ToolbarHeadline"
+            app:expandedTitleTextColor="?attr/colorPrimary"
+            app:statusBarScrim="?attr/colorSurface">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/alarmListToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/outline_arrow_back_24"
+                app:title="@string/alarm_list_title"
+                app:titleCentered="false"
+                app:titleTextAppearance="@style/TextAppearance.App.ToolbarHeadline" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/alarmListContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/alarmRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_alarm_entry" />
+
+        <TextView
+            android:id="@+id/alarmEmptyState"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/home_section_empty_alarms"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/alarmLoadingIndicator"
+            style="@style/Widget.Material3Expressive.CircularProgressIndicator.Wavy"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

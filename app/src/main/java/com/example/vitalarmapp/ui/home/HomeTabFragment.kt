@@ -9,6 +9,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.vitalarmapp.AlarmListActivity
+import com.example.vitalarmapp.MedsListActivity
+import com.example.vitalarmapp.PatsListActivity
 import com.example.vitalarmapp.R
 import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.databinding.FragmentHomeTabBinding
@@ -56,6 +59,7 @@ class HomeTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUserNameLoading(true)
         setupRecyclerViews()
+        setupSectionNavigation()
         refreshContent()
     }
 
@@ -98,6 +102,20 @@ class HomeTabFragment : Fragment() {
         binding.registeredMedicationsRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = medicationsAdapter
+        }
+    }
+
+    private fun setupSectionNavigation() {
+        binding.upcomingAlarmsHeader.setOnClickListener {
+            startActivity(AlarmListActivity.intent(requireContext()))
+        }
+
+        binding.registeredPatientsHeader.setOnClickListener {
+            startActivity(PatsListActivity.intent(requireContext()))
+        }
+
+        binding.registeredMedicationsHeader.setOnClickListener {
+            startActivity(MedsListActivity.intent(requireContext()))
         }
     }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.core.view.isVisible
 import com.example.vitalarmapp.databinding.FragmentHomeTabBinding
 import com.google.android.material.transition.MaterialFadeThrough
 
@@ -33,6 +34,7 @@ class HomeTabFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUserNameLoading(true)
         refreshContent()
     }
 
@@ -43,5 +45,16 @@ class HomeTabFragment : Fragment() {
 
     fun refreshContent() {
         if (view == null) return
+    }
+
+    fun setUserNameLoading(isLoading: Boolean) {
+        if (view == null) return
+        binding.homeLoadingIndicator.isVisible = isLoading
+        binding.homeContent.isVisible = !isLoading
+    }
+
+    fun onUserNameLoaded() {
+        setUserNameLoading(false)
+        refreshContent()
     }
 }

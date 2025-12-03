@@ -3,8 +3,8 @@ package com.example.vitalarmapp
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityLanMenuBinding
 import com.example.vitalarmapp.navigation.BottomNavigationHelper
@@ -20,12 +20,16 @@ class LanMenuActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLanMenuBinding
     private var currentTabId: Int = R.id.nav_home
+    private var userName: String? = null
+    private var isUserNameLoading: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLanMenuBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        setUserNameLoadingState(true)
 
         setupBottomNavigation()
         setupAppBar()
@@ -34,6 +38,8 @@ class LanMenuActivity : AppCompatActivity() {
         currentTabId = initialTab
         binding.lanMenuBottomNavigation.selectedItemId = initialTab
         switchToTab(initialTab)
+
+        loadUserNameIfNeeded()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -75,7 +81,8 @@ class LanMenuActivity : AppCompatActivity() {
         updateAppBarVisibility(itemId)
         val fragment = showFragment(itemId) ?: return false
         if (itemId == R.id.nav_home) {
-            loadToolbarGreeting()
+            loadUserNameIfNeeded()
+            updateToolbarGreeting()
             (fragment as? HomeTabFragment)?.refreshContent()
         }
         return true
@@ -123,13 +130,39 @@ class LanMenuActivity : AppCompatActivity() {
         binding.lanMenuAppBar.isVisible = itemId == R.id.nav_home
     }
 
-    private fun loadToolbarGreeting() {
+    private fun loadUserNameIfNeeded() {
+        if (userName != null || isUserNameLoading) return
+        isUserNameLoading = true
+        setUserNameLoadingState(true)
+
         lifecycleScope.launch {
-            val userName = withContext(Dispatchers.IO) {
-                FirebaseManager.getCurrentUserName()
-            }
-            binding.lanMenuToolbar.title = getString(R.string.home_greeting, userName)
+            val fetchedName = runCatching {
+                withContext(Dispatchers.IO) {
+                    FirebaseManager.getCurrentUserName()
+                }
+            }.getOrNull()
+
+            userName = fetchedName
+            updateToolbarGreeting()
+            setUserNameLoadingState(false)
+            isUserNameLoading = false
+            (supportFragmentManager.findFragmentByTag(fragmentTag(R.id.nav_home)) as? HomeTabFragment)
+                ?.onUserNameLoaded()
         }
+    }
+
+    private fun updateToolbarGreeting() {
+        val toolbarTitle = userName?.takeIf { it.isNotBlank() }
+            ?.let { getString(R.string.home_greeting, it) }
+            ?: getString(R.string.home_greeting_fallback)
+        binding.lanMenuToolbar.title = toolbarTitle
+    }
+
+    private fun setUserNameLoadingState(isLoading: Boolean) {
+        binding.lanMenuLoadingIndicator.isVisible = isLoading
+        binding.lanMenuContentGroup.isVisible = !isLoading
+        (supportFragmentManager.findFragmentByTag(fragmentTag(R.id.nav_home)) as? HomeTabFragment)
+            ?.setUserNameLoading(isLoading)
     }
 
     private fun fragmentTag(itemId: Int): String? = when (itemId) {

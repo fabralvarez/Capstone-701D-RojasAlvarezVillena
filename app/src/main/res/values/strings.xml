@@ -30,6 +30,18 @@
     <string name="home_no_people">No hay personas agregadas</string>
     <string name="home_no_medications">No hay medicamentos programados</string>
     <string name="home_error_loading">Error al cargar medicamentos</string>
+    <string name="home_section_upcoming_alarms">Próximas alarmas</string>
+    <string name="home_section_registered_patients">Pacientes registrados</string>
+    <string name="home_section_registered_medications">Medicamentos registrados</string>
+    <string name="home_section_empty_alarms">Aún no hay alarmas programadas.</string>
+    <string name="home_section_empty_patients">Aún no has agregado pacientes.</string>
+    <string name="home_section_empty_medications">No hay medicamentos registrados.</string>
+    <string name="home_patient_age_format">%1$d años</string>
+    <string name="home_patient_age_unknown">Edad no disponible</string>
+    <string name="home_alarm_today">Hoy</string>
+    <string name="home_alarm_tomorrow">Mañana</string>
+    <string name="home_alarm_schedule_format">%1$s - %2$s</string>
+    <string name="home_alarm_schedule_unknown">Horario por definir</string>
     <string name="home_medication_placeholder">Medicamento</string>
     <string name="home_dosage_placeholder">Sin dosis</string>
     <string name="home_person_placeholder">Persona</string>
@@ -247,6 +259,8 @@
     <string name="settings_cache_cleared">Caché limpiada correctamente.</string>
     <string name="settings_cache_clear_failed">No se pudo limpiar la caché.</string>
     <string name="settings_cache_autoclear_disabled">Limpieza automática desactivada.</string>
+    <string name="shortcut_clear_cache_short_label">Limpiar caché</string>
+    <string name="shortcut_clear_cache_long_label">Limpiar caché de Vitalarm</string>
     <string name="about_app_title">Acerca de la App</string>
     <string name="about_app_headline">Vitalarm App</string>
     <string name="about_app_version">Versión %1$s</string>

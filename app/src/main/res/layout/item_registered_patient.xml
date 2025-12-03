@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="132dp"
+    android:layout_height="179dp"
+    android:layout_marginEnd="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardElevation="1dp"
+    app:cardUseCompatPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="16dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:foregroundGravity="center"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:contentDescription="@null"
+                android:tint="?attr/colorOnSurfaceVariant"
+                app:srcCompat="@drawable/outline_person_24" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/patientName"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingTop="8dp"
+            android:textAlignment="center"
+            android:textColor="?attr/colorOnSurface"
+            tools:text="Juan Pérez" />
+
+        <TextView
+            android:id="@+id/patientAge"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            tools:text="28 años" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

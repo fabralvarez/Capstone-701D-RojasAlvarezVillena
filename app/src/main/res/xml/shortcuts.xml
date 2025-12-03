@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_delete"
+        android:shortcutId="shortcut_clear_cache"
+        android:shortcutLongLabel="@string/shortcut_clear_cache_long_label"
+        android:shortcutShortLabel="@string/shortcut_clear_cache_short_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.example.vitalarmapp.SettingsActivity"
+            android:targetPackage="com.example.vitalarmapp" />
+    </shortcut>
+</shortcuts>

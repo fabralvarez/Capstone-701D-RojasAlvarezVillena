@@ -4,11 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.loadingindicator.LoadingIndicator
+    <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/fullscreen_loading_indicator"
+        style="@style/Widget.Material3Expressive.CircularProgressIndicator.Wavy"
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_margin="24dp"
+        android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

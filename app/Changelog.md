@@ -1,3 +1,19 @@
+## [0.9.1] - 2025-12-03
+
+### Added
+
+- **Listados y navegación:**
+    - Nuevas `AlarmListActivity`, `MedsListActivity` y `PatsListActivity` con listas de Material 3, selección múltiple mediante checkboxes y diálogos reutilizables para confirmar la eliminación de elementos.
+    - Los titulares de Próximas Alarmas, Medicamentos Registrados y Pacientes Registrados ahora abren las nuevas pantallas desde LanMenuActivity.
+- **Componentes reutilizables:**
+    - Adaptadores compartidos y un helper de Firebase para gestionar la selección, borrado y actualización de datos de alarmas, medicamentos y pacientes.
+
+### Changed
+
+- **Interfaz de Usuario (UI):**
+    - Todos los indicadores de progreso circulares con estilo wavy adoptan un tamaño uniforme de 128dp.
+    - Se actualiza `versionName` a `0.9.1` en `build.gradle.kts`.
+
 ## [0.9.0] - 2025-12-02
 
 ### Added

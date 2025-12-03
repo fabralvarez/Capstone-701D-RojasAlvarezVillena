@@ -60,6 +60,9 @@
         <activity android:name=".AddPatsActivity" />
         <activity android:name=".AddAlarmActivity" />
         <activity android:name=".AddMedsActivity" />
+        <activity android:name=".AlarmListActivity" />
+        <activity android:name=".MedsListActivity" />
+        <activity android:name=".PatsListActivity" />
 
         <service
             android:name=".utils.local.AlarmService"

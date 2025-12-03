@@ -38,11 +38,15 @@
             tools:ignore="SpeakableTextPresentCheck">
 
             <LinearLayout
+                android:id="@+id/upcomingAlarmsHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingVertical="8dp">
+                android:paddingVertical="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/upcomingAlarmsHeadline"
@@ -86,11 +90,15 @@
                 android:layout_height="12dp" />
 
             <LinearLayout
+                android:id="@+id/registeredPatientsHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingVertical="8dp">
+                android:paddingVertical="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/registeredPatientsHeadline"
@@ -134,11 +142,15 @@
                 android:layout_height="12dp" />
 
             <LinearLayout
+                android:id="@+id/registeredMedicationsHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingVertical="8dp">
+                android:paddingVertical="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/registeredMedicationsHeadline"

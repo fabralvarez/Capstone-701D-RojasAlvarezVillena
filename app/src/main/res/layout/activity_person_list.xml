@@ -31,11 +31,13 @@
             android:layout_height="match_parent" />
 
         <!-- Loading indicator -->
-        <com.google.android.material.loadingindicator.LoadingIndicator
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Widget.Material3Expressive.CircularProgressIndicator.Wavy"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:layout_gravity="center"
+            android:indeterminate="true"
             android:visibility="gone" />
 
         <!-- Mensaje cuando no hay personas -->

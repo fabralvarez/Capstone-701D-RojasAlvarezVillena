@@ -127,24 +127,29 @@ object FirebaseManager {
         gender: String? = null,
         notes: String? = null
     ): Boolean {
-        val userId = getCurrentUserId() ?: return false
+        val userId = getCurrentUserId()
+        if (userId == null) {
+            Log.e(LOG_TAG, "Error añadiendo persona: usuario no autenticado")
+            return false
+        }
 
         return try {
-            val personData = hashMapOf(
+            val personData = mutableMapOf<String, Any>(
                 "name" to name,
-                "birthDate" to birthDate,
-                "gender" to gender,
-                "notes" to notes,
                 "userId" to userId,
                 "createdAt" to System.currentTimeMillis()
             )
+
+            birthDate?.let { personData["birthDate"] = it }
+            gender?.let { personData["gender"] = it }
+            notes?.let { personData["notes"] = it }
 
             db.collection(COLLECTION_PATIENTS)
                 .add(personData)
                 .await()
             true
         } catch (e: Exception) {
-            Log.e("FirebaseManager", "Error añadiendo persona: ${e.message}")
+            Log.e(LOG_TAG, "Error añadiendo persona: ${e.message}", e)
             false
         }
     }

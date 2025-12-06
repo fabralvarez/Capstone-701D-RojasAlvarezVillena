@@ -82,6 +82,15 @@ class AddPatsActivity : AppCompatActivity() {
             binding.patientNameInputLayout.error = null
         }
 
+        if (FirebaseManager.getCurrentUserId().isNullOrEmpty()) {
+            Snackbar.make(
+                binding.root,
+                R.string.add_patient_auth_error_snackbar,
+                Snackbar.LENGTH_LONG
+            ).show()
+            return
+        }
+
         binding.patientContinueBtn.isEnabled = false
 
         lifecycleScope.launch {

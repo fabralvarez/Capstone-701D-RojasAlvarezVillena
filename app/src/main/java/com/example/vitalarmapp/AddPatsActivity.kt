@@ -60,27 +60,62 @@ class AddPatsActivity : AppCompatActivity() {
             binding.patientNameInputLayout.error = null
         }
 
+        binding.patientGenderTf.doAfterTextChanged {
+            binding.patientGenderInputLayout.error = null
+        }
+
         binding.patientBirthDateTf.doAfterTextChanged {
             if (it.isNullOrEmpty()) {
                 binding.patientBirthDateInputLayout.isEndIconVisible = false
+                binding.patientBirthDateInputLayout.error = null
             } else {
                 binding.patientBirthDateInputLayout.isEndIconVisible = true
+                binding.patientBirthDateInputLayout.error = null
             }
+        }
+
+        binding.patientNotesTf.doAfterTextChanged {
+            binding.patientNotesInputLayout.error = null
         }
     }
 
     private fun savePatient() {
         val name = binding.patientNameTf.text?.toString()?.trim().orEmpty()
-        val gender = binding.patientGenderTf.text?.toString()?.trim().orEmpty().ifEmpty { null }
-        val birthDate = binding.patientBirthDateTf.text?.toString()?.trim().orEmpty().ifEmpty { null }
-        val notes = binding.patientNotesTf.text?.toString()?.trim().orEmpty().ifEmpty { null }
+        val gender = binding.patientGenderTf.text?.toString()?.trim().orEmpty()
+        val birthDate = binding.patientBirthDateTf.text?.toString()?.trim().orEmpty()
+        val notes = binding.patientNotesTf.text?.toString()?.trim().orEmpty()
+
+        var hasError = false
 
         if (name.isBlank()) {
             binding.patientNameInputLayout.error = getString(R.string.add_patient_name_error)
-            return
+            hasError = true
         } else {
             binding.patientNameInputLayout.error = null
         }
+
+        if (gender.isBlank()) {
+            binding.patientGenderInputLayout.error = getString(R.string.add_patient_gender_error)
+            hasError = true
+        } else {
+            binding.patientGenderInputLayout.error = null
+        }
+
+        if (birthDate.isBlank()) {
+            binding.patientBirthDateInputLayout.error = getString(R.string.add_patient_birthdate_error)
+            hasError = true
+        } else {
+            binding.patientBirthDateInputLayout.error = null
+        }
+
+        if (notes.isBlank()) {
+            binding.patientNotesInputLayout.error = getString(R.string.add_patient_notes_error)
+            hasError = true
+        } else {
+            binding.patientNotesInputLayout.error = null
+        }
+
+        if (hasError) return
 
         if (FirebaseManager.getCurrentUserId().isNullOrEmpty()) {
             Snackbar.make(

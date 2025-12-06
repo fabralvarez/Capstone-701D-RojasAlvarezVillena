@@ -123,9 +123,9 @@ object FirebaseManager {
 
     suspend fun addPerson(
         name: String,
-        birthDate: String? = null,
-        gender: String? = null,
-        notes: String? = null
+        birthDate: String,
+        gender: String,
+        notes: String,
     ): Boolean {
         val userId = getCurrentUserId()
         if (userId == null) {
@@ -134,15 +134,17 @@ object FirebaseManager {
         }
 
         return try {
+            val userName = auth.currentUser?.displayName ?: getCurrentUserName()
+
             val personData = mutableMapOf<String, Any>(
                 "name" to name,
+                "birthDate" to birthDate,
+                "gender" to gender,
+                "notes" to notes,
                 "userId" to userId,
+                "userName" to userName,
                 "createdAt" to System.currentTimeMillis()
             )
-
-            birthDate?.let { personData["birthDate"] = it }
-            gender?.let { personData["gender"] = it }
-            notes?.let { personData["notes"] = it }
 
             db.collection(COLLECTION_PATIENTS)
                 .add(personData)
@@ -181,8 +183,11 @@ object FirebaseManager {
                 Patient(
                     id = document.id,
                     name = data["name"] as? String ?: "",
-                    birthDate = data["birthDate"] as? String,
+                    birthDate = data["birthDate"] as? String ?: "",
+                    gender = data["gender"] as? String ?: "",
+                    notes = data["notes"] as? String ?: "",
                     userId = data["userId"] as? String ?: "",
+                    userName = data["userName"] as? String ?: "",
                     createdAt = (data["createdAt"] as? Number)?.toLong() ?: 0L
                 )
             }

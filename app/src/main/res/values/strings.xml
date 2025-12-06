@@ -166,6 +166,9 @@
     <string name="add_patient_success">Paciente registrado correctamente</string>
     <string name="add_patient_failure">No pudimos registrar al paciente</string>
     <string name="add_patient_name_error">Ingresa el nombre del paciente</string>
+    <string name="add_patient_gender_error">Indica el género del paciente</string>
+    <string name="add_patient_birthdate_error">Ingresa la fecha de nacimiento</string>
+    <string name="add_patient_notes_error">Agrega notas importantes del paciente</string>
     <string name="add_patient_heading">Agrega un paciente</string>
     <string name="add_patient_subheading">Registra los datos del paciente en la plataforma</string>
     <string name="add_patient_full_name_label">Nombre completo</string>

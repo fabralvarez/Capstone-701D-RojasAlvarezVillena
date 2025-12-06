@@ -1,3 +1,18 @@
+## [0.9.20] - 2025-12-04
+
+### Added
+
+- **Registro de Pacientes:**
+    - Guardado del identificador y el nombre del usuario autenticado junto a cada paciente registrado.
+    - Lectura del nombre del creador al obtener pacientes desde Firestore para mostrarlo en la app.
+- **Validación de Formularios:**
+    - Todos los campos de `AddPatsActivity` son obligatorios con mensajes de error en línea antes de guardar.
+
+### Changed
+
+- **Versionado de la App:**
+    - `versionName` actualizado a `0.9.20` en `build.gradle.kts`.
+
 ## [0.9.1] - 2025-12-03
 
 ### Added

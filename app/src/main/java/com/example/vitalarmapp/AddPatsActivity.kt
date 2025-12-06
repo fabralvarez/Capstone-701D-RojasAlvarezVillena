@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityAddPatsBinding
+import com.example.vitalarmapp.utils.firebase.AddPersonResult
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
@@ -118,18 +119,17 @@ class AddPatsActivity : AppCompatActivity() {
         if (hasError) return
 
         if (FirebaseManager.getCurrentUserId().isNullOrEmpty()) {
-            Snackbar.make(
-                binding.root,
-                R.string.add_patient_auth_error_snackbar,
-                Snackbar.LENGTH_LONG
-            ).show()
+            showErrorSnackbar(
+                messageRes = R.string.add_patient_auth_error_snackbar,
+                detail = getString(R.string.add_patient_generic_error_detail)
+            )
             return
         }
 
         binding.patientContinueBtn.isEnabled = false
 
         lifecycleScope.launch {
-            val success = FirebaseManager.addPerson(
+            val result = FirebaseManager.addPerson(
                 name = name,
                 birthDate = birthDate,
                 gender = gender,
@@ -138,16 +138,63 @@ class AddPatsActivity : AppCompatActivity() {
 
             binding.patientContinueBtn.isEnabled = true
 
-            if (success) {
-                showSuccessDialog()
-            } else {
-                Snackbar.make(
-                    binding.root,
-                    R.string.add_patient_error_snackbar,
-                    Snackbar.LENGTH_LONG
-                ).show()
+            when (result) {
+                AddPersonResult.Success -> showSuccessDialog()
+
+                is AddPersonResult.AuthError -> showErrorSnackbar(
+                    messageRes = R.string.add_patient_auth_error_snackbar,
+                    detail = result.message
+                )
+
+                is AddPersonResult.ConnectionError -> showErrorSnackbar(
+                    messageRes = R.string.add_patient_connection_error_snackbar,
+                    detail = result.message
+                )
+
+                is AddPersonResult.PermissionDenied -> showErrorSnackbar(
+                    messageRes = R.string.add_patient_permission_error_snackbar,
+                    detail = result.message
+                )
+
+                is AddPersonResult.ServiceUnavailable -> showErrorSnackbar(
+                    messageRes = R.string.add_patient_unavailable_error_snackbar,
+                    detail = result.message
+                )
+
+                is AddPersonResult.Timeout -> showErrorSnackbar(
+                    messageRes = R.string.add_patient_timeout_error_snackbar,
+                    detail = result.message
+                )
+
+                is AddPersonResult.QuotaExceeded -> showErrorSnackbar(
+                    messageRes = R.string.add_patient_quota_error_snackbar,
+                    detail = result.message
+                )
+
+                is AddPersonResult.InvalidData -> showErrorSnackbar(
+                    messageRes = R.string.add_patient_invalid_data_error_snackbar,
+                    detail = result.message
+                )
+
+                is AddPersonResult.OperationCancelled -> showErrorSnackbar(
+                    messageRes = R.string.add_patient_cancelled_error_snackbar,
+                    detail = result.message
+                )
+
+                is AddPersonResult.UnknownError -> showErrorSnackbar(
+                    messageRes = R.string.add_patient_unknown_error_snackbar,
+                    detail = result.message
+                )
             }
         }
+    }
+
+    private fun showErrorSnackbar(messageRes: Int, detail: String?) {
+        Snackbar.make(
+            binding.root,
+            getString(messageRes, detail ?: getString(R.string.add_patient_generic_error_detail)),
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     private fun showSuccessDialog() {

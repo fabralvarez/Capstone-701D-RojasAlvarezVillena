@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.FirebaseNetworkException
@@ -28,6 +29,19 @@ sealed class RegistrationResult {
     data object WeakPassword : RegistrationResult()
     data class ConnectionError(val message: String? = null) : RegistrationResult()
     data class UnknownError(val message: String? = null) : RegistrationResult()
+}
+
+sealed class AddPersonResult {
+    data object Success : AddPersonResult()
+    data class AuthError(val message: String? = null) : AddPersonResult()
+    data class ConnectionError(val message: String? = null) : AddPersonResult()
+    data class PermissionDenied(val message: String? = null) : AddPersonResult()
+    data class ServiceUnavailable(val message: String? = null) : AddPersonResult()
+    data class Timeout(val message: String? = null) : AddPersonResult()
+    data class QuotaExceeded(val message: String? = null) : AddPersonResult()
+    data class InvalidData(val message: String? = null) : AddPersonResult()
+    data class OperationCancelled(val message: String? = null) : AddPersonResult()
+    data class UnknownError(val message: String? = null) : AddPersonResult()
 }
 
 object FirebaseManager {
@@ -126,11 +140,11 @@ object FirebaseManager {
         birthDate: String,
         gender: String,
         notes: String,
-    ): Boolean {
+    ): AddPersonResult {
         val userId = getCurrentUserId()
         if (userId == null) {
             Log.e(LOG_TAG, "Error añadiendo persona: usuario no autenticado")
-            return false
+            return AddPersonResult.AuthError()
         }
 
         return try {
@@ -149,10 +163,41 @@ object FirebaseManager {
             db.collection(COLLECTION_PATIENTS)
                 .add(personData)
                 .await()
-            true
+            AddPersonResult.Success
+        } catch (e: FirebaseNetworkException) {
+            Log.e(LOG_TAG, "Error de red añadiendo persona: ${e.message}", e)
+            AddPersonResult.ConnectionError(e.localizedMessage)
+        } catch (e: FirebaseFirestoreException) {
+            Log.e(LOG_TAG, "Error de Firestore añadiendo persona: ${e.message}", e)
+            when (e.code) {
+                FirebaseFirestoreException.Code.PERMISSION_DENIED ->
+                    AddPersonResult.PermissionDenied(e.localizedMessage)
+
+                FirebaseFirestoreException.Code.UNAUTHENTICATED ->
+                    AddPersonResult.AuthError(e.localizedMessage)
+
+                FirebaseFirestoreException.Code.UNAVAILABLE,
+                FirebaseFirestoreException.Code.ABORTED ->
+                    AddPersonResult.ServiceUnavailable(e.localizedMessage)
+
+                FirebaseFirestoreException.Code.DEADLINE_EXCEEDED ->
+                    AddPersonResult.Timeout(e.localizedMessage)
+
+                FirebaseFirestoreException.Code.RESOURCE_EXHAUSTED ->
+                    AddPersonResult.QuotaExceeded(e.localizedMessage)
+
+                FirebaseFirestoreException.Code.INVALID_ARGUMENT,
+                FirebaseFirestoreException.Code.FAILED_PRECONDITION ->
+                    AddPersonResult.InvalidData(e.localizedMessage)
+
+                FirebaseFirestoreException.Code.CANCELLED ->
+                    AddPersonResult.OperationCancelled(e.localizedMessage)
+
+                else -> AddPersonResult.UnknownError(e.localizedMessage)
+            }
         } catch (e: Exception) {
             Log.e(LOG_TAG, "Error añadiendo persona: ${e.message}", e)
-            false
+            AddPersonResult.UnknownError(e.localizedMessage)
         }
     }
 

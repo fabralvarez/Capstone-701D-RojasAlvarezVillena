@@ -1,5 +1,6 @@
 package com.example.vitalarmapp.ui.add
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.vitalarmapp.AddAlarmActivity
 import com.example.vitalarmapp.AddMedsActivity
 import com.example.vitalarmapp.AddPatsActivity
+import com.example.vitalarmapp.NotificationsActivity
 import com.example.vitalarmapp.R
 import com.example.vitalarmapp.SettingsActivity
 import com.example.vitalarmapp.databinding.FragmentAddMainTabBinding
@@ -61,6 +63,10 @@ class AddMainTabFragment : Fragment() {
 
         binding.topAppBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+                R.id.action_notifications -> {
+                    startActivity(Intent(requireContext(), NotificationsActivity::class.java))
+                    true
+                }
                 R.id.action_settings -> {
                     startActivity(SettingsActivity.intent(requireContext()))
                     true

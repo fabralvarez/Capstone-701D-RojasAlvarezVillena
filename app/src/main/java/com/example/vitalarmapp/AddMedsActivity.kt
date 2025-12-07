@@ -6,9 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
@@ -19,11 +21,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.AddMainTabActivity
 import com.example.vitalarmapp.adapters.MedicationSearchAdapter
 import com.example.vitalarmapp.adapters.MedicationSearchItem
+import com.example.vitalarmapp.adapters.MedicationForm
 import com.example.vitalarmapp.databinding.ActivityAddMedsBinding
+import com.example.vitalarmapp.databinding.DialogMedicationDosageBinding
 import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.search.SearchView
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.android.material.transition.MaterialFadeThrough
+import androidx.transition.TransitionManager
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
@@ -73,6 +80,141 @@ class AddMedsActivity : AppCompatActivity() {
     private var displayedMedication: MedicationSearchItem? = null
     private var ignoreQueryChanges: Boolean = false
     private var isSelectionMode: Boolean = false
+    private var dosageDialog: AlertDialog? = null
+    private var pendingDosage: DosageInput? = null
+    private val fadeThrough by lazy {
+        MaterialFadeThrough().apply {
+            duration = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+        }
+    }
+
+    private fun buildDosageLabel(item: MedicationSearchItem): String? {
+        val value = item.dosageValue?.takeIf { it.isNotBlank() }
+        val unit = item.dosageUnit?.takeIf { it.isNotBlank() }
+        return if (value != null && unit != null) "$value $unit" else null
+    }
+
+    private fun formLabelRes(form: MedicationForm): Int = when (form) {
+        MedicationForm.TABLET -> R.string.add_meds_dosage_form_tablet
+        MedicationForm.CAPSULE -> R.string.add_meds_dosage_form_capsule
+        MedicationForm.SYRUP -> R.string.add_meds_dosage_form_syrup
+        MedicationForm.DROPS -> R.string.add_meds_dosage_form_drops
+        MedicationForm.INJECTION -> R.string.add_meds_dosage_form_injection
+        MedicationForm.OTHER -> R.string.add_meds_dosage_form_other
+    }
+
+    private fun promptDosageDialog(item: MedicationSearchItem) {
+        dosageDialog?.dismiss()
+        val dialogBinding = DialogMedicationDosageBinding.inflate(LayoutInflater.from(this))
+        val formOptions = MedicationForm.values()
+        val formLabels = formOptions.map { getString(formLabelRes(it)) }
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(R.string.add_meds_dosage_save, null)
+            .create()
+        dialog.setCanceledOnTouchOutside(false)
+
+        dialog.setOnShowListener {
+            dialogBinding.medicationFormField.setSimpleItems(formLabels.toTypedArray())
+            dialogBinding.medicationFormField.setOnItemClickListener { _, _, position, _ ->
+                val form = formOptions.getOrNull(position) ?: return@setOnItemClickListener
+                dialogBinding.medicationFormField.tag = form
+                dialogBinding.medicationFormLayout.error = null
+                dialogBinding.medicationUnitLayout.error = null
+                updateUnitsForForm(dialogBinding.medicationUnitField, form)
+            }
+
+            dialogBinding.medicationUnitField.setOnItemClickListener { _, _, _, _ ->
+                dialogBinding.medicationUnitLayout.error = null
+            }
+
+            dialogBinding.medicationDoseField.addTextChangedListener {
+                dialogBinding.medicationDoseLayout.error = null
+            }
+
+            prefillDosageFields(dialogBinding, item)
+
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val amount = dialogBinding.medicationDoseField.text?.toString()?.trim().orEmpty()
+                val form = dialogBinding.medicationFormField.tag as? MedicationForm
+                val unit = dialogBinding.medicationUnitField.text?.toString()?.trim().orEmpty()
+
+                var hasError = false
+                if (form == null || unit.isBlank()) {
+                    dialogBinding.medicationFormLayout.error =
+                        getString(R.string.add_meds_dosage_unit_error)
+                    dialogBinding.medicationUnitLayout.error =
+                        getString(R.string.add_meds_dosage_unit_error)
+                    hasError = true
+                }
+
+                if (amount.isBlank()) {
+                    dialogBinding.medicationDoseLayout.error =
+                        getString(R.string.add_meds_dosage_amount_error)
+                    hasError = true
+                }
+
+                if (hasError) return@setOnClickListener
+
+                val dosage = DosageInput(
+                    amount = amount,
+                    unit = unit,
+                    form = form!!,
+                )
+                pendingDosage = dosage
+                applyDosageToSelection(dosage)
+                dialog.dismiss()
+            }
+        }
+
+        dosageDialog = dialog
+        dialog.show()
+    }
+
+    private fun prefillDosageFields(
+        dialogBinding: DialogMedicationDosageBinding,
+        item: MedicationSearchItem,
+    ) {
+        val existingForm = item.form ?: pendingDosage?.form
+        val existingAmount = item.dosageValue ?: pendingDosage?.amount
+        val existingUnit = item.dosageUnit ?: pendingDosage?.unit
+
+        existingForm?.let { form ->
+            dialogBinding.medicationFormField.tag = form
+            dialogBinding.medicationFormField.setText(getString(formLabelRes(form)), false)
+            updateUnitsForForm(dialogBinding.medicationUnitField, form)
+        }
+
+        existingUnit?.let { unit ->
+            dialogBinding.medicationUnitField.setText(unit, false)
+        }
+
+        existingAmount?.let { dialogBinding.medicationDoseField.setText(it) }
+    }
+
+    private fun updateUnitsForForm(
+        autoCompleteTextView: MaterialAutoCompleteTextView,
+        form: MedicationForm,
+    ) {
+        autoCompleteTextView.setSimpleItems(form.allowedUnits.toTypedArray())
+        if (autoCompleteTextView.text.isNullOrBlank()) {
+            autoCompleteTextView.setText(form.allowedUnits.firstOrNull().orEmpty(), false)
+        }
+    }
+
+    private fun applyDosageToSelection(dosage: DosageInput) {
+        val current = displayedMedication ?: selectedMedication ?: return
+        val updated = current.copy(
+            dosageValue = dosage.amount,
+            dosageUnit = dosage.unit,
+            form = dosage.form,
+        )
+        displayedMedication = updated
+        selectedMedication = updated
+        showSelectedMedicationCard(updated)
+        updateAddMedicationState()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -299,6 +441,7 @@ class AddMedsActivity : AppCompatActivity() {
         ignoreQueryChanges = true
         selectedMedication = item
         displayedMedication = item
+        pendingDosage = null
         binding.searchView.editText.setText("")
         binding.searchBar.setText("")
         binding.searchView.hide()
@@ -311,6 +454,7 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     private fun showSelectedMedicationCard(item: MedicationSearchItem) {
+        TransitionManager.beginDelayedTransition(binding.contentContainer, fadeThrough)
         binding.selectedMedicationCard.isVisible = true
         val formattedName = formatCardText(item.name)
         binding.selectedMedicationName.text = formattedName.orEmpty()
@@ -328,9 +472,16 @@ class AddMedsActivity : AppCompatActivity() {
         binding.selectedMedicationRouteContainer.isVisible = routeText != null
         binding.selectedMedicationRoute.text = routeText ?: ""
 
-        val substanceText = formatCardText(item.substance)
-        binding.selectedMedicationSubstanceContainer.isVisible = substanceText != null
-        binding.selectedMedicationSubstance.text = substanceText ?: ""
+        val compositionText = formatCardText(item.composition ?: item.pharmacology)
+        binding.selectedMedicationCompositionContainer.isVisible = compositionText != null
+        binding.selectedMedicationComposition.text = compositionText ?: ""
+
+        val dosageText = buildDosageLabel(item)
+        binding.selectedMedicationDosageContainer.isVisible = dosageText != null
+        binding.selectedMedicationDosage.text = dosageText ?: ""
+        val formLabel = item.form?.let { getString(formLabelRes(it)) }
+        binding.selectedMedicationFormContainer.isVisible = formLabel != null
+        binding.selectedMedicationForm.text = formLabel.orEmpty()
 
         updateDisplayedMedication(
             item,
@@ -338,9 +489,15 @@ class AddMedsActivity : AppCompatActivity() {
             indicationText,
             pathologyText,
             routeText,
-            substanceText
+            compositionText,
+            item.dosageValue,
+            item.dosageUnit,
+            item.form
         )
 
+        if (item.dosageUnit.isNullOrBlank()) {
+            promptDosageDialog(item)
+        }
         translateSelectedMedicationCard(item)
         showAppropriateTopBar()
     }
@@ -354,7 +511,7 @@ class AddMedsActivity : AppCompatActivity() {
             val translatedIndication = translateText(item.indication)
             val translatedPharmacology = translateText(item.pharmacology)
             val translatedRoute = translateText(item.route)
-            val translatedSubstance = translateText(item.substance)
+            val translatedComposition = translateText(item.composition ?: item.pharmacology)
 
             if (selectedMedication != item) return@launch
 
@@ -373,9 +530,10 @@ class AddMedsActivity : AppCompatActivity() {
             binding.selectedMedicationRouteContainer.isVisible = routeText != null
             binding.selectedMedicationRoute.text = routeText ?: ""
 
-            val substanceText = translatedSubstance ?: formatCardText(item.substance)
-            binding.selectedMedicationSubstanceContainer.isVisible = substanceText != null
-            binding.selectedMedicationSubstance.text = substanceText ?: ""
+            val compositionText = translatedComposition
+                ?: formatCardText(item.composition ?: item.pharmacology)
+            binding.selectedMedicationCompositionContainer.isVisible = compositionText != null
+            binding.selectedMedicationComposition.text = compositionText ?: ""
 
             updateDisplayedMedication(
                 item,
@@ -383,7 +541,10 @@ class AddMedsActivity : AppCompatActivity() {
                 indicationText,
                 pathologyText,
                 routeText,
-                substanceText
+                compositionText,
+                item.dosageValue,
+                item.dosageUnit,
+                item.form
             )
         }
     }
@@ -465,7 +626,10 @@ class AddMedsActivity : AppCompatActivity() {
 
     private fun updateAddMedicationState() {
         val hasSelection = displayedMedication != null
-        binding.addMedicationButton.isEnabled = binding.progressBar.isVisible.not() && hasSelection
+        val hasDosage = displayedMedication?.let {
+            !it.dosageUnit.isNullOrBlank() && !it.dosageValue.isNullOrBlank() && it.form != null
+        } ?: false
+        binding.addMedicationButton.isEnabled = binding.progressBar.isVisible.not() && hasSelection && hasDosage
         binding.selectedMedicationCard.isVisible = hasSelection
         showAppropriateTopBar()
     }
@@ -496,15 +660,24 @@ class AddMedsActivity : AppCompatActivity() {
         updateSelectedMedicationCardSpacing(false)
     }
 
+    private data class DosageInput(
+        val amount: String,
+        val unit: String,
+        val form: MedicationForm,
+    )
+
     private fun removeSelectedMedication() {
         val removedMedicationName = selectedMedication?.name
         selectedMedication = null
         displayedMedication = null
+        pendingDosage = null
         binding.selectedMedicationName.text = null
         binding.selectedMedicationIndication.text = null
         binding.selectedMedicationPathology.text = null
         binding.selectedMedicationRoute.text = null
-        binding.selectedMedicationSubstance.text = null
+        binding.selectedMedicationComposition.text = null
+        binding.selectedMedicationDosage.text = null
+        binding.selectedMedicationForm.text = null
         binding.selectedMedicationCard.isVisible = false
         binding.searchBar.setText("")
         exitSelectionMode()
@@ -522,6 +695,7 @@ class AddMedsActivity : AppCompatActivity() {
     override fun onDestroy() {
         searchJob?.cancel()
         translationJob?.cancel()
+        dosageDialog?.dismiss()
         translatorCache.values.forEach { it.close() }
         translatorCache.clear()
         super.onDestroy()
@@ -542,15 +716,15 @@ class AddMedsActivity : AppCompatActivity() {
                 val indication = drug.drugIndication?.trim().takeIf { it?.isNotBlank() == true }
                 val pharmacology = drug.bestDescription()
                 val route = drug.openFda?.route?.firstOrNull()?.trim()
-                val substance = drug.openFda?.substanceName?.firstOrNull()?.trim()
+                val composition = drug.openFda?.substanceName?.firstOrNull()?.trim()
 
                 if (!uniqueItems.containsKey(rawName.lowercase())) {
                     uniqueItems[rawName.lowercase()] = MedicationSearchItem(
-                        normalizedName,
-                        indication,
-                        pharmacology,
-                        route,
-                        substance
+                        name = normalizedName,
+                        indication = indication,
+                        pharmacology = pharmacology,
+                        route = route,
+                        composition = composition
                     )
                 }
             }
@@ -592,25 +766,38 @@ class AddMedsActivity : AppCompatActivity() {
         indication: String?,
         pharmacology: String?,
         route: String?,
-        substance: String?
+        composition: String?,
+        dosageValue: String?,
+        dosageUnit: String?,
+        form: MedicationForm?,
     ) {
         displayedMedication = MedicationSearchItem(
             name?.takeIf { it.isNotBlank() } ?: base.name,
             indication,
             pharmacology,
             route,
-            substance
+            composition,
+            dosageValue,
+            dosageUnit,
+            form
         )
     }
 
     private fun saveMedicationLocally(item: MedicationSearchItem): Boolean {
+        if (item.dosageValue.isNullOrBlank() || item.dosageUnit.isNullOrBlank() || item.form == null) {
+            promptDosageDialog(item)
+            return false
+        }
         return runCatching {
             val simplifiedItem = MedicationSearchItem(
                 name = item.name,
                 indication = null,
                 pharmacology = item.pharmacology,
                 route = item.route,
-                substance = null
+                composition = item.composition ?: item.pharmacology,
+                dosageValue = item.dosageValue,
+                dosageUnit = item.dosageUnit,
+                form = item.form
             )
             val prefs = getSharedPreferences("medications_prefs", MODE_PRIVATE)
             val type = object : TypeToken<MutableList<MedicationSearchItem>>() {}.type
@@ -671,6 +858,7 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     private fun showAppropriateTopBar() {
+        TransitionManager.beginDelayedTransition(binding.contentContainer, fadeThrough)
         if (isSelectionMode) {
             binding.searchBar.visibility = View.GONE
             binding.summaryCollapsingToolbar.visibility = View.GONE

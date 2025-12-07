@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.EditProfileActivity
 import com.example.vitalarmapp.MainActivity
+import com.example.vitalarmapp.NotificationsActivity
 import com.example.vitalarmapp.R
 import com.example.vitalarmapp.SettingsActivity
 import com.example.vitalarmapp.databinding.FragmentProfileTabBinding
@@ -69,6 +70,10 @@ class ProfileTabFragment : Fragment() {
 
         binding.topAppBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+                R.id.action_notifications -> {
+                    startActivity(Intent(requireContext(), NotificationsActivity::class.java))
+                    true
+                }
                 R.id.action_settings -> {
                     startActivity(SettingsActivity.intent(requireContext()))
                     true

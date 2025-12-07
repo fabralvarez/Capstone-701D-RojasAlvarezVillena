@@ -4,25 +4,22 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.example.vitalarmapp.AlarmRingingActivity
+import com.example.vitalarmapp.utils.local.AlarmRepository
+import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.EXTRA_ALARM_ID
+
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         Log.d("AlarmReceiver", "🔔 Alarma recibida!")
 
-        val medicationName = intent.getStringExtra("medicationName")
-        val personName = intent.getStringExtra("personName")
-        val dosage = intent.getStringExtra("dosage")
-        val medicationId = intent.getStringExtra("medicationId")
+        val alarmId = intent.getStringExtra(EXTRA_ALARM_ID)
+        if (alarmId.isNullOrEmpty()) return
 
-        Log.d("AlarmReceiver", "💊 Mostrando notificación para: $medicationName - $personName")
+        val repository = AlarmRepository(context)
+        repository.markTriggered(alarmId)
 
-        // Iniciar el servicio que mostrará la notificación
-        val serviceIntent = Intent(context, AlarmService::class.java).apply {
-            putExtra("medicationName", medicationName)
-            putExtra("personName", personName)
-            putExtra("dosage", dosage)
-            putExtra("medicationId", medicationId)
-        }
-        context.startService(serviceIntent)
+        val launchIntent = AlarmRingingActivity.intent(context, alarmId)
+        context.startActivity(launchIntent)
     }
 }

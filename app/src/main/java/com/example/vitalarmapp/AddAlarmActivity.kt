@@ -1,99 +1,93 @@
 package com.example.vitalarmapp
 
-import android.app.TimePickerDialog
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.vitalarmapp.alarm.PatientChoice
+import com.example.vitalarmapp.alarm.PatientRadioAdapter
 import com.example.vitalarmapp.databinding.ActivityAddAlarmBinding
-import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
-import java.util.Calendar
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.google.android.material.transition.platform.MaterialSharedAxis
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddAlarmActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddAlarmBinding
-    private val alarmTimes = mutableListOf<String>()
+    private val adapter = PatientRadioAdapter(::onPatientSelected)
+
+    private var selectedPatient: PatientChoice? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
+        window.returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
         super.onCreate(savedInstanceState)
         binding = ActivityAddAlarmBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
 
         setupToolbar()
+        setupList()
         setupActions()
-        renderChips()
+        loadPatients()
     }
 
     private fun setupToolbar() {
-        binding.topAppBar.setNavigationOnClickListener {
+        binding.addAlarmToolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }
 
+    private fun setupList() {
+        binding.addAlarmPatients.layoutManager = LinearLayoutManager(this)
+        binding.addAlarmPatients.adapter = adapter
+    }
+
     private fun setupActions() {
-        binding.btnAddAlarmTime.setOnClickListener { showTimePicker() }
-        binding.btnSaveAlarm.setOnClickListener { saveAlarm() }
+        binding.addAlarmContinue.setOnClickListener {
+            val patient = selectedPatient ?: return@setOnClickListener
+            startActivity(
+                SelectMedActivity.intent(
+                    context = this,
+                    patientId = patient.id,
+                    patientName = patient.name
+                )
+            )
+        }
     }
 
-    private fun showTimePicker() {
-        val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-
-        TimePickerDialog(
-            this,
-            { _, selectedHour, selectedMinute ->
-                val formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
-                if (alarmTimes.contains(formattedTime)) {
-                    Snackbar.make(binding.root, getString(R.string.add_alarm_time_exists), Snackbar.LENGTH_SHORT)
-                        .setAnchorView(binding.btnSaveAlarm)
-                        .show()
-                    return@TimePickerDialog
-                }
-                alarmTimes.add(formattedTime)
-                alarmTimes.sort()
-                renderChips()
-            },
-            hour,
-            minute,
-            true
-        ).show()
-    }
-
-    private fun renderChips() {
-        binding.chipGroupTimes.removeAllViews()
-        alarmTimes.forEach { time ->
-            val chip = Chip(this).apply {
-                text = time
-                isCloseIconVisible = true
-                setOnCloseIconClickListener {
-                    alarmTimes.remove(time)
-                    renderChips()
-                }
+    private fun loadPatients() {
+        lifecycleScope.launch {
+            setLoading(true)
+            val patients = withContext(Dispatchers.IO) {
+                FirebaseManager.getPeople()
             }
-            binding.chipGroupTimes.addView(chip)
+            val mapped = patients.map { PatientChoice(id = it.id, name = it.name) }
+            adapter.submitList(mapped)
+            selectedPatient = null
+            binding.addAlarmContinue.isEnabled = false
+            setLoading(false)
         }
-        binding.chipGroupTimes.isVisible = alarmTimes.isNotEmpty()
     }
 
-    private fun saveAlarm() {
-        if (alarmTimes.isEmpty()) {
-            Snackbar.make(binding.root, getString(R.string.add_alarm_no_times), Snackbar.LENGTH_SHORT)
-                .setAnchorView(binding.btnSaveAlarm)
-                .show()
-            return
-        }
-        Snackbar.make(binding.root, getString(R.string.add_alarm_saved), Snackbar.LENGTH_SHORT)
-            .setAnchorView(binding.btnSaveAlarm)
-            .show()
-        finish()
+    private fun setLoading(isLoading: Boolean) {
+        binding.addAlarmLoading.isVisible = isLoading
+        val hasItems = adapter.itemCount > 0
+        binding.addAlarmPatients.isVisible = !isLoading && hasItems
+        binding.addAlarmEmpty.isVisible = !isLoading && !hasItems
+    }
+
+    private fun onPatientSelected(patient: PatientChoice) {
+        selectedPatient = patient
+        binding.addAlarmContinue.isEnabled = true
     }
 
     companion object {
-        fun intent(context: Context): Intent = Intent(context, AddAlarmActivity::class.java)
+        const val EXTRA_PATIENT_ID = "extra_patient_id"
+        const val EXTRA_PATIENT_NAME = "extra_patient_name"
     }
 }

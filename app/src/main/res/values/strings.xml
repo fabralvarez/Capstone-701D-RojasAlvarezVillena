@@ -212,6 +212,24 @@
     <string name="add_meds_selected_title">Medicamento seleccionado</string>
     <string name="add_meds_route_label">Vía: </string>
     <string name="add_meds_substance_label">Composición: </string>
+    <string name="add_meds_composition_label">Composición</string>
+    <string name="add_meds_dosage_label">Dosis</string>
+    <string name="add_meds_form_label">Formato</string>
+    <string name="add_meds_dosage_dialog_title">Agrega la dosificación</string>
+    <string name="add_meds_dosage_dialog_supporting">Selecciona el formato y la unidad correcta para este medicamento antes de guardarlo.</string>
+    <string name="add_meds_dosage_form_hint">Formato del medicamento</string>
+    <string name="add_meds_dosage_amount_hint">Cantidad</string>
+    <string name="add_meds_dosage_amount_helper">Ej: 200, 500, 1.5</string>
+    <string name="add_meds_dosage_unit_hint">Unidad de dosificación</string>
+    <string name="add_meds_dosage_save">Guardar dosificación</string>
+    <string name="add_meds_dosage_form_tablet">Tabletas / pastillas</string>
+    <string name="add_meds_dosage_form_capsule">Cápsulas</string>
+    <string name="add_meds_dosage_form_syrup">Jarabe / solución</string>
+    <string name="add_meds_dosage_form_drops">Gotas</string>
+    <string name="add_meds_dosage_form_injection">Inyectable</string>
+    <string name="add_meds_dosage_form_other">Otro formato</string>
+    <string name="add_meds_dosage_unit_error">Selecciona el formato y la unidad para continuar.</string>
+    <string name="add_meds_dosage_amount_error">Ingresa una cantidad válida.</string>
     <string name="add_meds_selection_count" tools:ignore="PluralsCandidate">%1$d seleccionado</string>
     <string name="add_meds_delete_selection">Eliminar selección</string>
     <string name="add_meds_selection_removed_message">%1$s eliminado exitosamente</string>
@@ -274,6 +292,11 @@
     <string name="profile_logout_dialog_supporting">Una vez cerrada la sesión, volverás a la pantalla de inicio</string>
     <string name="profile_logout_dialog_confirm">Cerrar Sesión</string>
     <string name="profile_logout_dialog_cancel">Cancelar</string>
+    <string name="notifications_title">Novedades</string>
+    <string name="notifications_headline_format">Vitalarm %1$s — %2$s</string>
+    <string name="notifications_added_prefix">Nuevos: %1$s.</string>
+    <string name="notifications_changed_prefix">Mejoras: %1$s.</string>
+    <string name="notifications_empty">No hay novedades para mostrar por ahora.</string>
     <string name="settings_title">Ajustes</string>
     <string name="settings_material_you_title">Activar Material You</string>
     <string name="settings_material_you_subtitle">El color estará basado en tu wallpaper</string>
@@ -293,4 +316,35 @@
     <string name="about_app_version">Versión %1$s</string>
     <string name="medication_pathology">Patología asociada:</string>
     <string name="medication_indication">Uso común en pacientes con:</string>
+    <string name="add_alarm_title">Agrega una alarma</string>
+    <string name="add_alarm_subtitle">Para comenzar, seleccione un paciente registrado</string>
+    <string name="add_alarm_empty">No tienes pacientes registrados todavía.</string>
+    <string name="add_alarm_continue">Continuar</string>
+    <string name="select_med_title">Seleccionar Medicamento</string>
+    <string name="select_med_subtitle">Para el paciente seleccionado</string>
+    <string name="select_med_empty">Aún no hay medicamentos guardados.</string>
+    <string name="confirm_alarm_title">Selecciona la hora</string>
+    <string name="confirm_alarm_subtitle">Seleccione la hora en que sonará la alarma</string>
+    <string name="confirm_alarm_pick_time">Fijar Hora</string>
+    <string name="confirm_alarm_time_unset">Hora no seleccionada</string>
+    <string name="confirm_alarm_summary">Paciente: %1$s
+Medicamento: %2$s
+Detalle: %3$s</string>
+    <string name="alarm_sum_title">Resumen</string>
+    <string name="alarm_sum_subtitle">De la alarma y sus configuraciones</string>
+    <string name="alarm_sum_patient_header">Paciente seleccionado</string>
+    <string name="alarm_sum_med_header">Medicamento seleccionado</string>
+    <string name="alarm_sum_med_value">%1$s • %2$s</string>
+    <string name="alarm_sum_time_header">Hora fijada</string>
+    <string name="alarm_sum_save">Guardar</string>
+    <string name="alarm_sum_saved">Alarma guardada correctamente.</string>
+    <string name="alarm_ring_medication">%1$s · %2$s</string>
+    <string name="alarm_ring_verify">Verificar</string>
+    <string name="alarm_ring_verified">Alarma verificada</string>
+    <string name="alarm_ring_capture_failed">No se pudo capturar la foto</string>
+    <string name="past_alarms_title">Alarmas pasadas</string>
+    <string name="past_alarms_empty">No hay alarmas verificadas en los últimos 7 días</string>
+    <string name="past_alarm_subtitle">%1$s · %2$s · %3$s</string>
+    <string name="past_alarm_detail_medication">%1$s · %2$s</string>
+    <string name="past_alarm_detail_photo">Foto de verificación</string>
 </resources>

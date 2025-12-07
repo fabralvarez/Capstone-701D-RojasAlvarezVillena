@@ -51,6 +51,16 @@ class AlarmListActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         binding.alarmListToolbar.setNavigationOnClickListener { finish() }
+        binding.alarmListToolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_past_alarms -> {
+                    startActivity(PastAlarmsActivity.intent(this))
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 
     private fun setupSelectionToolbar() {

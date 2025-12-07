@@ -1,5 +1,6 @@
 package com.example.vitalarmapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -58,6 +59,10 @@ class LanMenuActivity : AppCompatActivity() {
     private fun setupAppBar() {
         binding.lanMenuToolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+                R.id.action_notifications -> {
+                    startActivity(Intent(this, NotificationsActivity::class.java))
+                    true
+                }
                 R.id.action_settings -> {
                     startActivity(SettingsActivity.intent(this))
                     true

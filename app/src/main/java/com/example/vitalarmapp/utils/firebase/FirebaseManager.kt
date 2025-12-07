@@ -2,6 +2,7 @@ package com.example.vitalarmapp.utils.firebase
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -160,7 +161,7 @@ object FirebaseManager {
                 "createdAt" to System.currentTimeMillis()
             )
 
-            patientsCollection()
+            patientsCollection(userId)
                 .add(personData)
                 .await()
             AddPersonResult.Success
@@ -169,35 +170,40 @@ object FirebaseManager {
             AddPersonResult.ConnectionError(e.localizedMessage)
         } catch (e: FirebaseFirestoreException) {
             Log.e(LOG_TAG, "Error de Firestore añadiendo persona: ${e.message}", e)
-            when (e.code) {
-                FirebaseFirestoreException.Code.PERMISSION_DENIED ->
-                    AddPersonResult.PermissionDenied(e.localizedMessage)
-
-                FirebaseFirestoreException.Code.UNAUTHENTICATED ->
-                    AddPersonResult.AuthError(e.localizedMessage)
-
-                FirebaseFirestoreException.Code.UNAVAILABLE,
-                FirebaseFirestoreException.Code.ABORTED ->
-                    AddPersonResult.ServiceUnavailable(e.localizedMessage)
-
-                FirebaseFirestoreException.Code.DEADLINE_EXCEEDED ->
-                    AddPersonResult.Timeout(e.localizedMessage)
-
-                FirebaseFirestoreException.Code.RESOURCE_EXHAUSTED ->
-                    AddPersonResult.QuotaExceeded(e.localizedMessage)
-
-                FirebaseFirestoreException.Code.INVALID_ARGUMENT,
-                FirebaseFirestoreException.Code.FAILED_PRECONDITION ->
-                    AddPersonResult.InvalidData(e.localizedMessage)
-
-                FirebaseFirestoreException.Code.CANCELLED ->
-                    AddPersonResult.OperationCancelled(e.localizedMessage)
-
-                else -> AddPersonResult.UnknownError(e.localizedMessage)
-            }
+            mapFirestoreException(e)
         } catch (e: Exception) {
             Log.e(LOG_TAG, "Error añadiendo persona: ${e.message}", e)
             AddPersonResult.UnknownError(e.localizedMessage)
+        }
+    }
+
+    @VisibleForTesting
+    internal fun mapFirestoreException(e: FirebaseFirestoreException): AddPersonResult {
+        return when (e.code) {
+            FirebaseFirestoreException.Code.PERMISSION_DENIED ->
+                AddPersonResult.PermissionDenied(e.localizedMessage)
+
+            FirebaseFirestoreException.Code.UNAUTHENTICATED ->
+                AddPersonResult.AuthError(e.localizedMessage)
+
+            FirebaseFirestoreException.Code.UNAVAILABLE,
+            FirebaseFirestoreException.Code.ABORTED ->
+                AddPersonResult.ServiceUnavailable(e.localizedMessage)
+
+            FirebaseFirestoreException.Code.DEADLINE_EXCEEDED ->
+                AddPersonResult.Timeout(e.localizedMessage)
+
+            FirebaseFirestoreException.Code.RESOURCE_EXHAUSTED ->
+                AddPersonResult.QuotaExceeded(e.localizedMessage)
+
+            FirebaseFirestoreException.Code.INVALID_ARGUMENT,
+            FirebaseFirestoreException.Code.FAILED_PRECONDITION ->
+                AddPersonResult.InvalidData(e.localizedMessage)
+
+            FirebaseFirestoreException.Code.CANCELLED ->
+                AddPersonResult.OperationCancelled(e.localizedMessage)
+
+            else -> AddPersonResult.UnknownError(e.localizedMessage)
         }
     }
 
@@ -214,8 +220,7 @@ object FirebaseManager {
         return try {
             Log.d("FirebaseDebug", "🎯 Consultando Firestore...")
 
-            val result = patientsCollection()
-                .whereEqualTo("userId", userId)
+            val result = patientsCollection(userId)
                 .get()
                 .await()
 
@@ -261,7 +266,7 @@ object FirebaseManager {
                         .await()
                 }
             }
-            patientsCollection()
+            patientsCollection(userId)
                 .document(personId)
                 .delete()
                 .await()
@@ -272,8 +277,10 @@ object FirebaseManager {
         }
     }
 
-    private fun patientsCollection() =
-        db.collection(COLLECTION_PATIENTS)
+    private fun patientsCollection(userId: String) =
+        db.collection(COLLECTION_USERS)
+            .document(userId)
+            .collection(COLLECTION_PATIENTS)
 
     suspend fun addMedication(
         personId: String,

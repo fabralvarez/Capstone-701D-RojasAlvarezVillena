@@ -161,8 +161,9 @@ internal class MedicationListAdapter(
         ) {
             binding.medicationName.text = item.medication.name
             binding.medicationDetail.text = listOfNotNull(
+                buildDosageLabel(item.medication),
                 item.medication.route?.takeIf { it.isNotBlank() },
-                item.medication.pharmacology?.takeIf { it.isNotBlank() }
+                item.medication.composition?.takeIf { it.isNotBlank() }
             ).joinToString(" • ")
                 .ifBlank {
                     binding.root.context.getString(R.string.medication_detail_placeholder)
@@ -181,6 +182,12 @@ internal class MedicationListAdapter(
                     onItemSelected(item)
                 }
             }
+        }
+
+        private fun buildDosageLabel(item: MedicationSearchItem): String? {
+            val value = item.dosageValue?.takeIf { it.isNotBlank() }
+            val unit = item.dosageUnit?.takeIf { it.isNotBlank() }
+            return if (value != null && unit != null) "$value $unit" else null
         }
     }
 }

@@ -7,11 +7,25 @@ import com.example.vitalarmapp.databinding.ItemMedicationResultBinding
 
 data class MedicationSearchItem(
     val name: String,
-    val indication: String?,
-    val pharmacology: String?,
-    val route: String?,
-    val substance: String?
+    val indication: String? = null,
+    val pharmacology: String? = null,
+    val route: String? = null,
+    val composition: String? = null,
+    val dosageValue: String? = null,
+    val dosageUnit: String? = null,
+    val form: MedicationForm? = null,
 )
+
+enum class MedicationForm(
+    val allowedUnits: List<String>,
+) {
+    TABLET(listOf("mg", "mcg", "g")),
+    CAPSULE(listOf("mg", "mcg", "g")),
+    SYRUP(listOf("ml", "mg/ml")),
+    DROPS(listOf("drops", "ml")),
+    INJECTION(listOf("ml", "mg/ml")),
+    OTHER(listOf("mg", "mcg", "g", "ml")),
+}
 
 class MedicationSearchAdapter(
     private var items: List<MedicationSearchItem>,
@@ -46,7 +60,7 @@ class MedicationSearchAdapter(
             val summary = item.indication
                 ?: item.pharmacology
                 ?: item.route
-                ?: item.substance
+                ?: item.composition
             binding.tvMedicationDescription.text = summary?.takeIf { it.isNotBlank() }
                 ?: binding.root.context.getString(com.example.vitalarmapp.R.string.add_meds_empty_description)
 

@@ -160,7 +160,7 @@ object FirebaseManager {
                 "createdAt" to System.currentTimeMillis()
             )
 
-            patientsCollection(userId)
+            patientsCollection()
                 .add(personData)
                 .await()
             AddPersonResult.Success
@@ -214,7 +214,7 @@ object FirebaseManager {
         return try {
             Log.d("FirebaseDebug", "🎯 Consultando Firestore...")
 
-            val result = patientsCollection(userId)
+            val result = patientsCollection()
                 .whereEqualTo("userId", userId)
                 .get()
                 .await()
@@ -261,7 +261,7 @@ object FirebaseManager {
                         .await()
                 }
             }
-            patientsCollection(userId)
+            patientsCollection()
                 .document(personId)
                 .delete()
                 .await()
@@ -272,10 +272,8 @@ object FirebaseManager {
         }
     }
 
-    private fun patientsCollection(userId: String) =
-        db.collection(COLLECTION_USERS)
-            .document(userId)
-            .collection(COLLECTION_PATIENTS)
+    private fun patientsCollection() =
+        db.collection(COLLECTION_PATIENTS)
 
     suspend fun addMedication(
         personId: String,

@@ -16,7 +16,7 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.9.5"
+        versionName = "0.9.6"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val localProperties = Properties().apply {
@@ -33,16 +33,7 @@ android {
                 ?: ""
         }
 
-        val smtpHost: String = readSecret("SMTP_HOST")
-        val smtpPort: String = readSecret("SMTP_PORT")
-        val smtpUsername: String = readSecret("SMTP_USERNAME")
-        val smtpPassword: String = readSecret("SMTP_PASSWORD")
         val openFdaApiKey: String = readSecret("OPEN_FDA_API_KEY")
-
-        buildConfigField("String", "SMTP_HOST", "\"$smtpHost\"")
-        buildConfigField("String", "SMTP_PORT", "\"$smtpPort\"")
-        buildConfigField("String", "SMTP_USERNAME", "\"$smtpUsername\"")
-        buildConfigField("String", "SMTP_PASSWORD", "\"$smtpPassword\"")
         buildConfigField("String", "OPEN_FDA_API_KEY", "\"$openFdaApiKey\"")
     }
     androidResources {
@@ -98,10 +89,6 @@ dependencies {
     implementation(libs.core)
     implementation(libs.mlkit.translate)
     implementation(libs.mlkit.languageid)
-
-    // Envío de correos vía SMTP
-    implementation(libs.com.sun.mail.android.mail)
-    implementation(libs.com.sun.mail.android.activation)
 
     // Dependencias de testing
     testImplementation(libs.junit)

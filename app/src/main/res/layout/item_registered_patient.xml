@@ -28,6 +28,7 @@
             <ImageView
                 android:layout_width="72dp"
                 android:layout_height="72dp"
+                android:layout_gravity="center"
                 android:contentDescription="@null"
                 app:srcCompat="@drawable/outline_person_24"
                 app:tint="?attr/colorOnSurfaceVariant" />

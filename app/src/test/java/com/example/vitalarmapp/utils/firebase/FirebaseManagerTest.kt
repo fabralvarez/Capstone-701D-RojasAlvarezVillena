@@ -1,10 +1,15 @@
 package com.example.vitalarmapp.utils.firebase
 
 import com.google.firebase.firestore.FirebaseFirestoreException
+import org.junit.runner.RunWith
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
+@RunWith(RobolectricTestRunner::class)
+@Config(manifest = Config.NONE)
 class FirebaseManagerTest {
 
     @Test

@@ -50,7 +50,8 @@ class AddMainTabFragment : Fragment() {
 
     private fun setupActions() {
         binding.cardAddAlarm.setOnClickListener {
-            startActivity(AddAlarmActivity.intent(requireContext()))
+            val intent = Intent(requireContext(), AddAlarmActivity::class.java)
+            startActivity(intent)
         }
 
         binding.cardAddPatient.setOnClickListener {

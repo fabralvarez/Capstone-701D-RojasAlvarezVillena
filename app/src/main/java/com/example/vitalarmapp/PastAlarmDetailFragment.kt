@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.vitalarmapp.databinding.FragmentPastAlarmDetailBinding
 import com.example.vitalarmapp.utils.local.AlarmRepository
-import com.google.android.material.transition.MaterialArcMotion
-import com.google.android.material.transition.platform.MaterialFadeThrough
 
 class PastAlarmDetailFragment : Fragment() {
 
@@ -28,8 +26,6 @@ class PastAlarmDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        enterTransition = MaterialFadeThrough().apply { pathMotion = MaterialArcMotion() }
-        returnTransition = MaterialFadeThrough().apply { pathMotion = MaterialArcMotion() }
         bindDetails()
     }
 

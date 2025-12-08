@@ -29,8 +29,8 @@
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:contentDescription="@null"
-                android:tint="?attr/colorOnSurfaceVariant"
-                app:srcCompat="@drawable/outline_person_24" />
+                app:srcCompat="@drawable/outline_person_24"
+                app:tint="?attr/colorOnSurfaceVariant" />
         </FrameLayout>
 
         <TextView

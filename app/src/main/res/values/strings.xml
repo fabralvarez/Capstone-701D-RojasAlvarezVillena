@@ -36,7 +36,7 @@
     <string name="home_section_empty_alarms">Aún no hay alarmas programadas.</string>
     <string name="home_section_empty_patients">Aún no has agregado pacientes.</string>
     <string name="home_section_empty_medications">No hay medicamentos registrados.</string>
-    <string name="home_patient_age_format">%1$d años</string>
+    <string name="home_patient_age_format" tools:ignore="PluralsCandidate">%1$d años</string>
     <string name="home_patient_age_unknown">Edad no disponible</string>
     <string name="home_alarm_today">Hoy</string>
     <string name="home_alarm_tomorrow">Mañana</string>
@@ -149,7 +149,7 @@
     <string name="add_main_card_medication_title">Medicamentos</string>
     <string name="add_main_card_medication_subtitle">Agrega uno o más medicamentos a la lista desde la Base de Datos de Vitalarm</string>
     <string name="add_main_toolbar_title">¿Qué deseas agregar?</string>
-    <string name="add_alarm_title">Agregar alarmas</string>
+    <string name="add_alarm_alt_title">Agregar alarmas</string>
     <string name="add_alarm_description">Programa los recordatorios para tus pacientes. Puedes añadir varios horarios y los mantendremos ordenados.</string>
     <string name="add_alarm_add_time">Agregar horario</string>
     <string name="add_alarm_notes">Notas opcionales</string>
@@ -241,13 +241,13 @@
     <string name="add_meds_summary_title">Resumen</string>
     <string name="add_meds_summary_subtitle">Del medicamento seleccionado para agregar</string>
     <string name="add_meds_summary_cancel_title">¿Estás seguro de cancelar la operación?</string>
-    <string name="add_meds_summary_cancel_message">Perderás todo tu progreso hasta el momento.</string>
+    <string name="add_meds_summary_cancel_message" tools:ignore="Typos">Perderás todo tu progreso hasta el momento.</string>
     <string name="add_meds_summary_cancel_confirm">Sí</string>
     <string name="add_meds_summary_cancel_dismiss">No</string>
     <string name="alarm_list_title">Próximas Alarmas</string>
     <string name="meds_list_title">Medicamentos Registrados</string>
     <string name="pats_list_title">Pacientes Registrados</string>
-    <string name="list_selection_count">%1$d seleccionados</string>
+    <string name="list_selection_count" tools:ignore="PluralsCandidate">%1$d seleccionados</string>
     <string name="list_delete_confirm_title">Está seguro de eliminar los elementos seleccionados?</string>
     <string name="list_delete_confirm_supporting">Esta acción es irreversible.</string>
     <string name="list_delete_yes">Sí</string>
@@ -347,4 +347,14 @@ Detalle: %3$s</string>
     <string name="past_alarm_subtitle">%1$s · %2$s · %3$s</string>
     <string name="past_alarm_detail_medication">%1$s · %2$s</string>
     <string name="past_alarm_detail_photo">Foto de verificación</string>
+    <string name="patient">Paciente</string>
+    <string name="past_alarm_subtitle_desc">Medicamento - dosis - hora</string>
+    <string name="medication">Medicamento</string>
+    <string name="past_alarm_detail_time_text">08:00</string>
+    <string name="current_patients">Personas a Cuidado</string>
+    <string name="no_patients_registered">No hay personas agregadas\n\nPresiona el botón de abajo para agregar una persona</string>
+    <string name="add_patient">Agregar Persona</string>
+    <string name="lan_menu_home">Inicio</string>
+    <string name="lan_add">Agregar</string>
+    <string name="lan_profile">Perfil</string>
 </resources>

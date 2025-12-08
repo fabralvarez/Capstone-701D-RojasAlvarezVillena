@@ -17,7 +17,8 @@ internal class ChangelogRepository {
 
     @VisibleForTesting
     internal fun parseEntries(context: Context, changelog: String): List<ChangelogEntry> {
-        val entryRegex = Regex("## \\[(.+?)] - (.+?)\\n(.*?)(?=## \\\\[|\\z)", RegexOption.DOT_MATCHES_ALL)
+        val entryRegex =
+            Regex("""## \[(.+?)] - (.+?)\n(.*?)(?=## \[|\z)""", RegexOption.DOT_MATCHES_ALL)
         val matches = entryRegex.findAll(changelog)
 
         return matches.map { matchResult ->

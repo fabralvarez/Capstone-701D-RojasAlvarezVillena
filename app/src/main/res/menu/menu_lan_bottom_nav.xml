@@ -3,13 +3,13 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/bottom_nav_home_icon"
-        android:title="Inicio" />
+        android:title="@string/lan_menu_home" />
     <item
         android:id="@+id/nav_add"
         android:icon="@drawable/bottom_nav_add_icon"
-        android:title="Agregar" />
+        android:title="@string/lan_add" />
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/bottom_nav_profile_icon"
-        android:title="Perfil" />
+        android:title="@string/lan_profile" />
 </menu>

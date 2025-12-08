@@ -55,7 +55,8 @@ class AddMainTabActivity : AppCompatActivity() {
 
     private fun setupActions() {
         binding.cardAddAlarm.setOnClickListener {
-            startActivity(AddAlarmActivity.intent(this))
+            val intent = Intent(this, AddAlarmActivity::class.java)
+            startActivity(intent)
         }
 
         binding.cardAddPatient.setOnClickListener {

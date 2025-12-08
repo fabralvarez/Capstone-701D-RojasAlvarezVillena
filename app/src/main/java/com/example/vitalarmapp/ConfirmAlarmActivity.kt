@@ -12,6 +12,7 @@ import com.example.vitalarmapp.databinding.ActivityConfirmAlarmBinding
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.android.material.transition.platform.MaterialSharedAxis
+import java.util.Locale
 
 class ConfirmAlarmActivity : AppCompatActivity() {
 
@@ -79,7 +80,7 @@ class ConfirmAlarmActivity : AppCompatActivity() {
         picker.addOnPositiveButtonClickListener {
             val hour = picker.hour
             val minute = picker.minute
-            selectedTime = String.format("%02d:%02d", hour, minute)
+            selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hour, minute)
             binding.confirmAlarmSelectedTime.text = selectedTime
             binding.confirmAlarmContinue.isEnabled = true
         }
@@ -88,6 +89,7 @@ class ConfirmAlarmActivity : AppCompatActivity() {
     }
 
     companion object {
+        const val EXTRA_PATIENT_ID = "com.example.vitalarmapp.PATIENT_ID"
         fun intent(
             context: Context,
             patientId: String,

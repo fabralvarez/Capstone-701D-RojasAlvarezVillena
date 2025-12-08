@@ -61,8 +61,8 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="@null"
-                    android:tint="?attr/colorOnSurfaceVariant"
-                    app:srcCompat="@drawable/ic_arrow_right_24" />
+                    app:srcCompat="@drawable/ic_arrow_right_24"
+                    app:tint="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -113,8 +113,8 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="@null"
-                    android:tint="?attr/colorOnSurfaceVariant"
-                    app:srcCompat="@drawable/ic_arrow_right_24" />
+                    app:srcCompat="@drawable/ic_arrow_right_24"
+                    app:tint="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -165,8 +165,8 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="@null"
-                    android:tint="?attr/colorOnSurfaceVariant"
-                    app:srcCompat="@drawable/ic_arrow_right_24" />
+                    app:srcCompat="@drawable/ic_arrow_right_24"
+                    app:tint="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

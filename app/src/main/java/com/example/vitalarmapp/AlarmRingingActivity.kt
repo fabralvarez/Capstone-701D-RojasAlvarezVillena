@@ -4,12 +4,10 @@ import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -31,7 +29,7 @@ class AlarmRingingActivity : AppCompatActivity() {
     private val repository by lazy { AlarmRepository(this) }
     private var record: AlarmRecord? = null
     private var ringtone: Ringtone? = null
-    private var pendingPhotoUri: Uri? = null
+    private lateinit var pendingPhotoUri: Uri
     private var pendingPhotoFile: File? = null
 
     private val permissionLauncher =
@@ -136,9 +134,6 @@ class AlarmRingingActivity : AppCompatActivity() {
         WindowInsetsControllerCompat(window, binding.root).apply {
             hide(WindowInsetsCompat.Type.systemBars())
             systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _: View, insets: WindowInsetsCompat ->
-            WindowInsetsCompat.CONSUMED
         }
     }
 

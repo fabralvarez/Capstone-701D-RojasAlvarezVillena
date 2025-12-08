@@ -1,6 +1,5 @@
 package com.example.vitalarmapp.utils.local
 
-import android.R
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -22,10 +21,7 @@ class AlarmService : Service() {
         val dosage = intent?.getStringExtra("dosage") ?: "Sin dosis"
         val medicationId = intent?.getStringExtra("medicationId") ?: ""
 
-        // Crear notificación
         showNotification(medicationName, personName, dosage, medicationId)
-
-        // Reproducir sonido de alarma
         playAlarmSound()
 
         return START_NOT_STICKY
@@ -38,8 +34,6 @@ class AlarmService : Service() {
         medicationId: String
     ) {
         Log.d("AlarmService", "📱 Creando notificación: $medicationName para $personName")
-
-        // Intent para cuando se hace click en la notificación
         val mainIntent = Intent(this, LanMenuActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -49,8 +43,6 @@ class AlarmService : Service() {
             mainIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-
-        // Intent para "Marcar como tomado"
         val takenIntent = Intent(this, AlarmReceiver::class.java).apply {
             action = "ACTION_MARK_TAKEN"
             putExtra("medicationId", medicationId)
@@ -62,11 +54,10 @@ class AlarmService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Crear notificación con iconos del sistema
         val notification = NotificationCompat.Builder(this, "vitalarm_alarm_channel")
             .setContentTitle("💊 Hora de tomar medicamento")
             .setContentText("$medicationName para $personName")
-            .setSmallIcon(R.drawable.ic_dialog_info) // Icono del sistema
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -76,10 +67,13 @@ class AlarmService : Service() {
                 NotificationCompat.BigTextStyle()
                     .bigText("💊 $medicationName\n👤 Para: $personName\n📏 Dosis: $dosage\n\nToca para abrir la app")
             )
-            .addAction(R.drawable.ic_input_add, "✅ Tomado", takenPendingIntent) // Icono del sistema
+            .addAction(
+                android.R.drawable.ic_input_add,
+                "✅ Tomado",
+                takenPendingIntent
+            ) // Icono del sistema
             .build()
 
-        // Mostrar notificación
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(medicationId.hashCode(), notification)
 

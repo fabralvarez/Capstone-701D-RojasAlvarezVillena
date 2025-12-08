@@ -4,6 +4,8 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.provider.Settings
+import com.example.vitalarmapp.AlarmRingingActivity
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -28,14 +30,23 @@ class AlarmScheduler(private val context: Context) {
         )
 
         val displayIntent = Intent(context, AlarmRingingActivity::class.java)
-        val alarmInfo = AlarmManager.AlarmClockInfo(triggerAt, PendingIntent.getActivity(
-            context,
-            record.id.hashCode(),
-            displayIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        ))
+        val alarmInfo = AlarmManager.AlarmClockInfo(
+            triggerAt, PendingIntent.getActivity(
+                context,
+                record.id.hashCode(),
+                displayIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        )
 
-        alarmManager.setAlarmClock(alarmInfo, receiverPendingIntent)
+        try {
+            alarmManager.setAlarmClock(alarmInfo, receiverPendingIntent)
+        } catch (_: SecurityException) {
+            val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+        }
     }
 
     companion object {
@@ -45,7 +56,8 @@ class AlarmScheduler(private val context: Context) {
         fun computeTriggerMillis(time: String, now: LocalDateTime = LocalDateTime.now()): Long {
             val parsedTime = LocalTime.parse(time)
             val today = LocalDate.from(now)
-            val targetDate = if (parsedTime.isBefore(now.toLocalTime())) today.plusDays(1) else today
+            val targetDate =
+                if (parsedTime.isBefore(now.toLocalTime())) today.plusDays(1) else today
             return LocalDateTime.of(targetDate, parsedTime)
                 .atZone(ZoneId.systemDefault())
                 .toInstant()

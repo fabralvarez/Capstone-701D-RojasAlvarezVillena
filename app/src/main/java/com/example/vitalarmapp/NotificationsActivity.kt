@@ -3,7 +3,6 @@ package com.example.vitalarmapp
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.transition.doOnEnd
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -62,9 +61,6 @@ class NotificationsActivity : AppCompatActivity() {
             notificationsAdapter.submitList(entries)
             binding.notificationsEmpty.isVisible = entries.isEmpty()
             binding.notificationsRecycler.isVisible = entries.isNotEmpty()
-            fadeThrough.doOnEnd {
-                binding.notificationsContainer.requestLayout()
-            }
         }
     }
 }

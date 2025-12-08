@@ -13,7 +13,7 @@ class ChangelogRepositoryAdvancedInstrumentedTest {
     private val repository = ChangelogRepository()
 
     @Test
-    fun EmptyChangelogYieldsNoEntries() {
+    fun emptyChangelogYieldsNoEntries() {
         val context = ApplicationProvider.getApplicationContext<android.content.Context>()
 
         val entries = repository.parseEntries(context, "")
@@ -22,7 +22,7 @@ class ChangelogRepositoryAdvancedInstrumentedTest {
     }
 
     @Test
-    fun EntriesWithoutHighlightsAreDiscarded() {
+    fun entriesWithoutHighlightsAreDiscarded() {
         val context = ApplicationProvider.getApplicationContext<android.content.Context>()
         val changelog = """
             ## [1.2.3] - 2024-05-05
@@ -38,7 +38,7 @@ class ChangelogRepositoryAdvancedInstrumentedTest {
     }
 
     @Test
-    fun FriendlyMappingsReplaceTechnicalPhrases() {
+    fun friendlyMappingsReplaceTechnicalPhrases() {
         val context = ApplicationProvider.getApplicationContext<android.content.Context>()
         val changelog = """
             ## [2.0.0] - 2024-07-07
@@ -57,7 +57,7 @@ class ChangelogRepositoryAdvancedInstrumentedTest {
     }
 
     @Test
-    fun LimitsHighlightsToFirstItems() {
+    fun limitsHighlightsToFirstItems() {
         val context = ApplicationProvider.getApplicationContext<android.content.Context>()
         val changelog = """
             ## [3.1.0] - 2024-08-08

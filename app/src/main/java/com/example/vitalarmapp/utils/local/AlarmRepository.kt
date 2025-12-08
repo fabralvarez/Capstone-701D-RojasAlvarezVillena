@@ -8,6 +8,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.UUID
+import androidx.core.content.edit
 
 data class AlarmRecord(
     val id: String = UUID.randomUUID().toString(),
@@ -89,7 +90,7 @@ class AlarmRepository(context: Context) {
     }
 
     private fun persist(records: List<AlarmRecord>) {
-        prefs.edit().putString(KEY_ALARMS, gson.toJson(records)).apply()
+        prefs.edit { putString(KEY_ALARMS, gson.toJson(records)) }
     }
 
     companion object {

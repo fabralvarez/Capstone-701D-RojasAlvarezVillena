@@ -1,5 +1,6 @@
 package com.example.vitalarmapp.alarm
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +36,7 @@ class PatientRadioAdapter(
         return PatientRadioViewHolder(binding)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: PatientRadioViewHolder, position: Int) {
         holder.bind(items[position], selectedId == items[position].id) {
             selectedId = it.id
@@ -45,6 +47,7 @@ class PatientRadioAdapter(
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<PatientChoice>) {
         items.clear()
         items.addAll(newItems)
@@ -100,6 +103,7 @@ class MedicationRadioAdapter(
         return MedicationRadioViewHolder(binding)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: MedicationRadioViewHolder, position: Int) {
         holder.bind(items[position], selectedId == items[position].id) {
             selectedId = it.id
@@ -110,6 +114,7 @@ class MedicationRadioAdapter(
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<MedicationChoice>) {
         items.clear()
         items.addAll(newItems)

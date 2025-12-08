@@ -5,31 +5,31 @@
     <string name="sign_in_subtitle">Con tu cuenta Vitalarm</string>
     <string name="sign_up">Registrate</string>
     <string name="register">Registrar</string>
-    <string name="username">Usuario</string>
-    <string name="password">Contraseña</string>
-    <string name="enter">Entrar</string>
-    <string name="name">Nombre</string>
-    <string name="lastname">Apellidos</string>
-    <string name="confirm_password">Confirmar Contraseña</string>
-    <string name="birthdate">Fecha de nacimiento</string>
-    <string name="contact_name">Nombre persona de contacto</string>
-    <string name="contact_relationship">Relación persona de contacto</string>
-    <string name="contact_number">Número persona de contacto</string>
-    <string name="continue_button">Continuar</string>
-    <string name="main_menu">Menú Principal</string>
-    <string name="add_person_to_care">Ingresar Persona a cuidado</string>
-    <string name="people_list">Personas a cuidado</string>
-    <string name="medications">Medicamentos</string>
-    <string name="next_medication">PRÓXIMO MEDICAMENTO</string>
-    <string name="medication_name">Medicamento</string>
-    <string name="time">Hora</string>
-    <string name="person">Persona</string>
+    <string name="username" tools:keep="@string/username">Usuario</string>
+    <string name="password" tools:keep="@string/password">Contraseña</string>
+    <string name="enter" tools:keep="@string/enter">Entrar</string>
+    <string name="name" tools:keep="@string/name">Nombre</string>
+    <string name="lastname" tools:keep="@string/lastname">Apellidos</string>
+    <string name="confirm_password" tools:keep="@string/confirm_password">Confirmar Contraseña</string>
+    <string name="birthdate" tools:keep="@string/birthdate">Fecha de nacimiento</string>
+    <string name="contact_name" tools:keep="@string/contact_name">Nombre persona de contacto</string>
+    <string name="contact_relationship" tools:keep="@string/contact_relationship">Relación persona de contacto</string>
+    <string name="contact_number" tools:keep="@string/contact_number">Número persona de contacto</string>
+    <string name="continue_button" tools:keep="@string/continue_button">Continuar</string>
+    <string name="main_menu" tools:keep="@string/main_menu">Menú Principal</string>
+    <string name="add_person_to_care" tools:keep="@string/add_person_to_care">Ingresar Persona a cuidado</string>
+    <string name="people_list" tools:keep="@string/people_list">Personas a cuidado</string>
+    <string name="medications" tools:keep="@string/medications">Medicamentos</string>
+    <string name="next_medication" tools:keep="@string/next_medication">PRÓXIMO MEDICAMENTO</string>
+    <string name="medication_name" tools:keep="@string/medication_name">Medicamento</string>
+    <string name="time" tools:keep="@string/time">Hora</string>
+    <string name="person" tools:keep="@string/person">Persona</string>
     <string name="logout">Cerrar sesión</string>
     <string name="home_greeting">Bienvenido, %1$s!</string>
     <string name="home_greeting_fallback">Bienvenido, Usuario</string>
-    <string name="home_no_people">No hay personas agregadas</string>
-    <string name="home_no_medications">No hay medicamentos programados</string>
-    <string name="home_error_loading">Error al cargar medicamentos</string>
+    <string name="home_no_people" tools:keep="@string/home_no_people">No hay personas agregadas</string>
+    <string name="home_no_medications" tools:keep="@string/home_no_medications">No hay medicamentos programados</string>
+    <string name="home_error_loading" tools:keep="@string/home_error_loading">Error al cargar medicamentos</string>
     <string name="home_section_upcoming_alarms">Próximas alarmas</string>
     <string name="home_section_registered_patients">Pacientes registrados</string>
     <string name="home_section_registered_medications">Medicamentos registrados</string>
@@ -42,22 +42,22 @@
     <string name="home_alarm_tomorrow">Mañana</string>
     <string name="home_alarm_schedule_format">%1$s - %2$s</string>
     <string name="home_alarm_schedule_unknown">Horario por definir</string>
-    <string name="home_medication_placeholder">Medicamento</string>
-    <string name="home_dosage_placeholder">Sin dosis</string>
-    <string name="home_person_placeholder">Persona</string>
-    <string name="home_next_time">⏰ %1$s</string>
-    <string name="home_person_and_dosage">👤 %1$s\n💊 %2$s\n%3$s</string>
-    <string name="home_now">¡Ahora!</string>
-    <string name="home_minutes_format" tools:ignore="PluralsCandidate">%1$d minutos</string>
-    <string name="home_hours_format" tools:ignore="PluralsCandidate">%1$d horas</string>
-    <string name="home_hours_minutes_format">%1$d h %2$d min</string>
-    <string name="home_next_label">Próximo</string>
-    <string name="home_no_medications_title">💊 No hay medicamentos</string>
-    <string name="home_add_people_hint">Agrega personas y medicamentos</string>
-    <string name="placeholder_text_keyboard">AQUÍ SE MOSTRARÍA EL TECLADO</string>
-    <string name="user_or_email">Usuario o correo electrónico</string>
-    <string name="register_title">Registro</string>
-    <string name="register_action">Registrarse</string>
+    <string name="home_medication_placeholder" tools:keep="@string/home_medication_placeholder">Medicamento</string>
+    <string name="home_dosage_placeholder" tools:keep="@string/home_dosage_placeholder">Sin dosis</string>
+    <string name="home_person_placeholder" tools:keep="@string/home_person_placeholder">Persona</string>
+    <string name="home_next_time" tools:keep="@string/home_next_time">⏰ %1$s</string>
+    <string name="home_person_and_dosage" tools:keep="@string/home_person_and_dosage">👤 %1$s\n💊 %2$s\n%3$s</string>
+    <string name="home_now" tools:keep="@string/home_now">¡Ahora!</string>
+    <string name="home_minutes_format" tools:ignore="PluralsCandidate" tools:keep="@string/home_minutes_format">%1$d minutos</string>
+    <string name="home_hours_format" tools:ignore="PluralsCandidate" tools:keep="@string/home_hours_format">%1$d horas</string>
+    <string name="home_hours_minutes_format" tools:keep="@string/home_hours_minutes_format">%1$d h %2$d min</string>
+    <string name="home_next_label" tools:keep="@string/home_next_label">Próximo</string>
+    <string name="home_no_medications_title" tools:keep="@string/home_no_medications_title">💊 No hay medicamentos</string>
+    <string name="home_add_people_hint" tools:keep="@string/home_add_people_hint">Agrega personas y medicamentos</string>
+    <string name="placeholder_text_keyboard" tools:keep="@string/placeholder_text_keyboard">AQUÍ SE MOSTRARÍA EL TECLADO</string>
+    <string name="user_or_email" tools:keep="@string/user_or_email">Usuario o correo electrónico</string>
+    <string name="register_title" tools:keep="@string/register_title">Registro</string>
+    <string name="register_action" tools:keep="@string/register_action">Registrarse</string>
     <string name="login_toolbar_navigation_description">Regresar al inicio</string>
     <string name="email_label">Correo electrónico</string>
     <string name="email_placeholder">correo@ejemplo.com</string>
@@ -140,8 +140,8 @@
     <string name="pass_wait_open_email">Ir a mi correo</string>
     <string name="pass_wait_continue">Ya cambié mi contraseña</string>
     <string name="not_for_now">No por ahora</string>
-    <string name="add_main_tab_title">Acciones rápidas</string>
-    <string name="add_main_tab_subtitle">Gestiona alarmas, pacientes y medicamentos desde un solo lugar.</string>
+    <string name="add_main_tab_title" tools:keep="@string/add_main_tab_title">Acciones rápidas</string>
+    <string name="add_main_tab_subtitle" tools:keep="@string/add_main_tab_subtitle">Gestiona alarmas, pacientes y medicamentos desde un solo lugar.</string>
     <string name="add_main_card_alarm_title">Alarmas</string>
     <string name="add_main_card_alarm_subtitle">Agrega Alarmas para uno o más pacientes registrados</string>
     <string name="add_main_card_patient_title">Agrega Pacientes</string>
@@ -149,22 +149,22 @@
     <string name="add_main_card_medication_title">Medicamentos</string>
     <string name="add_main_card_medication_subtitle">Agrega uno o más medicamentos a la lista desde la Base de Datos de Vitalarm</string>
     <string name="add_main_toolbar_title">¿Qué deseas agregar?</string>
-    <string name="add_alarm_alt_title">Agregar alarmas</string>
-    <string name="add_alarm_description">Programa los recordatorios para tus pacientes. Puedes añadir varios horarios y los mantendremos ordenados.</string>
-    <string name="add_alarm_add_time">Agregar horario</string>
-    <string name="add_alarm_notes">Notas opcionales</string>
-    <string name="add_alarm_save">Guardar alarmas</string>
-    <string name="add_alarm_time_exists">Ese horario ya fue agregado</string>
-    <string name="add_alarm_no_times">Agrega al menos un horario</string>
-    <string name="add_alarm_saved">Alarma guardada correctamente</string>
-    <string name="add_patient_title">Nuevo paciente</string>
-    <string name="add_patient_description">Registra la información básica del paciente para poder asociar alarmas y medicamentos.</string>
-    <string name="add_patient_name_hint">Nombre del paciente</string>
-    <string name="add_patient_name_helper">Ejemplo: Juan Pérez</string>
-    <string name="add_patient_birthdate_hint">Fecha de nacimiento</string>
-    <string name="add_patient_save">Guardar paciente</string>
-    <string name="add_patient_success">Paciente registrado correctamente</string>
-    <string name="add_patient_failure">No pudimos registrar al paciente</string>
+    <string name="add_alarm_alt_title" tools:keep="@string/add_alarm_alt_title">Agregar alarmas</string>
+    <string name="add_alarm_description" tools:keep="@string/add_alarm_description">Programa los recordatorios para tus pacientes. Puedes añadir varios horarios y los mantendremos ordenados.</string>
+    <string name="add_alarm_add_time" tools:keep="@string/add_alarm_add_time">Agregar horario</string>
+    <string name="add_alarm_notes" tools:keep="@string/add_alarm_notes">Notas opcionales</string>
+    <string name="add_alarm_save" tools:keep="@string/add_alarm_save">Guardar alarmas</string>
+    <string name="add_alarm_time_exists" tools:keep="@string/add_alarm_time_exists">Ese horario ya fue agregado</string>
+    <string name="add_alarm_no_times" tools:keep="@string/add_alarm_no_times">Agrega al menos un horario</string>
+    <string name="add_alarm_saved" tools:keep="@string/add_alarm_saved">Alarma guardada correctamente</string>
+    <string name="add_patient_title" tools:keep="@string/add_patient_title">Nuevo paciente</string>
+    <string name="add_patient_description" tools:keep="@string/add_patient_description">Registra la información básica del paciente para poder asociar alarmas y medicamentos.</string>
+    <string name="add_patient_name_hint" tools:keep="@string/add_patient_name_hint">Nombre del paciente</string>
+    <string name="add_patient_name_helper" tools:keep="@string/add_patient_name_helper">Ejemplo: Juan Pérez</string>
+    <string name="add_patient_birthdate_hint" tools:keep="@string/add_patient_birthdate_hint">Fecha de nacimiento</string>
+    <string name="add_patient_save" tools:keep="@string/add_patient_save">Guardar paciente</string>
+    <string name="add_patient_success" tools:keep="@string/add_patient_success">Paciente registrado correctamente</string>
+    <string name="add_patient_failure" tools:keep="@string/add_patient_failure">No pudimos registrar al paciente</string>
     <string name="add_patient_name_error">Ingresa el nombre del paciente</string>
     <string name="add_patient_gender_error">Indica el género del paciente</string>
     <string name="add_patient_birthdate_error">Ingresa la fecha de nacimiento</string>
@@ -183,7 +183,7 @@
     <string name="add_patient_success_add_another">Agregar Otro</string>
     <string name="add_patient_success_back">Volver</string>
     <string name="add_patient_auth_error_snackbar">Inicia sesión para registrar pacientes. %1$s</string>
-    <string name="add_patient_error_snackbar">Error al registrar al paciente</string>
+    <string name="add_patient_error_snackbar" tools:keep="@string/add_patient_error_snackbar">Error al registrar al paciente</string>
     <string name="add_patient_generic_error_detail">Vuelve a intentarlo en unos momentos.</string>
     <string name="add_patient_connection_error_snackbar">No pudimos conectarnos. %1$s</string>
     <string name="add_patient_permission_error_snackbar">No tienes permiso para registrar pacientes. %1$s</string>
@@ -193,25 +193,25 @@
     <string name="add_patient_invalid_data_error_snackbar">Hay un problema con los datos enviados. %1$s</string>
     <string name="add_patient_cancelled_error_snackbar">Se canceló el registro antes de terminar. %1$s</string>
     <string name="add_patient_unknown_error_snackbar">Tuvimos un problema inesperado. %1$s</string>
-    <string name="common_cancel">Cancelar</string>
-    <string name="add_meds_title">Medicamentos</string>
-    <string name="add_meds_description">Busca medicamentos existentes y selecciónalos para añadirlos a tu flujo de trabajo.</string>
-    <string name="add_meds_search_hint">Buscar medicamentos</string>
+    <string name="common_cancel" tools:keep="@string/common_cancel">Cancelar</string>
+    <string name="add_meds_title" tools:keep="@string/add_meds_title">Medicamentos</string>
+    <string name="add_meds_description" tools:keep="@string/add_meds_description">Busca medicamentos existentes y selecciónalos para añadirlos a tu flujo de trabajo.</string>
+    <string name="add_meds_search_hint" tools:keep="@string/add_meds_search_hint">Buscar medicamentos</string>
     <string name="add_meds_search_placeholder">Ingresa el medicamento</string>
     <string name="add_meds_add_action">Agregar</string>
     <string name="add_meds_empty_description">Sin descripción disponible</string>
-    <string name="add_meds_empty_route">Vía no especificada</string>
-    <string name="add_meds_empty_composition">Composición no especificada</string>
-    <string name="add_meds_unknown">Medicamento sin nombre</string>
-    <string name="add_meds_load_error">No se pudo cargar el catálogo de medicamentos</string>
+    <string name="add_meds_empty_route" tools:keep="@string/add_meds_empty_route">Vía no especificada</string>
+    <string name="add_meds_empty_composition" tools:keep="@string/add_meds_empty_composition">Composición no especificada</string>
+    <string name="add_meds_unknown" tools:keep="@string/add_meds_unknown">Medicamento sin nombre</string>
+    <string name="add_meds_load_error" tools:keep="@string/add_meds_load_error">No se pudo cargar el catálogo de medicamentos</string>
     <string name="add_meds_search_loading">Buscando medicamentos…</string>
     <string name="add_meds_search_error">No pudimos obtener los medicamentos. Inténtalo nuevamente.</string>
     <string name="add_meds_search_no_results">No encontramos resultados para “%1$s”.</string>
     <string name="add_meds_search_start">Escribe el nombre de un medicamento para empezar.</string>
-    <string name="add_meds_selected_format">%1$s seleccionado</string>
+    <string name="add_meds_selected_format" tools:keep="@string/add_meds_selected_format">%1$s seleccionado</string>
     <string name="add_meds_selected_title">Medicamento seleccionado</string>
     <string name="add_meds_route_label">Vía: </string>
-    <string name="add_meds_substance_label">Composición: </string>
+    <string name="add_meds_substance_label" tools:keep="@string/add_meds_substance_label">Composición: </string>
     <string name="add_meds_composition_label">Composición</string>
     <string name="add_meds_dosage_label">Dosis</string>
     <string name="add_meds_form_label">Formato</string>
@@ -282,12 +282,12 @@
     <string name="profile_caregiver_label">Nombre del Cuidador:</string>
     <string name="profile_rut_label">Rut:</string>
     <string name="profile_rut_placeholder">Rut no disponible</string>
-    <string name="profile_qr_title">Tu código QR personal</string>
+    <string name="profile_qr_title" tools:keep="@string/profile_qr_title">Tu código QR personal</string>
     <string name="profile_qr_description">Código QR con tus datos de contacto</string>
     <string name="profile_qr_error">No se pudo generar el código QR</string>
-    <string name="profile_qr_supporting">Comparte este código con tu equipo médico para acceder rápidamente a tus datos.</string>
+    <string name="profile_qr_supporting" tools:keep="@string/profile_qr_supporting">Comparte este código con tu equipo médico para acceder rápidamente a tus datos.</string>
     <string name="profile_edit_action">Editar perfil</string>
-    <string name="profile_logout_message">Sesión cerrada</string>
+    <string name="profile_logout_message" tools:keep="@string/profile_logout_message">Sesión cerrada</string>
     <string name="profile_logout_dialog_title">¿Estás seguro de cerrar sesión?</string>
     <string name="profile_logout_dialog_supporting">Una vez cerrada la sesión, volverás a la pantalla de inicio</string>
     <string name="profile_logout_dialog_confirm">Cerrar Sesión</string>
@@ -308,7 +308,7 @@
     <string name="settings_clear_cache_subtitle">Para optimizar la app</string>
     <string name="settings_cache_cleared">Caché limpiada correctamente.</string>
     <string name="settings_cache_clear_failed">No se pudo limpiar la caché.</string>
-    <string name="settings_cache_autoclear_disabled">Limpieza automática desactivada.</string>
+    <string name="settings_cache_autoclear_disabled" tools:keep="@string/settings_cache_autoclear_disabled">Limpieza automática desactivada.</string>
     <string name="shortcut_clear_cache_short_label">Limpiar caché</string>
     <string name="shortcut_clear_cache_long_label">Limpiar caché de Vitalarm</string>
     <string name="about_app_title">Acerca de la App</string>
@@ -351,9 +351,9 @@ Detalle: %3$s</string>
     <string name="past_alarm_subtitle_desc">Medicamento - dosis - hora</string>
     <string name="medication">Medicamento</string>
     <string name="past_alarm_detail_time_text">08:00</string>
-    <string name="current_patients">Personas a Cuidado</string>
-    <string name="no_patients_registered">No hay personas agregadas\n\nPresiona el botón de abajo para agregar una persona</string>
-    <string name="add_patient">Agregar Persona</string>
+    <string name="current_patients" tools:keep="@string/current_patients">Personas a Cuidado</string>
+    <string name="no_patients_registered" tools:keep="@string/no_patients_registered">No hay personas agregadas\n\nPresiona el botón de abajo para agregar una persona</string>
+    <string name="add_patient" tools:keep="@string/add_patient">Agregar Persona</string>
     <string name="lan_menu_home">Inicio</string>
     <string name="lan_add">Agregar</string>
     <string name="lan_profile">Perfil</string>

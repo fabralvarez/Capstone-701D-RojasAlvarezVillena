@@ -18,7 +18,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.vitalarmapp.AddMainTabActivity
 import com.example.vitalarmapp.adapters.MedicationSearchAdapter
 import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.adapters.MedicationForm
@@ -106,7 +105,7 @@ class AddMedsActivity : AppCompatActivity() {
     private fun promptDosageDialog(item: MedicationSearchItem) {
         dosageDialog?.dismiss()
         val dialogBinding = DialogMedicationDosageBinding.inflate(LayoutInflater.from(this))
-        val formOptions = MedicationForm.values()
+        val formOptions = MedicationForm.entries.toTypedArray()
         val formLabels = formOptions.map { getString(formLabelRes(it)) }
         val dialog = MaterialAlertDialogBuilder(this)
             .setView(dialogBinding.root)

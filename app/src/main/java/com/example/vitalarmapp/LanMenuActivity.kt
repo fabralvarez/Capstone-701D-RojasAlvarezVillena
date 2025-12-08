@@ -48,14 +48,6 @@ class LanMenuActivity : AppCompatActivity() {
         outState.putInt(SELECTED_TAB_KEY, binding.lanMenuBottomNavigation.selectedItemId)
     }
 
-    fun selectTab(itemId: Int) {
-        if (binding.lanMenuBottomNavigation.selectedItemId == itemId) {
-            handleTabReselected(itemId)
-        } else {
-            binding.lanMenuBottomNavigation.selectedItemId = itemId
-        }
-    }
-
     private fun setupAppBar() {
         binding.lanMenuToolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {

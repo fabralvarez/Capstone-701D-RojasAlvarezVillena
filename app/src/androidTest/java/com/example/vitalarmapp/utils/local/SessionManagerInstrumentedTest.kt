@@ -21,7 +21,7 @@ class SessionManagerInstrumentedTest {
     }
 
     @Test
-    fun ShouldToggleSessionPreference() {
+    fun shouldToggleSessionPreference() {
         assertFalse(SessionManager.shouldKeepSession(context))
 
         SessionManager.setKeepSession(context, true)
@@ -30,7 +30,7 @@ class SessionManagerInstrumentedTest {
     }
 
     @Test
-    fun ShouldToggleMaterialYouPreference() {
+    fun shouldToggleMaterialYouPreference() {
         SessionManager.setMaterialYouEnabled(context, true)
         assertTrue(SessionManager.isMaterialYouEnabled(context))
 
@@ -39,7 +39,7 @@ class SessionManagerInstrumentedTest {
     }
 
     @Test
-    fun ShouldToggleAutoClearCachePreference() {
+    fun shouldToggleAutoClearCachePreference() {
         SessionManager.setAutoClearCacheEnabled(context, true)
         assertTrue(SessionManager.isAutoClearCacheEnabled(context))
 
@@ -48,7 +48,7 @@ class SessionManagerInstrumentedTest {
     }
 
     @Test
-    fun ClearAppCacheRemovesTemporaryFiles() {
+    fun clearAppCacheRemovesTemporaryFiles() {
         val cacheDir = context.cacheDir
         val nestedFile = cacheDir.resolve("tempDir/test.txt")
         nestedFile.parentFile?.mkdirs()

@@ -1,5 +1,6 @@
 package com.example.vitalarmapp.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -47,6 +48,7 @@ internal class UpcomingAlarmAdapter :
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<UpcomingAlarmUiModel>) {
         items.clear()
         items.addAll(newItems)
@@ -114,6 +116,7 @@ internal class RegisteredPatientsAdapter :
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<PatientSummaryUiModel>) {
         items.clear()
         items.addAll(newItems)
@@ -150,6 +153,7 @@ internal class RegisteredMedicationsAdapter :
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<MedicationSearchItem>) {
         items.clear()
         items.addAll(newItems)

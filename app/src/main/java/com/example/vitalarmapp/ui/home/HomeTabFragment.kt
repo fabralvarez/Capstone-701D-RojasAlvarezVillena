@@ -157,9 +157,9 @@ class HomeTabFragment : Fragment() {
         binding.registeredMedicationsEmpty.isVisible = meds.isEmpty()
     }
 
-    private suspend fun loadUpcomingAlarms() {
+    private fun loadUpcomingAlarms() {
         val alarms: List<UpcomingAlarmUiModel> = emptyList()
         upcomingAlarmsAdapter.submitList(alarms)
-        binding.upcomingAlarmsEmpty.isVisible = alarms.isEmpty()
+        binding.upcomingAlarmsEmpty.isVisible = true
     }
 }

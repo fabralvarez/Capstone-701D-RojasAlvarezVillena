@@ -5,7 +5,8 @@
    Note: This file is ignored for devices older that API 31
    See https://developer.android.com/about/versions/12/backup-restore
 -->
-<full-backup-content>
+<full-backup-content xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@xml/backup_rules">
     <!--
    <include domain="sharedpref" path="."/>
    <exclude domain="sharedpref" path="device.xml"/>

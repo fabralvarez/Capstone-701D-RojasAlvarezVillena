@@ -8,7 +8,7 @@ import org.junit.Test
 class FirebaseManagerTest {
 
     @Test
-    fun PermissionDeniedMapsToPermissionResult() {
+    fun permissionDeniedMapsToPermissionResult() {
         val exception = FirebaseFirestoreException(
             "Forbidden",
             FirebaseFirestoreException.Code.PERMISSION_DENIED
@@ -20,7 +20,7 @@ class FirebaseManagerTest {
     }
 
     @Test
-    fun UnauthenticatedMapsToAuthError() {
+    fun unauthenticatedMapsToAuthError() {
         val exception = FirebaseFirestoreException(
             "Unauthenticated",
             FirebaseFirestoreException.Code.UNAUTHENTICATED
@@ -32,7 +32,7 @@ class FirebaseManagerTest {
     }
 
     @Test
-    fun UnavailableMapsToServiceUnavailable() {
+    fun unavailableMapsToServiceUnavailable() {
         val exception = FirebaseFirestoreException(
             "Service unavailable",
             FirebaseFirestoreException.Code.UNAVAILABLE
@@ -44,7 +44,7 @@ class FirebaseManagerTest {
     }
 
     @Test
-    fun DeadlineExceededMapsToTimeout() {
+    fun deadlineExceededMapsToTimeout() {
         val exception = FirebaseFirestoreException(
             "deadline",
             FirebaseFirestoreException.Code.DEADLINE_EXCEEDED
@@ -56,7 +56,7 @@ class FirebaseManagerTest {
     }
 
     @Test
-    fun ResourceExhaustedMapsToQuotaExceeded() {
+    fun resourceExhaustedMapsToQuotaExceeded() {
         val exception = FirebaseFirestoreException(
             "quota",
             FirebaseFirestoreException.Code.RESOURCE_EXHAUSTED
@@ -68,7 +68,7 @@ class FirebaseManagerTest {
     }
 
     @Test
-    fun InvalidArgumentMapsToInvalidData() {
+    fun invalidArgumentMapsToInvalidData() {
         val exception = FirebaseFirestoreException(
             "invalid",
             FirebaseFirestoreException.Code.INVALID_ARGUMENT
@@ -80,7 +80,7 @@ class FirebaseManagerTest {
     }
 
     @Test
-    fun FailedPreconditionMapsToInvalidData() {
+    fun failedPreconditionMapsToInvalidData() {
         val exception = FirebaseFirestoreException(
             "precondition",
             FirebaseFirestoreException.Code.FAILED_PRECONDITION
@@ -92,7 +92,7 @@ class FirebaseManagerTest {
     }
 
     @Test
-    fun CancelledMapsToOperationCancelled() {
+    fun cancelledMapsToOperationCancelled() {
         val exception = FirebaseFirestoreException(
             "cancelled",
             FirebaseFirestoreException.Code.CANCELLED
@@ -104,7 +104,7 @@ class FirebaseManagerTest {
     }
 
     @Test
-    fun OtherCodesMapToUnknownError() {
+    fun otherCodesMapToUnknownError() {
         val exception = FirebaseFirestoreException(
             "other",
             FirebaseFirestoreException.Code.INTERNAL
@@ -116,7 +116,7 @@ class FirebaseManagerTest {
     }
 
     @Test
-    fun AbortedMapsToServiceUnavailable() {
+    fun abortedMapsToServiceUnavailable() {
         val exception = FirebaseFirestoreException(
             "aborted",
             FirebaseFirestoreException.Code.ABORTED

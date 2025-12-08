@@ -46,7 +46,8 @@
                 android:paddingVertical="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                android:foreground="?attr/selectableItemBackground"
+                tools:ignore="UseCompoundDrawables">
 
                 <TextView
                     android:id="@+id/upcomingAlarmsHeadline"
@@ -98,7 +99,8 @@
                 android:paddingVertical="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                android:foreground="?attr/selectableItemBackground"
+                tools:ignore="UseCompoundDrawables">
 
                 <TextView
                     android:id="@+id/registeredPatientsHeadline"
@@ -150,7 +152,8 @@
                 android:paddingVertical="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                android:foreground="?attr/selectableItemBackground"
+                tools:ignore="UseCompoundDrawables">
 
                 <TextView
                     android:id="@+id/registeredMedicationsHeadline"

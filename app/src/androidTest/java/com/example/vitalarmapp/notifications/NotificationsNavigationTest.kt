@@ -31,7 +31,7 @@ class NotificationsNavigationTest {
     }
 
     @Test
-    fun LanMenuToolbarBellOpensNotifications() {
+    fun lanMenuToolbarBellOpensNotifications() {
         ActivityScenario.launch(LanMenuActivity::class.java)
 
         onView(withContentDescription(R.string.notifications_action_label))
@@ -41,7 +41,7 @@ class NotificationsNavigationTest {
     }
 
     @Test
-    fun AddMainTabToolbarBellOpensNotifications() {
+    fun addMainTabToolbarBellOpensNotifications() {
         ActivityScenario.launch(AddMainTabActivity::class.java)
 
         onView(withContentDescription(R.string.notifications_action_label))
@@ -51,7 +51,7 @@ class NotificationsNavigationTest {
     }
 
     @Test
-    fun ProfileToolbarBellOpensNotifications() {
+    fun profileToolbarBellOpensNotifications() {
         ActivityScenario.launch(ProfileTabActivity::class.java)
 
         onView(withContentDescription(R.string.notifications_action_label))

@@ -13,7 +13,7 @@ import org.junit.runner.RunWith
 class ChangelogRepositoryInstrumentedTest {
 
     @Test
-    fun LoadEntriesReturnsFriendlyHighlights() {
+    fun loadEntriesReturnsFriendlyHighlights() {
         val context: Context = ApplicationProvider.getApplicationContext()
         val repository = ChangelogRepository()
 
@@ -24,7 +24,7 @@ class ChangelogRepositoryInstrumentedTest {
     }
 
     @Test
-    fun ParseEntriesFiltersAndSummarizesSections() {
+    fun parseEntriesFiltersAndSummarizesSections() {
         val context: Context = ApplicationProvider.getApplicationContext()
         val repository = ChangelogRepository()
         val changelogText = """

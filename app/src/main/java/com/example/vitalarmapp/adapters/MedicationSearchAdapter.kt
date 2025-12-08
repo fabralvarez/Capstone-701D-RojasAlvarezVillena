@@ -1,5 +1,6 @@
 package com.example.vitalarmapp.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -47,6 +48,7 @@ class MedicationSearchAdapter(
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(newItems: List<MedicationSearchItem>) {
         items = newItems
         notifyDataSetChanged()

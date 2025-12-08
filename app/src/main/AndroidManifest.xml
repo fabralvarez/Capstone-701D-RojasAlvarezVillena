@@ -26,6 +26,7 @@
         android:minSdkVersion="31"
         android:targetSdkVersion="36"
         android:theme="@style/AppTheme"
+        android:supportsRtl="false"
         tools:targetApi="36"
         tools:ignore="CredManMissingDal">
         <meta-data

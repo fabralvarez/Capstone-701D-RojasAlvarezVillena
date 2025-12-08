@@ -8,9 +8,9 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.vitalarmapp.NotificationsActivity
 import com.example.vitalarmapp.R
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.greaterThan
 import org.hamcrest.Matchers.not
-import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -18,7 +18,7 @@ import org.junit.runner.RunWith
 class NotificationsActivityRenderTest {
 
     @Test
-    fun ShowsRecyclerWithData() {
+    fun showsRecyclerWithData() {
         val scenario = ActivityScenario.launch(NotificationsActivity::class.java)
 
         onView(withId(R.id.notificationsRecycler)).check(matches(isDisplayed()))

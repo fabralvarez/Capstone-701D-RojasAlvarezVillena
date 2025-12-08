@@ -1,5 +1,6 @@
 package com.example.vitalarmapp.ui.lists
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -56,12 +57,14 @@ internal class AlarmListAdapter(
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<AlarmListItem>) {
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateSelection(selection: Set<String>, selectionMode: Boolean) {
         this.selectionMode = selectionMode
         selectedIds.clear()
@@ -129,12 +132,14 @@ internal class MedicationListAdapter(
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<MedicationListItem>) {
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateSelection(selection: Set<String>, selectionMode: Boolean) {
         this.selectionMode = selectionMode
         selectedIds.clear()
@@ -142,6 +147,7 @@ internal class MedicationListAdapter(
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun removeItems(predicate: (MedicationListItem) -> Boolean) {
         items.removeAll(predicate)
         notifyDataSetChanged()
@@ -216,12 +222,14 @@ internal class PatientListAdapter(
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<PatientListItem>) {
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateSelection(selection: Set<String>, selectionMode: Boolean) {
         this.selectionMode = selectionMode
         selectedIds.clear()
@@ -229,6 +237,7 @@ internal class PatientListAdapter(
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun removeItems(predicate: (PatientListItem) -> Boolean) {
         items.removeAll(predicate)
         notifyDataSetChanged()

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.example.vitalarmapp.AlarmRingingActivity
-import com.example.vitalarmapp.utils.local.AlarmRepository
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.EXTRA_ALARM_ID
 
 

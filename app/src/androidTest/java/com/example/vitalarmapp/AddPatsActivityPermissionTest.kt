@@ -19,6 +19,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.jvm.JvmName
 
 @RunWith(AndroidJUnit4::class)
 class AddPatsActivityPermissionTest {
@@ -89,6 +90,7 @@ class AddPatsActivityPermissionTest {
     }
 
     private class RecordingPatientRegistrar : PatientRegistrar {
+        @get:JvmName("getUserIdInternal")
         var currentUserId: String? = null
         var resultToReturn: AddPersonResult = AddPersonResult.Success
         var lastPayload: Payload? = null

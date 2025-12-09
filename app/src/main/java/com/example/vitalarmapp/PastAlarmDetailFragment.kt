@@ -7,13 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.vitalarmapp.databinding.FragmentPastAlarmDetailBinding
-import com.example.vitalarmapp.utils.local.AlarmRepository
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import com.example.vitalarmapp.models.AlarmRecord
 
 class PastAlarmDetailFragment : Fragment() {
 
     private var _binding: FragmentPastAlarmDetailBinding? = null
     private val binding get() = _binding!!
-    private val repository by lazy { AlarmRepository(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,14 +40,20 @@ class PastAlarmDetailFragment : Fragment() {
 
     private fun bindDetails() {
         val alarmId = arguments?.getString(ARG_ALARM_ID).orEmpty()
-        val record = repository.get(alarmId) ?: return
+        viewLifecycleOwner.lifecycleScope.launch {
+            val record = withContext(Dispatchers.IO) { FirebaseManager.getAlarmById(alarmId) }
+            record?.let { populateDetails(it) }
+        }
+    }
+
+    private fun populateDetails(record: AlarmRecord) {
         binding.pastAlarmDetailPatient.text = record.patientName
         binding.pastAlarmDetailMedication.text = getString(
             R.string.past_alarm_detail_medication,
             record.medicationName,
             record.medicationDetail
         )
-        binding.pastAlarmDetailTime.text = record.time
+        binding.pastAlarmDetailTime.text = getString(R.string.alarm_ring_time, record.date, record.time)
         record.photoPath?.let { path ->
             binding.pastAlarmDetailPhoto.setImageURI(Uri.fromFile(java.io.File(path)))
         }

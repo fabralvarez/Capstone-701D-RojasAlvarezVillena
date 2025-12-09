@@ -80,6 +80,8 @@ class AddMedsActivity : AppCompatActivity() {
     private var ignoreQueryChanges: Boolean = false
     private var isSelectionMode: Boolean = false
     private var dosageDialog: AlertDialog? = null
+    private var confirmationDialog: AlertDialog? = null
+    private var cancelDialog: AlertDialog? = null
     private var pendingDosage: DosageInput? = null
     private val fadeThrough by lazy {
         MaterialFadeThrough().apply {
@@ -807,7 +809,8 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     private fun showAddConfirmationDialog() {
-        MaterialAlertDialogBuilder(this)
+        confirmationDialog?.dismiss()
+        confirmationDialog = MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.add_meds_dialog_title))
             .setMessage(getString(R.string.add_meds_dialog_body))
             .setNegativeButton(getString(R.string.add_meds_dialog_add_another)) { _, _ ->
@@ -820,11 +823,14 @@ class AddMedsActivity : AppCompatActivity() {
                 startActivity(AddMainTabActivity.intent(this).addFlags(FLAG_ACTIVITY_CLEAR_TOP))
                 finish()
             }
-            .show()
+            .create()
+
+        confirmationDialog?.show()
     }
 
     private fun showCancelSummaryDialog() {
-        MaterialAlertDialogBuilder(this)
+        cancelDialog?.dismiss()
+        cancelDialog = MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.add_meds_summary_cancel_title))
             .setMessage(getString(R.string.add_meds_summary_cancel_message))
             .setNegativeButton(getString(R.string.add_meds_summary_cancel_confirm)) { _, _ ->
@@ -836,7 +842,9 @@ class AddMedsActivity : AppCompatActivity() {
             .setPositiveButton(getString(R.string.add_meds_summary_cancel_dismiss)) { dialog, _ ->
                 dialog.dismiss()
             }
-            .show()
+            .create()
+
+        cancelDialog?.show()
     }
 
     private suspend fun <T> Task<T>.await(): T = suspendCancellableCoroutine { continuation ->
@@ -866,6 +874,15 @@ class AddMedsActivity : AppCompatActivity() {
         val hasSelection = displayedMedication != null
         binding.summaryCollapsingToolbar.visibility = if (hasSelection) View.VISIBLE else View.GONE
         binding.searchBar.visibility = if (hasSelection) View.GONE else View.VISIBLE
+    }
+
+    override fun onDestroy() {
+        dosageDialog?.dismiss()
+        confirmationDialog?.dismiss()
+        cancelDialog?.dismiss()
+        searchJob?.cancel()
+        translationJob?.cancel()
+        super.onDestroy()
     }
 
 }

@@ -95,6 +95,7 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="ACTION_TRIGGER_ALARM" />
+                <action android:name="ACTION_PRE_ALARM_NOTIFICATION" />
             </intent-filter>
         </receiver>
         <provider

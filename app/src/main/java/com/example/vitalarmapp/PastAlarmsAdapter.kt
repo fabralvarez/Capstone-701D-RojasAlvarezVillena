@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vitalarmapp.databinding.ItemPastAlarmBinding
-import com.example.vitalarmapp.utils.local.AlarmRecord
+import com.example.vitalarmapp.models.AlarmRecord
 
 class PastAlarmsAdapter(
     private val onClick: (String) -> Unit,
@@ -39,7 +39,7 @@ class PastAlarmsAdapter(
                 R.string.past_alarm_subtitle,
                 item.medicationName,
                 item.medicationDetail,
-                item.time
+                binding.root.context.getString(R.string.alarm_ring_time, item.date, item.time)
             )
             binding.root.setOnClickListener { onClick(item.id) }
         }

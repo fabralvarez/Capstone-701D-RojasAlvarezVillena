@@ -12,8 +12,10 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.FirebaseNetworkException
 import kotlinx.coroutines.tasks.await
+import com.example.vitalarmapp.models.AlarmRecord
 import com.example.vitalarmapp.models.Medication
 import com.example.vitalarmapp.models.Patient
 import com.example.vitalarmapp.models.User
@@ -57,6 +59,7 @@ object FirebaseManager {
     private const val COLLECTION_PATIENTS = "patients"
     private const val COLLECTION_MEDICATIONS = "medications"
     private const val COLLECTION_REGISTERED_MEDICATIONS = "registered_medications"
+    private const val COLLECTION_ALARMS = "alarms"
     private const val LOG_TAG = "FirebaseManager"
 
     suspend fun registerUser(
@@ -426,6 +429,78 @@ object FirebaseManager {
         }
     }
 
+    suspend fun addAlarm(record: AlarmRecord): Boolean {
+        val userId = getCurrentUserId() ?: return false
+        return try {
+            alarmsCollection(userId)
+                .document(record.id)
+                .set(record)
+                .await()
+            true
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error guardando alarma: ${e.message}", e)
+            false
+        }
+    }
+
+    suspend fun getAlarms(): List<AlarmRecord> {
+        val userId = getCurrentUserId() ?: return emptyList()
+        return try {
+            val result = alarmsCollection(userId)
+                .get()
+                .await()
+
+            result.documents.mapNotNull { doc ->
+                doc.toObject(AlarmRecord::class.java)?.copy(id = doc.id)
+            }.sortedByDescending { it.createdAt }
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error obteniendo alarmas: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun getAlarmById(id: String): AlarmRecord? {
+        val userId = getCurrentUserId() ?: return null
+        return try {
+            val snapshot = alarmsCollection(userId)
+                .document(id)
+                .get()
+                .await()
+            snapshot.toObject(AlarmRecord::class.java)?.copy(id = snapshot.id)
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error obteniendo alarma: ${e.message}", e)
+            null
+        }
+    }
+
+    suspend fun markAlarmTriggered(id: String, timestamp: Long = System.currentTimeMillis()) {
+        val userId = getCurrentUserId() ?: return
+        try {
+            alarmsCollection(userId)
+                .document(id)
+                .update("triggeredAt", timestamp)
+                .await()
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error marcando alarma como disparada: ${e.message}", e)
+        }
+    }
+
+    suspend fun markAlarmVerified(id: String, photoPath: String) {
+        val userId = getCurrentUserId() ?: return
+        try {
+            val updates = mapOf(
+                "photoPath" to photoPath,
+                "triggeredAt" to System.currentTimeMillis(),
+            )
+            alarmsCollection(userId)
+                .document(id)
+                .update(updates)
+                .await()
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error marcando alarma verificada: ${e.message}", e)
+        }
+    }
+
     suspend fun getCurrentUserName(): String {
         return try {
             val userId = getCurrentUserId()
@@ -493,6 +568,10 @@ object FirebaseManager {
             false
         }
     }
+
+    private fun alarmsCollection(userId: String) = db.collection(COLLECTION_USERS)
+        .document(userId)
+        .collection(COLLECTION_ALARMS)
 }
 
 internal interface PatientRegistrar {

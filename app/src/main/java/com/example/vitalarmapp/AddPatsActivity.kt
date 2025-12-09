@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +26,8 @@ class AddPatsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddPatsBinding
     private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private var birthDatePicker: MaterialDatePicker<Long>? = null
+    private var successDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,7 +177,8 @@ class AddPatsActivity : AppCompatActivity() {
     }
 
     private fun showSuccessDialog() {
-        MaterialAlertDialogBuilder(this)
+        successDialog?.dismiss()
+        successDialog = MaterialAlertDialogBuilder(this)
             .setTitle(R.string.add_patient_success_dialog_title)
             .setMessage(R.string.add_patient_success_dialog_message)
             .setNegativeButton(R.string.add_patient_success_add_another) { dialog, _ ->
@@ -185,7 +189,9 @@ class AddPatsActivity : AppCompatActivity() {
                 startActivity(Intent(this, AddMainTabActivity::class.java))
                 finish()
             }
-            .show()
+            .create()
+
+        successDialog?.show()
     }
 
     private fun resetForm() {
@@ -200,25 +206,33 @@ class AddPatsActivity : AppCompatActivity() {
             .setValidator(DateValidatorPointBackward.now())
             .build()
 
-        val picker = MaterialDatePicker.Builder.datePicker()
+        birthDatePicker?.dismissAllowingStateLoss()
+        birthDatePicker = MaterialDatePicker.Builder.datePicker()
             .setTitleText(getString(R.string.add_patient_birthdate_placeholder))
             .setCalendarConstraints(constraints)
             .build()
 
-        picker.addOnPositiveButtonClickListener { selection ->
+        birthDatePicker?.addOnPositiveButtonClickListener { selection ->
             val formattedDate = selection?.let { dateFormatter.format(Date(it)) }.orEmpty()
             binding.patientBirthDateTf.setText(formattedDate)
         }
 
-        picker.addOnNegativeButtonClickListener { clearBirthDate() }
-        picker.addOnCancelListener { clearBirthDate() }
+        birthDatePicker?.addOnNegativeButtonClickListener { clearBirthDate() }
+        birthDatePicker?.addOnCancelListener { clearBirthDate() }
+        birthDatePicker?.addOnDismissListener { birthDatePicker = null }
 
-        picker.show(supportFragmentManager, "patient_birth_date_picker")
+        birthDatePicker?.show(supportFragmentManager, "patient_birth_date_picker")
     }
 
     private fun clearBirthDate() {
         binding.patientBirthDateTf.text = null
         binding.patientBirthDateInputLayout.isEndIconVisible = false
+    }
+
+    override fun onDestroy() {
+        birthDatePicker?.dismissAllowingStateLoss()
+        successDialog?.dismiss()
+        super.onDestroy()
     }
 
     companion object {

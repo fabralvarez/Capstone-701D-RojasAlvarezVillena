@@ -6,7 +6,9 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityAddPatsBinding
 import com.example.vitalarmapp.utils.firebase.AddPersonResult
@@ -134,9 +136,8 @@ class AddPatsActivity : AppCompatActivity() {
             return
         }
 
-        binding.patientContinueBtn.isEnabled = false
-
         lifecycleScope.launch {
+            setLoadingState(true)
             val result = patientRegistrar.addPerson(
                 name = name,
                 birthDate = birthDate,
@@ -144,7 +145,7 @@ class AddPatsActivity : AppCompatActivity() {
                 notes = notes
             )
 
-            binding.patientContinueBtn.isEnabled = true
+            setLoadingState(false)
 
             when (result) {
                 AddPersonResult.Success -> showSuccessDialog()
@@ -231,6 +232,43 @@ class AddPatsActivity : AppCompatActivity() {
     private fun clearBirthDate() {
         binding.patientBirthDateTf.text = null
         binding.patientBirthDateInputLayout.isEndIconVisible = false
+    }
+
+    private fun setLoadingState(isLoading: Boolean) {
+        binding.patientContinueBtn.isEnabled = !isLoading
+        binding.patientNameTf.isEnabled = !isLoading
+        binding.patientGenderTf.isEnabled = !isLoading
+        binding.patientBirthDateTf.isEnabled = !isLoading
+        binding.patientNotesTf.isEnabled = !isLoading
+
+        if (isLoading) {
+            showLoadingOverlay()
+        } else {
+            hideLoadingOverlay()
+        }
+    }
+
+    private fun showLoadingOverlay() {
+        binding.patientLoadingContainer.isVisible = true
+        if (supportFragmentManager.findFragmentByTag(LoadingIndicatorFragment.TAG) == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add(
+                    binding.patientLoadingContainer.id,
+                    LoadingIndicatorFragment(),
+                    LoadingIndicatorFragment.TAG
+                )
+            }
+        }
+    }
+
+    private fun hideLoadingOverlay() {
+        binding.patientLoadingContainer.isVisible = false
+        supportFragmentManager.findFragmentByTag(LoadingIndicatorFragment.TAG)?.let { fragment ->
+            supportFragmentManager.commit {
+                remove(fragment)
+            }
+        }
     }
 
     override fun onDestroy() {

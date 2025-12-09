@@ -35,7 +35,8 @@ class LanMenuActivity : AppCompatActivity() {
         setupBottomNavigation()
         setupAppBar()
 
-        val initialTab = savedInstanceState?.getInt(SELECTED_TAB_KEY) ?: R.id.nav_home
+        val initialTab = savedInstanceState?.getInt(SELECTED_TAB_KEY)
+            ?: intent.getIntExtra(EXTRA_SELECTED_TAB, R.id.nav_home)
         currentTabId = initialTab
         binding.lanMenuBottomNavigation.selectedItemId = initialTab
         switchToTab(initialTab)
@@ -184,9 +185,15 @@ class LanMenuActivity : AppCompatActivity() {
     }
 
     companion object {
+        const val EXTRA_SELECTED_TAB = "selected_tab_override"
         private const val SELECTED_TAB_KEY = "selected_tab"
         private const val TAG_HOME = "home_tab"
         private const val TAG_ADD = "add_tab"
         private const val TAG_PROFILE = "profile_tab"
+
+        fun intentForTab(context: android.content.Context, tabId: Int): Intent =
+            Intent(context, LanMenuActivity::class.java).apply {
+                putExtra(EXTRA_SELECTED_TAB, tabId)
+            }
     }
 }

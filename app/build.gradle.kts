@@ -16,7 +16,7 @@ android {
         minSdk = 31
         targetSdk = 36
         versionCode = 1
-        versionName = "0.9.980"
+        versionName = "0.9.99"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val localProperties = Properties().apply {
@@ -37,7 +37,7 @@ android {
         buildConfigField("String", "OPEN_FDA_API_KEY", "\"$openFdaApiKey\"")
     }
     androidResources {
-        localeFilters.addAll(listOf("es-rUS"))
+        localeFilters.addAll(listOf("es-rUS", "en-rUS"))
     }
     buildTypes {
         release {

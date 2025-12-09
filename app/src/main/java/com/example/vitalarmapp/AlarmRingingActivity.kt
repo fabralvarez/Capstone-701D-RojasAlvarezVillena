@@ -2,6 +2,7 @@ package com.example.vitalarmapp
 
 import android.media.Ringtone
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
@@ -122,8 +123,15 @@ class AlarmRingingActivity : AppCompatActivity() {
     }
 
     private fun startAlarmSound() {
-        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        val preferredUri = record?.soundUri
+            ?.takeIf { it.isNotBlank() }
+            ?.let { Uri.parse(it) }
+
+        val fallbackUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+            ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
             ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+        val uri = preferredUri ?: fallbackUri
         ringtone = RingtoneManager.getRingtone(this, uri)
         ringtone?.play()
     }

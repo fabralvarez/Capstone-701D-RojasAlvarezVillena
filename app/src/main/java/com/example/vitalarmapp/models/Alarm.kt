@@ -6,6 +6,8 @@ data class AlarmRecord(
     val patientName: String = "",
     val medicationName: String = "",
     val medicationDetail: String = "",
+    val soundTitle: String = "",
+    val soundUri: String = "",
     val date: String = "",
     val time: String = "",
     val scheduledAt: Long = 0L,

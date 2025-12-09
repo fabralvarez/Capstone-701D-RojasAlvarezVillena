@@ -2,4 +2,5 @@
 <locale-config xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Idioma principal soportado por la app -->
     <locale android:name="es-US" />
+    <locale android:name="en-US" />
 </locale-config>

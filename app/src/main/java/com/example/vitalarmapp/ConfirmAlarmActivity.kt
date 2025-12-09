@@ -11,6 +11,7 @@ import com.example.vitalarmapp.AddAlarmActivity.Companion.EXTRA_PATIENT_NAME
 import com.example.vitalarmapp.SelectMedActivity.Companion.EXTRA_MED_DETAIL
 import com.example.vitalarmapp.SelectMedActivity.Companion.EXTRA_MED_NAME
 import com.example.vitalarmapp.databinding.ActivityConfirmAlarmBinding
+import com.example.vitalarmapp.ui.home.HomeTabFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -18,7 +19,6 @@ import com.google.android.material.transition.platform.MaterialSharedAxis
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
-import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -66,7 +66,7 @@ class ConfirmAlarmActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        binding.confirmAlarmToolbar.setNavigationOnClickListener { navigateToMenu() }
+        binding.confirmAlarmToolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
     }
 
     private fun setupContent() {
@@ -163,8 +163,9 @@ class ConfirmAlarmActivity : AppCompatActivity() {
     }
 
     private fun navigateToMenu() {
-        startActivity(Intent(this, LanMenuActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        val intent = Intent(this, HomeTabFragment::class.java)
+        startActivity(intent.apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         })
         finish()
     }

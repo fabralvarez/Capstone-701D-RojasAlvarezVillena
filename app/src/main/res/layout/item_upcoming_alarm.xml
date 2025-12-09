@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
+    android:layout_marginTop="8dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@android:color/transparent"
     app:cardElevation="0dp"
+    style="@style/Widget.Material3.ListItemCardView.Segmented"
     app:cardUseCompatPadding="false">
 
     <LinearLayout
@@ -41,7 +43,8 @@
             android:layout_height="120dp"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="TextSizeCheck">
 
             <TextView
                 android:id="@+id/alarmPatientName"

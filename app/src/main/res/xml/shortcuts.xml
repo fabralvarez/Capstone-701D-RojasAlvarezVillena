@@ -2,7 +2,7 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_delete"
+        android:icon="@drawable/outline_delete_24"
         android:shortcutId="shortcut_clear_cache"
         android:shortcutLongLabel="@string/shortcut_clear_cache_long_label"
         android:shortcutShortLabel="@string/shortcut_clear_cache_short_label">

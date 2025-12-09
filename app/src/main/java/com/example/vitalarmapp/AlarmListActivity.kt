@@ -17,6 +17,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -34,8 +35,9 @@ class AlarmListActivity : AppCompatActivity() {
         AlarmListAdapter(::onAlarmLongPressed, ::onAlarmSelected)
     }
 
-    private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
-    private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    private val displayLocale = Locale("es", "US")
+    private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", displayLocale)
+    private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", displayLocale)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

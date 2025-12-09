@@ -102,20 +102,11 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/confirm_pick_date"
+            android:id="@+id/confirm_pick_date_time"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/confirm_alarm_pick_date"
-            android:textAllCaps="false" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/confirm_pick_time"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/confirm_alarm_pick_time"
+            android:text="@string/confirm_alarm_pick_date_time"
             android:textAllCaps="false" />
 
         <com.google.android.material.button.MaterialButton

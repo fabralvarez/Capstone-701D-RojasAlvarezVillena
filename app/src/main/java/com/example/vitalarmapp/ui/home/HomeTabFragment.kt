@@ -131,7 +131,7 @@ class HomeTabFragment : Fragment() {
 
     private fun calculateAge(birthDate: String?): Int? {
         if (birthDate.isNullOrBlank()) return null
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale("es", "US"))
         return runCatching {
             val birth = LocalDate.parse(birthDate, formatter)
             val today = LocalDate.now()

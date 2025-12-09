@@ -144,47 +144,22 @@ class AddPatsActivity : AppCompatActivity() {
 
                 is AddPersonResult.AuthError -> showErrorSnackbar(
                     messageRes = R.string.add_patient_auth_error_snackbar,
-                    detail = result.message
+                    detail = null
                 )
 
                 is AddPersonResult.ConnectionError -> showErrorSnackbar(
                     messageRes = R.string.add_patient_connection_error_snackbar,
-                    detail = result.message
-                )
-
-                is AddPersonResult.PermissionDenied -> showErrorSnackbar(
-                    messageRes = R.string.add_patient_permission_error_snackbar,
-                    detail = result.message
-                )
-
-                is AddPersonResult.ServiceUnavailable -> showErrorSnackbar(
-                    messageRes = R.string.add_patient_unavailable_error_snackbar,
-                    detail = result.message
-                )
-
-                is AddPersonResult.Timeout -> showErrorSnackbar(
-                    messageRes = R.string.add_patient_timeout_error_snackbar,
-                    detail = result.message
-                )
-
-                is AddPersonResult.QuotaExceeded -> showErrorSnackbar(
-                    messageRes = R.string.add_patient_quota_error_snackbar,
-                    detail = result.message
-                )
-
-                is AddPersonResult.InvalidData -> showErrorSnackbar(
-                    messageRes = R.string.add_patient_invalid_data_error_snackbar,
-                    detail = result.message
-                )
-
-                is AddPersonResult.OperationCancelled -> showErrorSnackbar(
-                    messageRes = R.string.add_patient_cancelled_error_snackbar,
-                    detail = result.message
+                    detail = null
                 )
 
                 is AddPersonResult.UnknownError -> showErrorSnackbar(
                     messageRes = R.string.add_patient_unknown_error_snackbar,
-                    detail = result.message
+                    detail = null
+                )
+
+                else -> showErrorSnackbar(
+                    messageRes = R.string.add_patient_unknown_error_snackbar,
+                    detail = null
                 )
             }
         }

@@ -23,6 +23,7 @@ import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.adapters.MedicationForm
 import com.example.vitalarmapp.databinding.ActivityAddMedsBinding
 import com.example.vitalarmapp.databinding.DialogMedicationDosageBinding
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -32,7 +33,6 @@ import com.google.android.material.transition.MaterialFadeThrough
 import androidx.transition.TransitionManager
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.google.gson.reflect.TypeToken
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.languageid.IdentifiedLanguage
 import com.google.mlkit.nl.languageid.LanguageIdentification
@@ -299,15 +299,39 @@ class AddMedsActivity : AppCompatActivity() {
     private fun setupAddAction() {
         binding.addMedicationButton.setOnClickListener {
             val medication = displayedMedication ?: return@setOnClickListener
-            val saved = saveMedicationLocally(medication)
-            if (saved) {
-                showAddConfirmationDialog()
-            } else {
+
+            if (medication.dosageValue.isNullOrBlank() ||
+                medication.dosageUnit.isNullOrBlank() ||
+                medication.form == null
+            ) {
+                promptDosageDialog(medication)
+                return@setOnClickListener
+            }
+
+            if (FirebaseManager.getCurrentUserId().isNullOrEmpty()) {
                 Snackbar.make(
                     binding.root,
-                    R.string.add_meds_save_error,
+                    R.string.add_patient_auth_error_snackbar,
                     Snackbar.LENGTH_LONG
                 ).show()
+                return@setOnClickListener
+            }
+
+            binding.addMedicationButton.isEnabled = false
+
+            lifecycleScope.launch {
+                val saved = FirebaseManager.saveRegisteredMedication(medication)
+                binding.addMedicationButton.isEnabled = true
+
+                if (saved) {
+                    showAddConfirmationDialog()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        R.string.add_meds_save_error,
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             }
         }
     }
@@ -780,37 +804,6 @@ class AddMedsActivity : AppCompatActivity() {
             dosageUnit,
             form
         )
-    }
-
-    private fun saveMedicationLocally(item: MedicationSearchItem): Boolean {
-        if (item.dosageValue.isNullOrBlank() || item.dosageUnit.isNullOrBlank() || item.form == null) {
-            promptDosageDialog(item)
-            return false
-        }
-        return runCatching {
-            val simplifiedItem = MedicationSearchItem(
-                name = item.name,
-                indication = null,
-                pharmacology = item.pharmacology,
-                route = item.route,
-                composition = item.composition ?: item.pharmacology,
-                dosageValue = item.dosageValue,
-                dosageUnit = item.dosageUnit,
-                form = item.form
-            )
-            val prefs = getSharedPreferences("medications_prefs", MODE_PRIVATE)
-            val type = object : TypeToken<MutableList<MedicationSearchItem>>() {}.type
-            val storedJson = prefs.getString("medications_list", "[]")
-            val currentList: MutableList<MedicationSearchItem> = runCatching {
-                gson.fromJson<MutableList<MedicationSearchItem>>(storedJson, type)
-            }.getOrDefault(mutableListOf())
-
-            currentList.add(simplifiedItem)
-            val editor = prefs.edit()
-            editor.putString("medications_list", gson.toJson(currentList))
-            val committed = editor.commit()
-            if (!committed) error("Failed to persist medication locally")
-        }.isSuccess
     }
 
     private fun showAddConfirmationDialog() {

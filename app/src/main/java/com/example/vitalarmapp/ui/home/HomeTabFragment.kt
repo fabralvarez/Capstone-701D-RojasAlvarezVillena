@@ -1,6 +1,5 @@
 package com.example.vitalarmapp.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +12,9 @@ import com.example.vitalarmapp.AlarmListActivity
 import com.example.vitalarmapp.MedsListActivity
 import com.example.vitalarmapp.PatsListActivity
 import com.example.vitalarmapp.R
-import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.databinding.FragmentHomeTabBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.google.android.material.transition.MaterialFadeThrough
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
@@ -32,7 +28,6 @@ class HomeTabFragment : Fragment() {
     private var _binding: FragmentHomeTabBinding? = null
     private val binding get() = _binding!!
 
-    private val gson: Gson by lazy { Gson() }
     private val upcomingAlarmsAdapter = UpcomingAlarmAdapter()
     private val patientsAdapter = RegisteredPatientsAdapter()
     private val medicationsAdapter = RegisteredMedicationsAdapter()
@@ -144,17 +139,12 @@ class HomeTabFragment : Fragment() {
         }.getOrNull()?.takeIf { it >= 0 }
     }
 
-    private fun loadRegisteredMedications() {
-        val context = context ?: return
-        val prefs = context.getSharedPreferences("medications_prefs", Context.MODE_PRIVATE)
-        val storedJson = prefs.getString("medications_list", "[]")
-        val type = object : TypeToken<List<MedicationSearchItem>>() {}.type
-        val meds = runCatching {
-            gson.fromJson<List<MedicationSearchItem>>(storedJson, type)
-        }.getOrDefault(emptyList())
+    private suspend fun loadRegisteredMedications() {
+        val meds = FirebaseManager.getRegisteredMedications()
+        val medicationItems = meds.map { it.medication }
 
-        medicationsAdapter.submitList(meds)
-        binding.registeredMedicationsEmpty.isVisible = meds.isEmpty()
+        medicationsAdapter.submitList(medicationItems)
+        binding.registeredMedicationsEmpty.isVisible = medicationItems.isEmpty()
     }
 
     private fun loadUpcomingAlarms() {

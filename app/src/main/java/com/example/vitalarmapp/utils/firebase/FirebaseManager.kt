@@ -12,7 +12,6 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.FirebaseNetworkException
 import kotlinx.coroutines.tasks.await
 import com.example.vitalarmapp.models.AlarmRecord
@@ -402,8 +401,7 @@ object FirebaseManager {
                 "dosage" to medication.dosage,
                 "frequency" to medication.frequency,
                 "alarmTimes" to medication.alarmTimes.sorted(),
-                "createdAt" to medication.createdAt.takeIf { it > 0 }
-                    ?: System.currentTimeMillis(),
+                ("createdAt" to medication.createdAt.takeIf { it > 0 }) as Pair<*, *>,
             )
 
             val collection = medicationsCollection(userId, patientId)

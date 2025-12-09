@@ -577,7 +577,7 @@ class AddMedsActivity : AppCompatActivity() {
     private fun shouldTranslateToSpanishUnitedStates(): Boolean {
         val locale = resources.configuration.locales.get(0)
         return locale.language.equals("es", ignoreCase = true) &&
-            locale.country.equals("US", ignoreCase = true)
+                locale.country.equals("US", ignoreCase = true)
     }
 
     private suspend fun ensureTranslatorReady(sourceLanguage: String): Translator {
@@ -618,9 +618,10 @@ class AddMedsActivity : AppCompatActivity() {
             ?.takeUnless { it.equals("und", ignoreCase = true) }
         if (primary != null) return primary
 
-        val possibleLanguages = runCatching { languageIdClient.identifyPossibleLanguages(text).await() }
-            .getOrNull()
-            .orEmpty()
+        val possibleLanguages =
+            runCatching { languageIdClient.identifyPossibleLanguages(text).await() }
+                .getOrNull()
+                .orEmpty()
         return selectBestLanguage(possibleLanguages)
     }
 
@@ -654,14 +655,16 @@ class AddMedsActivity : AppCompatActivity() {
         val hasDosage = displayedMedication?.let {
             !it.dosageUnit.isNullOrBlank() && !it.dosageValue.isNullOrBlank() && it.form != null
         } ?: false
-        binding.addMedicationButton.isEnabled = binding.progressBar.isVisible.not() && hasSelection && hasDosage
+        binding.addMedicationButton.isEnabled =
+            binding.progressBar.isVisible.not() && hasSelection && hasDosage
         binding.selectedMedicationCard.isVisible = hasSelection
         showAppropriateTopBar()
     }
 
     private fun updateSelectedMedicationCardSpacing(isSelectionMode: Boolean) {
         val newTopMargin = if (isSelectionMode) selectionCardTopMargin else defaultCardTopMargin
-        val layoutParams = binding.selectedMedicationCard.layoutParams as ConstraintLayout.LayoutParams
+        val layoutParams =
+            binding.selectedMedicationCard.layoutParams as ConstraintLayout.LayoutParams
 
         if (layoutParams.topMargin != newTopMargin) {
             layoutParams.topMargin = newTopMargin
@@ -715,15 +718,6 @@ class AddMedsActivity : AppCompatActivity() {
                 Snackbar.LENGTH_LONG
             ).show()
         }
-    }
-
-    override fun onDestroy() {
-        searchJob?.cancel()
-        translationJob?.cancel()
-        dosageDialog?.dismiss()
-        translatorCache.values.forEach { it.close() }
-        translatorCache.clear()
-        super.onDestroy()
     }
 
     companion object {
@@ -877,14 +871,13 @@ class AddMedsActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
+        translatorCache.values.forEach { it.close() }
+        languageIdClient.close()
         dosageDialog?.dismiss()
         confirmationDialog?.dismiss()
         cancelDialog?.dismiss()
-        searchJob?.cancel()
-        translationJob?.cancel()
-        super.onDestroy()
     }
-
 }
 
 private data class OpenFdaResponse(

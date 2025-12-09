@@ -20,11 +20,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import androidx.core.content.FileProvider
-import com.example.vitalarmapp.utils.local.AlarmScheduler
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.extractAlarmPayload
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.putAlarmPayload
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialFadeThrough
+import kotlinx.coroutines.launch
 
 class AlarmRingingActivity : AppCompatActivity() {
 

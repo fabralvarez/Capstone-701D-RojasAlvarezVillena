@@ -14,7 +14,6 @@ import com.example.vitalarmapp.AddAlarmActivity.Companion.EXTRA_PATIENT_NAME
 import com.example.vitalarmapp.alarm.MedicationChoice
 import com.example.vitalarmapp.alarm.MedicationRadioAdapter
 import com.example.vitalarmapp.alarm.toChoice
-import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.databinding.ActivitySelectMedBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.google.android.material.transition.platform.MaterialSharedAxis

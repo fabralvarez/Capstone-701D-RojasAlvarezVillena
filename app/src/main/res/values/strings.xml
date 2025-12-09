@@ -186,12 +186,12 @@
     <string name="add_patient_error_snackbar" tools:keep="@string/add_patient_error_snackbar">Error al registrar al paciente</string>
     <string name="add_patient_generic_error_detail">Vuelve a intentarlo en unos momentos.</string>
     <string name="add_patient_connection_error_snackbar">No pudimos conectarnos. %1$s</string>
-    <string name="add_patient_permission_error_snackbar">No tienes permiso para registrar pacientes. %1$s</string>
-    <string name="add_patient_unavailable_error_snackbar">El servicio está temporalmente ocupado. %1$s</string>
-    <string name="add_patient_timeout_error_snackbar">La conexión tardó demasiado. %1$s</string>
-    <string name="add_patient_quota_error_snackbar">Alcanzaste el límite de registros por ahora. %1$s</string>
-    <string name="add_patient_invalid_data_error_snackbar">Hay un problema con los datos enviados. %1$s</string>
-    <string name="add_patient_cancelled_error_snackbar">Se canceló el registro antes de terminar. %1$s</string>
+    <string name="add_patient_permission_error_snackbar" tools:keep="@string/add_patient_permission_error_snackbar">No tienes permiso para registrar pacientes. %1$s</string>
+    <string name="add_patient_unavailable_error_snackbar" tools:keep="@string/add_patient_unavailable_error_snackbar">El servicio está temporalmente ocupado. %1$s</string>
+    <string name="add_patient_timeout_error_snackbar" tools:keep="@string/add_patient_timeout_error_snackbar">La conexión tardó demasiado. %1$s</string>
+    <string name="add_patient_quota_error_snackbar" tools:keep="@string/add_patient_quota_error_snackbar">Alcanzaste el límite de registros por ahora. %1$s</string>
+    <string name="add_patient_invalid_data_error_snackbar" tools:keep="@string/add_patient_invalid_data_error_snackbar">Hay un problema con los datos enviados. %1$s</string>
+    <string name="add_patient_cancelled_error_snackbar" tools:keep="@string/add_patient_cancelled_error_snackbar">Se canceló el registro antes de terminar. %1$s</string>
     <string name="add_patient_unknown_error_snackbar">Tuvimos un problema inesperado. %1$s</string>
     <string name="common_cancel" tools:keep="@string/common_cancel">Cancelar</string>
     <string name="add_meds_title" tools:keep="@string/add_meds_title">Medicamentos</string>

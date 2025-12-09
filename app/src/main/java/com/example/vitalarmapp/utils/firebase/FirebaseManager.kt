@@ -1,3 +1,5 @@
+@file:Suppress("unused", "RedundantSuppression")
+
 package com.example.vitalarmapp.utils.firebase
 
 import android.annotation.SuppressLint

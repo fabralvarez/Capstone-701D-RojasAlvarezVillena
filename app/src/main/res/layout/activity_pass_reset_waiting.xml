@@ -37,6 +37,7 @@
                     android:layout_height="?attr/actionBarSize"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
+                    app:navigationIconTint="?attr/colorOnSurface"
                     app:navigationIcon="@drawable/outline_arrow_back_24"
                     app:subtitle="@string/pass_wait_subtitle"
                     app:subtitleCentered="true"

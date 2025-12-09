@@ -30,7 +30,7 @@ internal class UpcomingAlarmAdapter :
     RecyclerView.Adapter<UpcomingAlarmAdapter.UpcomingAlarmViewHolder>() {
 
     private val items = mutableListOf<UpcomingAlarmUiModel>()
-    private val displayLocale = Locale("es", "US")
+    private val displayLocale = Locale.Builder().setLanguage("es").setRegion("US").build()
     private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", displayLocale)
     private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", displayLocale)
 

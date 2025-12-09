@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 class AddPatsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddPatsBinding
-    private val displayLocale = Locale("es", "US")
+    private val displayLocale = Locale.Builder().setLanguage("es").setRegion("US").build()
     private val dateFormatter: DateTimeFormatter =
         DateTimeFormatter.ofPattern("dd/MM/yyyy", displayLocale)
     private var birthDatePicker: MaterialDatePicker<Long>? = null

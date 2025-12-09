@@ -11,22 +11,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityAlarmRingingBinding
-import com.example.vitalarmapp.utils.local.AlarmRecord
-import com.example.vitalarmapp.utils.local.AlarmRepository
+import com.example.vitalarmapp.models.AlarmRecord
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import androidx.core.content.FileProvider
 import com.example.vitalarmapp.utils.local.AlarmScheduler
+import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.extractAlarmPayload
+import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.putAlarmPayload
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialFadeThrough
 
 class AlarmRingingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAlarmRingingBinding
-    private val repository by lazy { AlarmRepository(this) }
     private var record: AlarmRecord? = null
     private var ringtone: Ringtone? = null
     private lateinit var pendingPhotoUri: Uri
@@ -44,7 +46,7 @@ class AlarmRingingActivity : AppCompatActivity() {
     private val captureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) {
             val photoPath = pendingPhotoFile?.absolutePath ?: return@registerForActivityResult
-            record?.let { repository.markVerified(it.id, photoPath) }
+            record?.let { markVerified(it.id, photoPath) }
             Snackbar.make(binding.root, R.string.alarm_ring_verified, Snackbar.LENGTH_LONG).show()
             finish()
         } else {
@@ -75,11 +77,12 @@ class AlarmRingingActivity : AppCompatActivity() {
     }
 
     private fun loadRecord() {
-        val alarmId = intent.getStringExtra(AlarmScheduler.EXTRA_ALARM_ID).orEmpty()
-        record = repository.get(alarmId)
+        record = intent.extractAlarmPayload()
         if (record == null) {
             Snackbar.make(binding.root, R.string.alarm_ring_capture_failed, Snackbar.LENGTH_LONG).show()
             finish()
+        } else {
+            markTriggered()
         }
     }
 
@@ -91,11 +94,18 @@ class AlarmRingingActivity : AppCompatActivity() {
             item.medicationName,
             item.medicationDetail
         )
-        binding.alarmRingTime.text = item.time
+        binding.alarmRingTime.text = getString(R.string.alarm_ring_time, item.date, item.time)
     }
 
     private fun setupActions() {
         binding.alarmRingVerify.setOnClickListener { launchCamera() }
+    }
+
+    private fun markTriggered() {
+        val alarmId = record?.id ?: return
+        lifecycleScope.launch {
+            FirebaseManager.markAlarmTriggered(alarmId)
+        }
     }
 
     private fun launchCamera() {
@@ -122,6 +132,12 @@ class AlarmRingingActivity : AppCompatActivity() {
         captureLauncher.launch(pendingPhotoUri)
     }
 
+    private fun markVerified(id: String, photoPath: String) {
+        lifecycleScope.launch {
+            FirebaseManager.markAlarmVerified(id, photoPath)
+        }
+    }
+
     private fun startAlarmSound() {
         val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
             ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -138,9 +154,9 @@ class AlarmRingingActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun intent(context: android.content.Context, alarmId: String) =
+        fun intent(context: android.content.Context, record: AlarmRecord) =
             android.content.Intent(context, AlarmRingingActivity::class.java).apply {
-                putExtra(AlarmScheduler.EXTRA_ALARM_ID, alarmId)
+                putAlarmPayload(record)
                 flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or
                     android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or
                     android.content.Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS

@@ -6,13 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.databinding.ActivityPastAlarmsBinding
-import com.example.vitalarmapp.utils.local.AlarmRepository
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.google.android.material.transition.platform.MaterialSharedAxis
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PastAlarmsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPastAlarmsBinding
-    private val repository by lazy { AlarmRepository(this) }
     private val adapter by lazy { PastAlarmsAdapter(::onAlarmSelected) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,10 +41,12 @@ class PastAlarmsActivity : AppCompatActivity() {
     }
 
     private fun loadAlarms() {
-        val items = repository.getHistory()
-        adapter.submitList(items)
-        binding.pastAlarmsEmpty.isVisible = items.isEmpty()
-        binding.pastAlarmsList.isVisible = items.isNotEmpty()
+        lifecycleScope.launch {
+            val items = withContext(Dispatchers.IO) { FirebaseManager.getAlarms() }
+            adapter.submitList(items)
+            binding.pastAlarmsEmpty.isVisible = items.isEmpty()
+            binding.pastAlarmsList.isVisible = items.isNotEmpty()
+        }
     }
 
     private fun onAlarmSelected(id: String) {

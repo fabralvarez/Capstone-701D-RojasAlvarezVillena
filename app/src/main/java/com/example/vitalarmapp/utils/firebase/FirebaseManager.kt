@@ -264,16 +264,13 @@ object FirebaseManager {
         val userId = getCurrentUserId() ?: return false
 
         return try {
-            val medications = getMedicationsForPerson(personId)
-            medications.forEach { medication ->
-                val medId = medication.id
-                if (medId.isNotEmpty()) {
-                    db.collection(COLLECTION_MEDICATIONS)
-                        .document(medId)
-                        .delete()
-                        .await()
+            val medicationsSnapshot = medicationsCollection(userId, personId).get().await()
+
+            db.runBatch { batch ->
+                medicationsSnapshot.documents.forEach { document ->
+                    batch.delete(document.reference)
                 }
-            }
+            }.await()
             patientsCollection(userId)
                 .document(personId)
                 .delete()
@@ -289,6 +286,11 @@ object FirebaseManager {
         db.collection(COLLECTION_USERS)
             .document(userId)
             .collection(COLLECTION_PATIENTS)
+
+    private fun medicationsCollection(userId: String, patientId: String) =
+        patientsCollection(userId)
+            .document(patientId)
+            .collection(COLLECTION_MEDICATIONS)
 
     private fun registeredMedicationsCollection(userId: String) =
         db.collection(COLLECTION_USERS)
@@ -374,12 +376,44 @@ object FirebaseManager {
         }
     }
 
+    suspend fun saveMedication(patientId: String, medication: Medication): Boolean {
+        val userId = getCurrentUserId() ?: return false
+        if (patientId.isBlank()) return false
+
+        return try {
+            val medicationId = medication.id.takeIf { it.isNotBlank() }
+            val medicationData = mapOf(
+                "userId" to userId,
+                "patientId" to patientId,
+                "personId" to patientId,
+                "name" to medication.name,
+                "dosage" to medication.dosage,
+                "frequency" to medication.frequency,
+                "alarmTimes" to medication.alarmTimes.sorted(),
+                "createdAt" to medication.createdAt.takeIf { it > 0 }
+                    ?: System.currentTimeMillis(),
+            )
+
+            val collection = medicationsCollection(userId, patientId)
+            if (medicationId != null) {
+                collection.document(medicationId).set(medicationData).await()
+            } else {
+                collection.add(medicationData).await()
+            }
+            true
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error guardando medicamento: ${e.message}", e)
+            false
+        }
+    }
+
     suspend fun getMedicationsForPerson(personId: String): List<Medication> {
+        val userId = getCurrentUserId() ?: return emptyList()
+
         return try {
             Log.d(LOG_TAG, "🔍 Buscando medicamentos para persona: $personId")
 
-            val result = db.collection(COLLECTION_MEDICATIONS)
-                .whereEqualTo("personId", personId)
+            val result = medicationsCollection(userId, personId)
                 .get()
                 .await()
 
@@ -390,7 +424,7 @@ object FirebaseManager {
                 val data = document.data ?: return@mapNotNull null
                 Medication(
                     id = document.id,
-                    personId = data["personId"] as? String ?: "",
+                    personId = data["personId"] as? String ?: personId,
                     name = data["name"] as? String ?: "",
                     dosage = data["dosage"] as? String ?: "",
                     frequency = data["frequency"] as? String ?: "",
@@ -414,11 +448,15 @@ object FirebaseManager {
     }
 
     suspend fun updateMedicationAlarmTimes(
+        patientId: String,
         medicationId: String,
         alarmTimes: List<String>,
     ): Boolean {
+        val userId = getCurrentUserId() ?: return false
+        if (patientId.isBlank()) return false
+
         return try {
-            db.collection(COLLECTION_MEDICATIONS)
+            medicationsCollection(userId, patientId)
                 .document(medicationId)
                 .update("alarmTimes", alarmTimes.sorted())
                 .await()
@@ -426,6 +464,65 @@ object FirebaseManager {
         } catch (e: Exception) {
             Log.e(LOG_TAG, "❌ Error actualizando alarmas del medicamento: ${e.message}", e)
             false
+        }
+    }
+
+    suspend fun deleteMedication(patientId: String, medicationId: String): Boolean {
+        val userId = getCurrentUserId() ?: return false
+        if (patientId.isBlank()) return false
+
+        return try {
+            medicationsCollection(userId, patientId)
+                .document(medicationId)
+                .delete()
+                .await()
+            true
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error eliminando medicamento: ${e.message}", e)
+            false
+        }
+    }
+
+    suspend fun migrateLegacyMedicationsForCurrentUser(): Int {
+        val userId = getCurrentUserId() ?: return 0
+
+        return try {
+            val legacyMedications = db.collection(COLLECTION_MEDICATIONS)
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+
+            var migrated = 0
+            legacyMedications.documents.forEach { document ->
+                val data = document.data ?: return@forEach
+                val patientId = (data["patientId"] as? String)
+                    ?: (data["personId"] as? String)
+                    ?: return@forEach
+
+                val medication = Medication(
+                    id = document.id,
+                    personId = patientId,
+                    name = data["name"] as? String ?: "",
+                    dosage = data["dosage"] as? String ?: "",
+                    frequency = data["frequency"] as? String ?: "",
+                    alarmTimes = (data["alarmTimes"] as? List<*>)
+                        ?.filterIsInstance<String>()
+                        ?.sorted()
+                        ?: emptyList(),
+                    createdAt = (data["createdAt"] as? Number)?.toLong() ?: 0L,
+                )
+
+                val saved = saveMedication(patientId, medication)
+                if (saved) {
+                    document.reference.delete().await()
+                    migrated++
+                }
+            }
+
+            migrated
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error migrando medicamentos antiguos: ${e.message}", e)
+            0
         }
     }
 

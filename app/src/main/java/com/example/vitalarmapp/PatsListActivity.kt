@@ -12,7 +12,6 @@ import com.example.vitalarmapp.ui.lists.PatientListItem
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.AlarmScheduler
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,12 +62,6 @@ class PatsListActivity : AppCompatActivity() {
         binding.patsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@PatsListActivity)
             adapter = patientAdapter
-            addItemDecoration(
-                MaterialDividerItemDecoration(
-                    context,
-                    LinearLayoutManager.VERTICAL
-                )
-            )
         }
     }
 

@@ -1,6 +1,5 @@
 package com.example.vitalarmapp
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -54,9 +53,7 @@ class PastAlarmDetailFragment : Fragment() {
             record.medicationDetail
         )
         binding.pastAlarmDetailTime.text = getString(R.string.alarm_ring_time, record.date, record.time)
-        record.photoPath?.let { path ->
-            binding.pastAlarmDetailPhoto.setImageURI(Uri.fromFile(java.io.File(path)))
-        }
+        binding.pastAlarmDetailVerification.text = getString(R.string.past_alarm_detail_verified)
     }
 
     companion object {

@@ -553,13 +553,18 @@ object FirebaseManager {
     suspend fun getAlarms(): List<AlarmRecord> {
         val userId = getCurrentUserId() ?: return emptyList()
         return try {
+            val now = System.currentTimeMillis()
+            val sevenDaysAgo = now - java.util.concurrent.TimeUnit.DAYS.toMillis(7)
             val result = alarmsCollection(userId)
                 .get()
                 .await()
 
             result.documents.mapNotNull { doc ->
                 doc.toObject(AlarmRecord::class.java)?.copy(id = doc.id)
-            }.sortedByDescending { it.createdAt }
+            }.filter { record ->
+                val verifiedAt = record.verifiedAt
+                verifiedAt != null && verifiedAt in sevenDaysAgo..now && record.scheduledAt <= now
+            }.sortedByDescending { it.verifiedAt ?: it.createdAt }
         } catch (e: Exception) {
             Log.e(LOG_TAG, "❌ Error obteniendo alarmas: ${e.message}", e)
             emptyList()
@@ -592,12 +597,13 @@ object FirebaseManager {
         }
     }
 
-    suspend fun markAlarmVerified(id: String, photoPath: String) {
+    suspend fun markAlarmVerified(id: String) {
         val userId = getCurrentUserId() ?: return
         try {
+            val timestamp = System.currentTimeMillis()
             val updates = mapOf(
-                "photoPath" to photoPath,
-                "triggeredAt" to System.currentTimeMillis(),
+                "triggeredAt" to timestamp,
+                "verifiedAt" to timestamp,
             )
             alarmsCollection(userId)
                 .document(id)

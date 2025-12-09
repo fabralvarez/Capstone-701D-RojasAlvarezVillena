@@ -34,14 +34,14 @@
             android:layout_marginTop="12dp"
             android:text="@string/past_alarm_detail_time_text" />
 
-        <ImageView
-            android:id="@+id/past_alarm_detail_photo"
-            android:layout_width="match_parent"
-            android:layout_height="260dp"
+        <TextView
+            android:id="@+id/past_alarm_detail_verification"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:contentDescription="@string/past_alarm_detail_photo"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/outline_camera_alt_24" />
+            android:text="@string/past_alarm_detail_verified"
+            android:textColor="?attr/colorOnSurfaceVariant" />
     </LinearLayout>
 
 </ScrollView>

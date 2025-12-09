@@ -15,8 +15,11 @@ import com.example.vitalarmapp.R
 import com.example.vitalarmapp.databinding.FragmentHomeTabBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.google.android.material.transition.MaterialFadeThrough
+import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.Period
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlinx.coroutines.Dispatchers
@@ -147,9 +150,22 @@ class HomeTabFragment : Fragment() {
         binding.registeredMedicationsEmpty.isVisible = medicationItems.isEmpty()
     }
 
-    private fun loadUpcomingAlarms() {
-        val alarms: List<UpcomingAlarmUiModel> = emptyList()
+    private suspend fun loadUpcomingAlarms() {
+        val alarms = withContext(Dispatchers.IO) {
+            FirebaseManager.getUpcomingAlarms()
+        }.map { record ->
+            UpcomingAlarmUiModel(
+                patientName = record.patientName,
+                medicationName = record.medicationName,
+                scheduledAt = runCatching {
+                    Instant.ofEpochMilli(record.scheduledAt)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime()
+                }.getOrNull()
+            )
+        }
+
         upcomingAlarmsAdapter.submitList(alarms)
-        binding.upcomingAlarmsEmpty.isVisible = true
+        binding.upcomingAlarmsEmpty.isVisible = alarms.isEmpty()
     }
 }

@@ -17,9 +17,10 @@ import com.google.android.material.transition.platform.MaterialSharedAxis
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import java.time.ZoneId
 import java.util.Locale
 
 class ConfirmAlarmActivity : AppCompatActivity() {
@@ -98,7 +99,7 @@ class ConfirmAlarmActivity : AppCompatActivity() {
 
         picker.addOnPositiveButtonClickListener { millis ->
             val date = Instant.ofEpochMilli(millis)
-                .atZone(ZoneId.systemDefault())
+                .atZone(ZoneOffset.UTC)
                 .toLocalDate()
             selectedDate = date
             binding.confirmAlarmSelectedDate.text = formatDate(date)

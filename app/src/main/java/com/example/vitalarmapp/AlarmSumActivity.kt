@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.view.KeyEvent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -142,6 +143,14 @@ class AlarmSumActivity : AppCompatActivity() {
             .create()
 
         dialog.setCanceledOnTouchOutside(false)
+        dialog.setOnKeyListener { _, keyCode, _ ->
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                navigateToAddMainTab()
+                true
+            } else {
+                false
+            }
+        }
         dialog.show()
     }
 
@@ -168,10 +177,12 @@ class AlarmSumActivity : AppCompatActivity() {
     }
 
     private fun navigateToAddMainTab() {
-        startActivity(AddMainTabActivity.intent(this).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        })
-        finish()
+        startActivity(
+            AddMainTabActivity.intent(this).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+        )
+        finishAffinity()
     }
 
     companion object {

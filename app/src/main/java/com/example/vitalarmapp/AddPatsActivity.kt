@@ -19,19 +19,18 @@ import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.Locale
-import java.util.TimeZone
 import kotlinx.coroutines.launch
 
 class AddPatsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddPatsBinding
     private val displayLocale = Locale("es", "US")
-    private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", displayLocale).apply {
-        timeZone = TimeZone.getDefault()
-    }
+    private val dateFormatter: DateTimeFormatter =
+        DateTimeFormatter.ofPattern("dd/MM/yyyy", displayLocale)
     private var birthDatePicker: MaterialDatePicker<Long>? = null
     private var successDialog: AlertDialog? = null
 
@@ -218,7 +217,12 @@ class AddPatsActivity : AppCompatActivity() {
             .build()
 
         birthDatePicker?.addOnPositiveButtonClickListener { selection ->
-            val formattedDate = selection?.let { dateFormatter.format(Date(it)) }.orEmpty()
+            val formattedDate = selection?.let {
+                Instant.ofEpochMilli(it)
+                    .atZone(ZoneOffset.UTC)
+                    .toLocalDate()
+                    .format(dateFormatter)
+            }.orEmpty()
             binding.patientBirthDateTf.setText(formattedDate)
         }
 

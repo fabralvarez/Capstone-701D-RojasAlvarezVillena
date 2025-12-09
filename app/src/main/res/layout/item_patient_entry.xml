@@ -44,10 +44,22 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:textColor="?attr/colorOnSurface"
-            app:layout_constraintBottom_toBottomOf="@id/patientAvatar"
+            app:layout_constraintTop_toTopOf="@id/patientAvatar"
             app:layout_constraintEnd_toStartOf="@id/patientSelectionCheckBox"
             app:layout_constraintStart_toEndOf="@id/patientAvatar"
-            app:layout_constraintTop_toTopOf="@id/patientAvatar" />
+            app:layout_constraintBottom_toTopOf="@id/patientCaregiver" />
+
+        <TextView
+            android:id="@+id/patientCaregiver"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintBottom_toBottomOf="@id/patientAvatar"
+            app:layout_constraintEnd_toStartOf="@id/patientSelectionCheckBox"
+            app:layout_constraintStart_toStartOf="@id/patientName"
+            app:layout_constraintTop_toBottomOf="@id/patientName" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/patientSelectionCheckBox"

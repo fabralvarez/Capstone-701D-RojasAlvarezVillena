@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionManager
 import com.example.vitalarmapp.databinding.ActivityNotificationsBinding
-import com.example.vitalarmapp.notifications.ChangelogRepository
+import com.example.vitalarmapp.notifications.NotificationHistoryRepository
 import com.example.vitalarmapp.notifications.NotificationsAdapter
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.platform.MaterialSharedAxis
@@ -19,6 +19,7 @@ import kotlinx.coroutines.withContext
 class NotificationsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNotificationsBinding
+    private val repository = NotificationHistoryRepository()
     private val notificationsAdapter = NotificationsAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +32,7 @@ class NotificationsActivity : AppCompatActivity() {
 
         setupAppBar()
         setupRecycler()
-        loadChangelog()
+        loadNotifications()
     }
 
     private fun setupAppBar() {
@@ -47,10 +48,10 @@ class NotificationsActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadChangelog() {
+    private fun loadNotifications() {
         lifecycleScope.launch {
             val entries = withContext(Dispatchers.IO) {
-                ChangelogRepository().loadEntries(this@NotificationsActivity)
+                repository.loadEntries(this@NotificationsActivity)
             }
 
             val fadeThrough = MaterialFadeThrough().apply {

@@ -60,23 +60,6 @@
         app:layout_constraintTop_toBottomOf="@id/select_med_coordinator"
         tools:listitem="@layout/item_medication_radio_entry" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/md_theme_outlineVariant"
-        app:layout_constraintBottom_toTopOf="@id/select_med_actions"
-        app:layout_constraintTop_toBottomOf="@id/select_med_list"
-        tools:visibility="gone" />
-
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/select_med_divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/select_med_list" />
-
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/select_med_loading"
         android:layout_width="wrap_content"

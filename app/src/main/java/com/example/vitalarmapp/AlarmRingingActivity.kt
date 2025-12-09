@@ -2,7 +2,6 @@ package com.example.vitalarmapp
 
 import android.media.Ringtone
 import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
@@ -15,13 +14,10 @@ import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityAlarmRingingBinding
 import com.example.vitalarmapp.models.AlarmRecord
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import androidx.core.content.FileProvider
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.extractAlarmPayload
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.putAlarmPayload
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialFadeThrough
 import kotlinx.coroutines.launch
@@ -31,8 +27,6 @@ class AlarmRingingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAlarmRingingBinding
     private var record: AlarmRecord? = null
     private var ringtone: Ringtone? = null
-    private lateinit var pendingPhotoUri: Uri
-    private var pendingPhotoFile: File? = null
 
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -43,10 +37,9 @@ class AlarmRingingActivity : AppCompatActivity() {
             }
         }
 
-    private val captureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) {
-            val photoPath = pendingPhotoFile?.absolutePath ?: return@registerForActivityResult
-            record?.let { markVerified(it.id, photoPath) }
+    private val captureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+        if (bitmap != null) {
+            record?.let { markVerified(it.id) }
             Snackbar.make(binding.root, R.string.alarm_ring_verified, Snackbar.LENGTH_LONG).show()
             finish()
         } else {
@@ -61,6 +54,7 @@ class AlarmRingingActivity : AppCompatActivity() {
         binding = ActivityAlarmRingingBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
+        applySurfacePalette()
         setShowWhenLocked(true)
         setTurnScreenOn(true)
         makeFullScreen()
@@ -119,22 +113,12 @@ class AlarmRingingActivity : AppCompatActivity() {
     }
 
     private fun launchCameraInternal() {
-        val item = record ?: return
-        val photosDir = File(filesDir, "alarm_photos").apply { mkdirs() }
-        val stamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-        val file = File(photosDir, "${item.id}_$stamp.jpg")
-        pendingPhotoFile = file
-        pendingPhotoUri = FileProvider.getUriForFile(
-            this,
-            "$packageName.fileprovider",
-            file
-        )
-        captureLauncher.launch(pendingPhotoUri)
+        captureLauncher.launch(null)
     }
 
-    private fun markVerified(id: String, photoPath: String) {
+    private fun markVerified(id: String) {
         lifecycleScope.launch {
-            FirebaseManager.markAlarmVerified(id, photoPath)
+            FirebaseManager.markAlarmVerified(id)
         }
     }
 
@@ -143,6 +127,17 @@ class AlarmRingingActivity : AppCompatActivity() {
             ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         ringtone = RingtoneManager.getRingtone(this, uri)
         ringtone?.play()
+    }
+
+    private fun applySurfacePalette() {
+        val surfaceColor = SurfaceColors.SURFACE_0.getColor(this)
+        binding.root.setBackgroundColor(surfaceColor)
+        window.statusBarColor = surfaceColor
+        window.navigationBarColor = surfaceColor
+        val controller = WindowInsetsControllerCompat(window, binding.root)
+        val lightBars = MaterialColors.isColorLight(surfaceColor)
+        controller.isAppearanceLightStatusBars = lightBars
+        controller.isAppearanceLightNavigationBars = lightBars
     }
 
     private fun makeFullScreen() {

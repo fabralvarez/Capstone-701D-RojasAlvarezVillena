@@ -257,6 +257,10 @@ internal class PatientListAdapter(
             onItemSelected: (PatientListItem) -> Unit,
         ) {
             binding.patientName.text = item.patient.name
+            binding.patientCaregiver.text = binding.root.context.getString(
+                R.string.patient_caregiver_label,
+                item.patient.userName
+            )
             binding.patientSelectionCheckBox.isVisible = selectionMode
             binding.patientSelectionCheckBox.isChecked = selectedIds.contains(item.patient.id)
 

@@ -11,5 +11,5 @@ data class AlarmRecord(
     val scheduledAt: Long = 0L,
     val createdAt: Long = System.currentTimeMillis(),
     val triggeredAt: Long? = null,
-    val photoPath: String? = null,
+    val verifiedAt: Long? = null,
 )

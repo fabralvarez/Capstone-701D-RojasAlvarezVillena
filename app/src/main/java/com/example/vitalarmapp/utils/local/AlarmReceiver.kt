@@ -11,6 +11,8 @@ import com.example.vitalarmapp.AlarmRingingActivity
 import com.example.vitalarmapp.LanMenuActivity
 import com.example.vitalarmapp.R
 import com.example.vitalarmapp.models.AlarmRecord
+import com.example.vitalarmapp.notifications.NotificationEntry
+import com.example.vitalarmapp.notifications.NotificationHistoryRepository
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.ACTION_PRE_ALARM_NOTIFICATION
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.ACTION_TRIGGER_ALARM
@@ -74,6 +76,22 @@ class AlarmReceiver : BroadcastReceiver() {
         NotificationManagerCompat.from(context).notify(
             payload.id.hashCode() + PRE_NOTIFICATION_REQUEST_CODE_OFFSET,
             notification
+        )
+
+        NotificationHistoryRepository().addEntry(
+            context,
+            NotificationEntry(
+                title = context.getString(R.string.pre_alarm_notification_title),
+                detail = context.getString(
+                    R.string.pre_alarm_notification_detail,
+                    payload.medicationName,
+                    payload.medicationDetail,
+                    payload.patientName,
+                    payload.date,
+                    payload.time
+                ),
+                timestamp = System.currentTimeMillis()
+            )
         )
     }
 

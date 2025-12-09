@@ -3,6 +3,7 @@ package com.example.vitalarmapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.format.DateFormat
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.vitalarmapp.AddAlarmActivity.Companion.EXTRA_PATIENT_NAME
@@ -15,6 +16,7 @@ import com.google.android.material.timepicker.TimeFormat
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.ZoneId
@@ -23,17 +25,19 @@ import java.util.Locale
 class ConfirmAlarmActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityConfirmAlarmBinding
-    private val displayLocale = Locale("es", "US")
-    private val dateFormatter = DateTimeFormatter
-        .ofLocalizedDate(FormatStyle.SHORT)
-        .withLocale(displayLocale)
+    private val displayLocale by lazy { resources.configuration.locales[0] ?: Locale.getDefault() }
+    private val dateFormatter by lazy {
+        DateTimeFormatter
+            .ofLocalizedDate(FormatStyle.SHORT)
+            .withLocale(displayLocale)
+    }
 
     private var patientId: String = ""
     private var patientName: String = ""
     private var medicationName: String = ""
     private var medicationDetail: String = ""
     private var selectedDate: LocalDate? = null
-    private var selectedTime: String? = null
+    private var selectedTime: LocalTime? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
@@ -81,7 +85,7 @@ class ConfirmAlarmActivity : AppCompatActivity() {
                     medicationName = medicationName,
                     medicationDetail = medicationDetail,
                     date = date.toString(),
-                    time = time
+                    time = time.toString()
                 )
             )
         }
@@ -97,7 +101,7 @@ class ConfirmAlarmActivity : AppCompatActivity() {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate()
             selectedDate = date
-            binding.confirmAlarmSelectedDate.text = date.format(dateFormatter)
+            binding.confirmAlarmSelectedDate.text = formatDate(date)
             updateContinueState()
             showTimePicker()
         }
@@ -107,16 +111,16 @@ class ConfirmAlarmActivity : AppCompatActivity() {
 
     private fun showTimePicker() {
         val builder = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setTimeFormat(if (DateFormat.is24HourFormat(this)) {
+                TimeFormat.CLOCK_24H
+            } else {
+                TimeFormat.CLOCK_12H
+            })
             .setTitleText(R.string.confirm_alarm_pick_time)
 
-        selectedTime?.split(":")?.let { parts ->
-            val hour = parts.getOrNull(0)?.toIntOrNull()
-            val minute = parts.getOrNull(1)?.toIntOrNull()
-            if (hour != null && minute != null) {
-                builder.setHour(hour)
-                builder.setMinute(minute)
-            }
+        selectedTime?.let { time ->
+            builder.setHour(time.hour)
+            builder.setMinute(time.minute)
         }
 
         val picker = builder.build()
@@ -124,8 +128,8 @@ class ConfirmAlarmActivity : AppCompatActivity() {
         picker.addOnPositiveButtonClickListener {
             val hour = picker.hour
             val minute = picker.minute
-            selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hour, minute)
-            binding.confirmAlarmSelectedTime.text = selectedTime
+            selectedTime = LocalTime.of(hour, minute)
+            binding.confirmAlarmSelectedTime.text = formatTime(selectedTime)
             updateContinueState()
         }
 
@@ -134,6 +138,19 @@ class ConfirmAlarmActivity : AppCompatActivity() {
 
     private fun updateContinueState() {
         binding.confirmAlarmContinue.isEnabled = selectedTime != null && selectedDate != null
+    }
+
+    private fun formatDate(date: LocalDate): String = date.format(dateFormatter)
+
+    private fun formatTime(time: LocalTime?): String {
+        val localTime = time ?: return ""
+        val locale = displayLocale
+        val formatter = if (DateFormat.is24HourFormat(this)) {
+            DateTimeFormatter.ofPattern("HH:mm", locale)
+        } else {
+            DateTimeFormatter.ofPattern("hh:mm a", locale)
+        }
+        return localTime.format(formatter)
     }
 
     companion object {

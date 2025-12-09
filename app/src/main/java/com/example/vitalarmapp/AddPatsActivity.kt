@@ -11,6 +11,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityAddPatsBinding
+import com.example.vitalarmapp.ui.LoadingIndicatorFragment
 import com.example.vitalarmapp.utils.firebase.AddPersonResult
 import com.example.vitalarmapp.utils.firebase.FirebasePatientRegistrar
 import com.example.vitalarmapp.utils.firebase.PatientRegistrar

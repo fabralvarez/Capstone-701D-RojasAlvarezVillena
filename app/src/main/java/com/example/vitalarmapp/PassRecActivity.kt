@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.commit
 import com.example.vitalarmapp.databinding.ActivityPassRecBinding
+import com.example.vitalarmapp.ui.LoadingIndicatorFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseNetworkException
@@ -141,7 +142,10 @@ class PassRecActivity : AppCompatActivity() {
         if (supportFragmentManager.findFragmentByTag(LoadingIndicatorFragment.TAG) == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add(binding.passRecLoadingContainer.id, LoadingIndicatorFragment(), LoadingIndicatorFragment.TAG)
+                add(
+                    binding.passRecLoadingContainer.id,
+                    LoadingIndicatorFragment(), LoadingIndicatorFragment.TAG
+                )
             }
         }
     }

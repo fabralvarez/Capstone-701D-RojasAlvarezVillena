@@ -21,6 +21,7 @@ import androidx.credentials.exceptions.CreateCredentialException
 import androidx.fragment.app.commit
 import com.example.vitalarmapp.databinding.ActivityLoginBinding
 import com.example.vitalarmapp.databinding.LoginBottomSheetBinding
+import com.example.vitalarmapp.ui.LoadingIndicatorFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

@@ -370,9 +370,9 @@ Detalle: %3$s</string>
     <string name="alarm_ring_capture_failed">No se pudo capturar la foto</string>
     <string name="alarm_ring_header">Alarma activa</string>
     <string name="alarm_ring_body">Confirma la toma con una foto rápida para mantener tu historial al día.</string>
-    <string name="patient">Paciente</string>
+    <string name="patient" tools:keep="@string/patient">Paciente</string>
     <string name="patient_caregiver_label">Cuidador: %1$s</string>
-    <string name="medication">Medicamento</string>
+    <string name="medication" tools:keep="@string/medication">Medicamento</string>
     <string name="current_patients" tools:keep="@string/current_patients">Personas a Cuidado</string>
     <string name="no_patients_registered" tools:keep="@string/no_patients_registered">No hay personas agregadas\n\nPresiona el botón de abajo para agregar una persona</string>
     <string name="add_patient" tools:keep="@string/add_patient">Agregar Persona</string>

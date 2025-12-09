@@ -171,4 +171,17 @@
             app:cornerRadius="36dp"
             tools:ignore="VisualLintButtonSize" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/patient_loading_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#59000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

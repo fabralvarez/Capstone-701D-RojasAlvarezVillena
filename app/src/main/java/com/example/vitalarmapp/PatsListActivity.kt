@@ -10,6 +10,7 @@ import com.example.vitalarmapp.databinding.ActivityPatsListBinding
 import com.example.vitalarmapp.ui.lists.PatientListAdapter
 import com.example.vitalarmapp.ui.lists.PatientListItem
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.example.vitalarmapp.utils.local.AlarmScheduler
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.snackbar.Snackbar
@@ -22,6 +23,7 @@ class PatsListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPatsListBinding
     private val selectedIds = mutableSetOf<String>()
     private var isSelectionMode: Boolean = false
+    private val alarmScheduler by lazy { AlarmScheduler(this) }
 
     private val patientAdapter by lazy {
         PatientListAdapter(::onPatientLongPressed, ::onPatientSelected)
@@ -134,11 +136,22 @@ class PatsListActivity : AppCompatActivity() {
                 selectedIds.contains(it.patient.id)
             }
 
-            val success = withContext(Dispatchers.IO) {
-                itemsToDelete.all { FirebaseManager.deletePerson(it.patient.id) }
+            val (success, deletedAlarmIds) = withContext(Dispatchers.IO) {
+                val deletedIds = mutableListOf<String>()
+                val result = itemsToDelete.all { item ->
+                    val deletionResult = FirebaseManager.deletePerson(item.patient.id)
+                    if (deletionResult.success) {
+                        deletedIds.addAll(deletionResult.deletedAlarmIds)
+                        true
+                    } else {
+                        false
+                    }
+                }
+                result to deletedIds
             }
 
             if (success) {
+                alarmScheduler.cancelAlarms(deletedAlarmIds)
                 patientAdapter.removeItems { selectedIds.contains(it.patient.id) }
                 updateSelectionState(emptySet(), false)
                 updateEmptyState(patientAdapter.currentItems().isEmpty())

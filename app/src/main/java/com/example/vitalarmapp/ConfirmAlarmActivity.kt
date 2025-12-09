@@ -15,6 +15,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.android.material.transition.platform.MaterialSharedAxis
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
@@ -59,9 +60,14 @@ class ConfirmAlarmActivity : AppCompatActivity() {
         soundTitle = intent.getStringExtra(EXTRA_SOUND_TITLE).orEmpty()
         soundUri = intent.getStringExtra(EXTRA_SOUND_URI).orEmpty()
 
+        darkModeChecker()
         setupToolbar()
         setupContent()
         setupActions()
+    }
+
+    private fun darkModeChecker() {
+        DarkModeUtils.applyToolbarIconColors(binding.confirmAlarmToolbar)
     }
 
     private fun setupToolbar() {

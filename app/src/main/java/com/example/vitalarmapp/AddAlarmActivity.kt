@@ -11,6 +11,7 @@ import com.example.vitalarmapp.alarm.PatientRadioAdapter
 import com.example.vitalarmapp.databinding.ActivityAddAlarmBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.google.android.material.transition.platform.MaterialSharedAxis
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,10 +31,15 @@ class AddAlarmActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
+        darkModeChecker()
         setupToolbar()
         setupList()
         setupActions()
         loadPatients()
+    }
+
+    private fun darkModeChecker() {
+        DarkModeUtils.applyToolbarIconColors(binding.addAlarmToolbar)
     }
 
     private fun setupToolbar() {

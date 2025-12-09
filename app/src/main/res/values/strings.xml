@@ -372,6 +372,7 @@ Detalle: %3$s</string>
     <string name="alarm_ring_body">Confirma la toma con una foto rápida para mantener tu historial al día.</string>
     <string name="past_alarms_title">Alarmas pasadas</string>
     <string name="past_alarms_empty">No hay alarmas verificadas en los últimos 7 días</string>
+    <string name="past_alarms_incomplete_data">Los datos de algunas alarmas son incompletos o no se pudieron obtener correctamente.</string>
     <string name="past_alarm_subtitle">%1$s · %2$s · %3$s</string>
     <string name="past_alarm_detail_medication">%1$s · %2$s</string>
     <string name="past_alarm_detail_verified">Alarma verificada</string>

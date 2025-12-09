@@ -591,7 +591,6 @@ object FirebaseManager {
 
             alarmIds.forEach { alarmId ->
                 batch.delete(alarmsCollection(userId).document(alarmId))
-                batch.delete(db.collection(COLLECTION_ALARMS).document(alarmId))
             }
 
             batch.commit().await()
@@ -663,18 +662,24 @@ object FirebaseManager {
 
     suspend fun markAlarmVerified(id: String) {
         val userId = getCurrentUserId() ?: return
+        val document = alarmsCollection(userId).document(id)
+
+        val timestamp = System.currentTimeMillis()
+        val updates = mapOf(
+            "triggeredAt" to timestamp,
+            "verifiedAt" to timestamp,
+        )
+
         try {
-            val timestamp = System.currentTimeMillis()
-            val updates = mapOf(
-                "triggeredAt" to timestamp,
-                "verifiedAt" to timestamp,
-            )
-            alarmsCollection(userId)
-                .document(id)
-                .update(updates)
-                .await()
+            document.update(updates).await()
         } catch (e: Exception) {
             Log.e(LOG_TAG, "❌ Error marcando alarma verificada: ${e.message}", e)
+        }
+
+        try {
+            document.delete().await()
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error eliminando alarma verificada: ${e.message}", e)
         }
     }
 

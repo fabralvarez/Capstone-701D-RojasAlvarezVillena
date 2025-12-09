@@ -34,6 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
+                    app:navigationIconTint="?attr/colorOnSurface"
                     app:navigationIcon="@drawable/outline_arrow_back_24"
                     app:subtitle="@string/select_med_subtitle"
                     app:subtitleCentered="true"

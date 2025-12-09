@@ -37,6 +37,7 @@
                     android:background="?attr/colorSurface"
                     android:elevation="0dp"
                     app:layout_collapseMode="pin"
+                    app:navigationIconTint="?attr/colorOnSurface"
                     app:navigationIcon="@drawable/outline_arrow_back_24"
                     app:title="@string/about_app_title"
                     app:titleCentered="false"

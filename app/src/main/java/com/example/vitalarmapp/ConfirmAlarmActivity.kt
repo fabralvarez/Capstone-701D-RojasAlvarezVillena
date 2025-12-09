@@ -96,6 +96,7 @@ class ConfirmAlarmActivity : AppCompatActivity() {
                     time = time.toString()
                 )
             )
+            finish()
         }
     }
 

@@ -582,6 +582,24 @@ object FirebaseManager {
         }
     }
 
+    suspend fun deleteAlarms(alarmIds: Collection<String>): Boolean {
+        val userId = getCurrentUserId() ?: return false
+        if (alarmIds.isEmpty()) return true
+
+        return try {
+            alarmIds.forEach { alarmId ->
+                alarmsCollection(userId)
+                    .document(alarmId)
+                    .delete()
+                    .await()
+            }
+            true
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error eliminando alarmas: ${e.message}", e)
+            false
+        }
+    }
+
     suspend fun getAlarms(): List<AlarmRecord> {
         val userId = getCurrentUserId() ?: return emptyList()
         return try {

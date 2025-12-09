@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.databinding.ActivityPastAlarmsBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -36,21 +37,41 @@ class PastAlarmsActivity : AppCompatActivity() {
     }
 
     private fun setupList() {
-        binding.pastAlarmsList.layoutManager = LinearLayoutManager(this)
-        binding.pastAlarmsList.adapter = adapter
+        binding.pastAlarmsList.apply {
+            layoutManager = LinearLayoutManager(this@PastAlarmsActivity)
+            adapter = this@PastAlarmsActivity.adapter
+            addItemDecoration(
+                MaterialDividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
+        }
     }
 
     private fun loadAlarms() {
         lifecycleScope.launch {
+            showLoading(true)
             val items = withContext(Dispatchers.IO) { FirebaseManager.getAlarms() }
             adapter.submitList(items)
-            binding.pastAlarmsEmpty.isVisible = items.isEmpty()
-            binding.pastAlarmsList.isVisible = items.isNotEmpty()
+            updateEmptyState(items.isEmpty())
+            showLoading(false)
         }
     }
 
     private fun onAlarmSelected(id: String) {
         startActivity(PastAlarmDetailActivity.intent(this, id))
+    }
+
+    private fun updateEmptyState(isEmpty: Boolean) {
+        binding.pastAlarmsList.isVisible = !isEmpty
+        binding.pastAlarmsEmpty.isVisible = isEmpty
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.pastAlarmsLoading.isVisible = isLoading
+        binding.pastAlarmsList.isVisible = !isLoading
+        binding.pastAlarmsEmpty.isVisible = !isLoading && binding.pastAlarmsEmpty.isVisible
     }
 
     companion object {

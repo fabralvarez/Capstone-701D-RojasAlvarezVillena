@@ -302,6 +302,12 @@
     <string name="settings_material_you_default_subtitle">Vuelve a la paleta base de Vitalarm</string>
     <string name="settings_material_you_enabled">Material You activado.</string>
     <string name="settings_material_you_disabled">Material You desactivado.</string>
+    <string name="settings_language_title">Idioma de la app</string>
+    <string name="settings_language_subtitle">Elige cómo se muestra Vitalarm</string>
+    <string name="settings_language_changed">Idioma cambiado a %1$s.</string>
+    <string name="language_option_spanish_us">Español (Estados Unidos)</string>
+    <string name="language_option_english_us">English (United States)</string>
+    <string name="language_dialog_title">Elige el idioma</string>
     <string name="settings_clear_cache_title">Limpiar caché</string>
     <string name="settings_clear_cache_subtitle">Para optimizar la app</string>
     <string name="settings_cache_cleared">Caché limpiada correctamente.</string>
@@ -331,6 +337,7 @@
     <string name="confirm_alarm_summary">Paciente: %1$s
 Medicamento: %2$s
 Detalle: %3$s</string>
+    <string name="confirm_alarm_sound_header">Sonido de la alarma</string>
     <string name="alarm_sum_title">Resumen</string>
     <string name="alarm_sum_subtitle">De la alarma y sus configuraciones</string>
     <string name="alarm_sum_patient_header">Paciente seleccionado</string>
@@ -338,6 +345,7 @@ Detalle: %3$s</string>
     <string name="alarm_sum_med_value">%1$s • %2$s</string>
     <string name="alarm_sum_date_header">Fecha fijada</string>
     <string name="alarm_sum_time_header">Hora fijada</string>
+    <string name="alarm_sum_sound_header">Sonido</string>
     <string name="alarm_sum_save">Guardar</string>
     <string name="alarm_sum_saved">Alarma guardada correctamente.</string>
     <string name="alarm_sum_save_failed">No se pudo guardar la alarma en la nube.</string>
@@ -346,6 +354,12 @@ Detalle: %3$s</string>
     <string name="alarm_sum_saved_add_another">Agregar otra</string>
     <string name="alarm_sum_saved_return">Volver</string>
     <string name="alarm_sum_invalid_time">Selecciona una fecha y hora futura para la alarma.</string>
+    <string name="select_sound_title">Elegir sonido</string>
+    <string name="select_sound_subtitle">Personaliza la alarma</string>
+    <string name="select_sound_summary">Elige el sonido que se reproducirá cuando suene la alarma.</string>
+    <string name="select_sound_label">Sonido seleccionado</string>
+    <string name="select_sound_pick_button">Cambiar sonido</string>
+    <string name="select_sound_default_label">Sonido predeterminado</string>
     <string name="pre_alarm_notification_title">Alarma en 30 minutos</string>
     <string name="pre_alarm_notification_content">%1$s para %2$s a las %3$s</string>
     <string name="pre_alarm_notification_detail">Medicamento: %1$s (%2$s)&#x0a;Paciente: %3$s&#x0a;Fecha: %4$s · %5$s</string>

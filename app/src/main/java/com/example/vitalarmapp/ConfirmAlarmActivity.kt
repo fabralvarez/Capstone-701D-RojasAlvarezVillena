@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.vitalarmapp.AddAlarmActivity.Companion.EXTRA_PATIENT_NAME
@@ -37,6 +38,8 @@ class ConfirmAlarmActivity : AppCompatActivity() {
     private var patientName: String = ""
     private var medicationName: String = ""
     private var medicationDetail: String = ""
+    private var soundTitle: String = ""
+    private var soundUri: String = ""
     private var selectedDate: LocalDate? = null
     private var selectedTime: LocalTime? = null
 
@@ -48,10 +51,14 @@ class ConfirmAlarmActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
+        onBackPressedDispatcher.addCallback(this) { navigateToMenu() }
+
         patientId = intent.getStringExtra(EXTRA_PATIENT_ID).orEmpty()
         patientName = intent.getStringExtra(EXTRA_PATIENT_NAME).orEmpty()
         medicationName = intent.getStringExtra(EXTRA_MED_NAME).orEmpty()
         medicationDetail = intent.getStringExtra(EXTRA_MED_DETAIL).orEmpty()
+        soundTitle = intent.getStringExtra(EXTRA_SOUND_TITLE).orEmpty()
+        soundUri = intent.getStringExtra(EXTRA_SOUND_URI).orEmpty()
 
         setupToolbar()
         setupContent()
@@ -59,9 +66,7 @@ class ConfirmAlarmActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        binding.confirmAlarmToolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+        binding.confirmAlarmToolbar.setNavigationOnClickListener { navigateToMenu() }
     }
 
     private fun setupContent() {
@@ -71,6 +76,7 @@ class ConfirmAlarmActivity : AppCompatActivity() {
             medicationName,
             medicationDetail
         )
+        binding.confirmAlarmSoundValue.text = soundTitle.ifBlank { getString(R.string.select_sound_default_label) }
     }
 
     private fun setupActions() {
@@ -85,6 +91,8 @@ class ConfirmAlarmActivity : AppCompatActivity() {
                     patientName = patientName,
                     medicationName = medicationName,
                     medicationDetail = medicationDetail,
+                    soundUri = soundUri,
+                    soundTitle = soundTitle,
                     date = date.toString(),
                     time = time.toString()
                 )
@@ -154,19 +162,32 @@ class ConfirmAlarmActivity : AppCompatActivity() {
         return localTime.format(formatter)
     }
 
+    private fun navigateToMenu() {
+        startActivity(Intent(this, LanMenuActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        })
+        finish()
+    }
+
     companion object {
         const val EXTRA_PATIENT_ID = "com.example.vitalarmapp.PATIENT_ID"
+        const val EXTRA_SOUND_URI = "com.example.vitalarmapp.SOUND_URI"
+        const val EXTRA_SOUND_TITLE = "com.example.vitalarmapp.SOUND_TITLE"
         fun intent(
             context: Context,
             patientId: String,
             patientName: String,
             medicationName: String,
             medicationDetail: String,
+            soundUri: String,
+            soundTitle: String,
         ): Intent = Intent(context, ConfirmAlarmActivity::class.java).apply {
             putExtra(EXTRA_PATIENT_ID, patientId)
             putExtra(EXTRA_PATIENT_NAME, patientName)
             putExtra(EXTRA_MED_NAME, medicationName)
             putExtra(EXTRA_MED_DETAIL, medicationDetail)
+            putExtra(EXTRA_SOUND_URI, soundUri)
+            putExtra(EXTRA_SOUND_TITLE, soundTitle)
         }
     }
 }

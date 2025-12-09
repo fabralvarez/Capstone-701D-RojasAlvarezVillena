@@ -1,0 +1,389 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Vitalarm</string>
+    <string name="login">Log in</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_subtitle">With your Vitalarm account</string>
+    <string name="sign_up">Sign up</string>
+    <string name="register">Register</string>
+    <string name="username" tools:keep="@string/username">Username</string>
+    <string name="password" tools:keep="@string/password">Password</string>
+    <string name="enter" tools:keep="@string/enter">Enter</string>
+    <string name="name" tools:keep="@string/name">Name</string>
+    <string name="lastname" tools:keep="@string/lastname">Last name</string>
+    <string name="confirm_password" tools:keep="@string/confirm_password">Confirm password</string>
+    <string name="birthdate" tools:keep="@string/birthdate">Date of birth</string>
+    <string name="contact_name" tools:keep="@string/contact_name">Emergency contact name</string>
+    <string name="contact_relationship" tools:keep="@string/contact_relationship">Emergency contact relationship</string>
+    <string name="contact_number" tools:keep="@string/contact_number">Emergency contact number</string>
+    <string name="continue_button" tools:keep="@string/continue_button">Continue</string>
+    <string name="main_menu" tools:keep="@string/main_menu">Main menu</string>
+    <string name="add_person_to_care" tools:keep="@string/add_person_to_care">Add person to care</string>
+    <string name="people_list" tools:keep="@string/people_list">People in care</string>
+    <string name="medications" tools:keep="@string/medications">Medications</string>
+    <string name="next_medication" tools:keep="@string/next_medication">NEXT MEDICATION</string>
+    <string name="medication_name" tools:keep="@string/medication_name">Medication</string>
+    <string name="time" tools:keep="@string/time">Time</string>
+    <string name="person" tools:keep="@string/person">Person</string>
+    <string name="logout">Log out</string>
+    <string name="home_greeting">Welcome, %1$s!</string>
+    <string name="home_greeting_fallback">Welcome, User</string>
+    <string name="home_no_people" tools:keep="@string/home_no_people">No people added</string>
+    <string name="home_no_medications" tools:keep="@string/home_no_medications">No medications scheduled</string>
+    <string name="home_error_loading" tools:keep="@string/home_error_loading">Error loading medications</string>
+    <string name="home_section_upcoming_alarms">Upcoming alarms</string>
+    <string name="home_section_registered_patients">Registered patients</string>
+    <string name="home_section_registered_medications">Registered medications</string>
+    <string name="home_section_empty_alarms">No alarms scheduled yet.</string>
+    <string name="home_section_empty_patients">You haven’t added patients yet.</string>
+    <string name="home_section_empty_medications">No medications registered.</string>
+    <string name="home_patient_age_format" tools:ignore="PluralsCandidate">%1$d years</string>
+    <string name="home_patient_age_unknown">Age unavailable</string>
+    <string name="home_alarm_today">Today</string>
+    <string name="home_alarm_tomorrow">Tomorrow</string>
+    <string name="home_alarm_schedule_format">%1$s - %2$s</string>
+    <string name="home_alarm_schedule_unknown">Schedule to be defined</string>
+    <string name="home_medication_placeholder" tools:keep="@string/home_medication_placeholder">Medication</string>
+    <string name="home_dosage_placeholder" tools:keep="@string/home_dosage_placeholder">No dosage</string>
+    <string name="home_person_placeholder" tools:keep="@string/home_person_placeholder">Person</string>
+    <string name="home_next_time" tools:keep="@string/home_next_time">⏰ %1$s</string>
+    <string name="home_person_and_dosage" tools:keep="@string/home_person_and_dosage">👤 %1$s\n💊 %2$s\n%3$s</string>
+    <string name="home_now" tools:keep="@string/home_now">Now!</string>
+    <string name="home_minutes_format" tools:ignore="PluralsCandidate" tools:keep="@string/home_minutes_format">%1$d minutes</string>
+    <string name="home_hours_format" tools:ignore="PluralsCandidate" tools:keep="@string/home_hours_format">%1$d hours</string>
+    <string name="home_hours_minutes_format" tools:keep="@string/home_hours_minutes_format">%1$d h %2$d min</string>
+    <string name="home_next_label" tools:keep="@string/home_next_label">Next</string>
+    <string name="home_no_medications_title" tools:keep="@string/home_no_medications_title">💊 No medications</string>
+    <string name="home_add_people_hint" tools:keep="@string/home_add_people_hint">Add people and medications</string>
+    <string name="placeholder_text_keyboard" tools:keep="@string/placeholder_text_keyboard">THE KEYBOARD WOULD SHOW HERE</string>
+    <string name="user_or_email" tools:keep="@string/user_or_email">Username or email</string>
+    <string name="register_title" tools:keep="@string/register_title">Registration</string>
+    <string name="register_action" tools:keep="@string/register_action">Sign up</string>
+    <string name="login_toolbar_navigation_description">Back to start</string>
+    <string name="email_label">Email</string>
+    <string name="email_placeholder">email@example.com</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_password_placeholder">Password</string>
+    <string name="login_action">Log in</string>
+    <string name="login_forgot_password">Forgot your password?</string>
+    <string name="login_loading">Signing in…</string>
+    <string name="login_error_invalid_email">Enter a valid email.</string>
+    <string name="login_error_empty_password">Enter your password.</string>
+    <string name="login_error_short_password">Password must have at least 6 characters.</string>
+    <string name="login_dialog_user_not_found_title">Account not found</string>
+    <string name="login_dialog_user_not_found_message">We couldn’t find an account with those credentials. Check your email or sign up.</string>
+    <string name="login_dialog_connection_error_title">No connection</string>
+    <string name="login_dialog_connection_error_message">There was a problem connecting to our servers. Try again when you have internet.</string>
+    <string name="login_dialog_unknown_error_title">Couldn’t sign in</string>
+    <string name="login_dialog_unknown_error_message">Something went wrong while trying to sign in. %1$s</string>
+    <string name="login_dialog_unknown_error_fallback">Try again in a few minutes.</string>
+    <string name="login_save_session_title">Do you want to save your session?</string>
+    <string name="login_save_session_supporting_text">To save time and make access easier, you can store your session quickly and safely.</string>
+    <string name="login_save_session_dismiss">Not now</string>
+    <string name="login_save_session_accept">Accept</string>
+    <string name="sign_up_name_label">Full name</string>
+    <string name="sign_up_name_placeholder">John Doe</string>
+    <string name="sign_up_email_label">Email</string>
+    <string name="sign_up_email_placeholder">email@example.com</string>
+    <string name="sign_up_password_label">Password</string>
+    <string name="sign_up_password_placeholder">Password</string>
+    <string name="sign_up_confirm_password_label">Confirm password</string>
+    <string name="sign_up_confirm_password_placeholder">Confirm password</string>
+    <string name="sign_up_error_empty_name">Enter your full name.</string>
+    <string name="sign_up_error_invalid_email">Enter a valid email.</string>
+    <string name="sign_up_error_invalid_rut">Enter a valid RUT.</string>
+    <string name="sign_up_error_password_length">Password must have at least 6 characters.</string>
+    <string name="sign_up_error_password_mismatch">Passwords do not match.</string>
+    <string name="sign_up_error_empty_password">Enter a password.</string>
+    <string name="sign_up_error_empty_confirm_password">Confirm your password.</string>
+    <string name="sign_up_register_loading">Creating account…</string>
+    <string name="sign_up_success_dialog_title">User registered successfully</string>
+    <string name="sign_up_success_dialog_supporting">User %1$s has been registered successfully.</string>
+    <string name="sign_up_success_primary_action">Sign in</string>
+    <string name="sign_up_success_secondary_action">Go to start</string>
+    <string name="sign_up_success_fallback_name">new user</string>
+    <string name="sign_up_error_dialog_title">We couldn’t register your account</string>
+    <string name="sign_up_error_message_generic">There was a problem creating your account. Try again.</string>
+    <string name="sign_up_error_message_email_in_use">That email is already registered. Sign in or try another email.</string>
+    <string name="sign_up_error_message_weak_password">Your password must have at least 6 characters combining letters and numbers.</string>
+    <string name="error_detail_network">Check your internet connection and try again.</string>
+    <string name="error_detail_credentials">Verify the entered data and try again.</string>
+    <string name="error_detail_email_in_use">That email already has an account.</string>
+    <string name="error_detail_weak_password">Your password must be stronger. Use at least 6 characters combining letters and numbers.</string>
+    <string name="error_detail_invalid_email">The email format is invalid. Review it and try again.</string>
+    <string name="error_detail_missing_password">We’re missing your password. Type it to continue.</string>
+    <string name="error_detail_too_many_requests">We tried too many times in a row. Wait a moment and try again.</string>
+    <string name="error_detail_operation_not_allowed">Sign-up with email and password is disabled for now.</string>
+    <string name="error_detail_user_disabled">This account was disabled. If this is an error, contact us.</string>
+    <string name="error_detail_permission_denied">We couldn’t save your data because of missing permissions. Try later.</string>
+    <string name="error_detail_generic">Something unexpected happened. Try again in a few minutes.</string>
+    <string name="sign_up_rut_label">RUT</string>
+    <string name="sign_up_rut_placeholder">11.111.111–1</string>
+    <string name="confirm_email">Confirm Email</string>
+    <string name="pass_rec_info_card_header">Important information</string>
+    <string name="pass_rec_info_card_subhead">Make sure to enter a valid email already registered on the platform; otherwise you can sign up from the home screen.</string>
+    <string name="pass_rec_invalid_email">Enter a valid email to continue.</string>
+    <string name="pass_rec_error_user_not_found">We didn’t find an account with that email. Verify it or sign up.</string>
+    <string name="pass_rec_error_generic">We couldn’t send the recovery email. Try again in a moment.</string>
+    <string name="pass_rec_sending_email">Sending instructions…</string>
+    <string name="pass_rec_not_registered_title">Email not registered</string>
+    <string name="pass_rec_not_registered_message">We didn’t find an account associated with %1$s. Do you want to sign up now?</string>
+    <string name="pass_rec_not_registered_register">Sign up</string>
+    <string name="pass_reset_title">Reset password</string>
+    <string name="pass_reset_subtitle">You’ll soon be able to choose a new password</string>
+    <string name="pass_reset_info_title">All set</string>
+    <string name="pass_reset_info_body">If you already changed your password with the link sent to %1$s, you can log in again with your new password.</string>
+    <string name="pass_reset_finish_button">Go to login</string>
+    <string name="pass_wait_title">Check your email</string>
+    <string name="pass_wait_subtitle">We sent you a link to change your password</string>
+    <string name="pass_wait_info_title">Follow these steps</string>
+    <string name="pass_wait_info_body">1. Open the email sent to %1$s.\n2. Click the link to create your new password.\n3. Return to the app and confirm to finish.</string>
+    <string name="pass_wait_open_email">Go to my email</string>
+    <string name="pass_wait_continue">I already changed my password</string>
+    <string name="not_for_now">Not for now</string>
+    <string name="add_main_tab_title" tools:keep="@string/add_main_tab_title">Quick actions</string>
+    <string name="add_main_tab_subtitle" tools:keep="@string/add_main_tab_subtitle">Manage alarms, patients and medications from one place.</string>
+    <string name="add_main_card_alarm_title">Alarms</string>
+    <string name="add_main_card_alarm_subtitle">Add alarms for one or more registered patients</string>
+    <string name="add_main_card_patient_title">Add patients</string>
+    <string name="add_main_card_patient_subtitle">Add and register a new patient in Vitalarm’s database</string>
+    <string name="add_main_card_medication_title">Medications</string>
+    <string name="add_main_card_medication_subtitle">Add one or more medications to the list from Vitalarm’s database</string>
+    <string name="add_main_toolbar_title">What do you want to add?</string>
+    <string name="add_alarm_alt_title" tools:keep="@string/add_alarm_alt_title">Add alarms</string>
+    <string name="add_alarm_description" tools:keep="@string/add_alarm_description">Schedule reminders for your patients. You can add several times and we’ll keep them ordered.</string>
+    <string name="add_alarm_add_time" tools:keep="@string/add_alarm_add_time">Add time</string>
+    <string name="add_alarm_notes" tools:keep="@string/add_alarm_notes">Optional notes</string>
+    <string name="add_alarm_save" tools:keep="@string/add_alarm_save">Save alarms</string>
+    <string name="add_alarm_time_exists" tools:keep="@string/add_alarm_time_exists">That time was already added</string>
+    <string name="add_alarm_no_times" tools:keep="@string/add_alarm_no_times">Add at least one time</string>
+    <string name="add_alarm_saved" tools:keep="@string/add_alarm_saved">Alarm saved successfully</string>
+    <string name="add_patient_title" tools:keep="@string/add_patient_title">New patient</string>
+    <string name="add_patient_description" tools:keep="@string/add_patient_description">Register the patient’s basic information to link alarms and medications.</string>
+    <string name="add_patient_name_hint" tools:keep="@string/add_patient_name_hint">Patient name</string>
+    <string name="add_patient_name_helper" tools:keep="@string/add_patient_name_helper">Example: Juan Pérez</string>
+    <string name="add_patient_birthdate_hint" tools:keep="@string/add_patient_birthdate_hint">Date of birth</string>
+    <string name="add_patient_save" tools:keep="@string/add_patient_save">Save patient</string>
+    <string name="add_patient_success" tools:keep="@string/add_patient_success">Patient registered successfully</string>
+    <string name="add_patient_failure" tools:keep="@string/add_patient_failure">We couldn’t register the patient</string>
+    <string name="add_patient_name_error">Enter the patient’s name</string>
+    <string name="add_patient_gender_error">Select the patient’s gender</string>
+    <string name="add_patient_birthdate_error">Enter the birth date</string>
+    <string name="add_patient_notes_error">Add important patient notes</string>
+    <string name="add_patient_heading">Add a patient</string>
+    <string name="add_patient_subheading">Register the patient’s data in the platform</string>
+    <string name="add_patient_full_name_label">Full name</string>
+    <string name="add_patient_gender_placeholder">Gender</string>
+    <string name="add_patient_birthdate_placeholder">Date of birth</string>
+    <string name="add_patient_notes_label">Important notes</string>
+    <string name="add_patient_notes_placeholder">E.g., chronic illnesses</string>
+    <string name="add_patient_notes_supporting">Vital information</string>
+    <string name="add_patient_continue">Save patient</string>
+    <string name="add_patient_success_dialog_title">Patient registered successfully</string>
+    <string name="add_patient_success_dialog_message">You have successfully registered the patient.</string>
+    <string name="add_patient_success_add_another">Add another</string>
+    <string name="add_patient_success_back">Back</string>
+    <string name="add_patient_auth_error_snackbar">Sign in to register patients. %1$s</string>
+    <string name="add_patient_error_snackbar" tools:keep="@string/add_patient_error_snackbar">Error registering patient</string>
+    <string name="add_patient_generic_error_detail">Try again in a few moments.</string>
+    <string name="add_patient_connection_error_snackbar">We couldn’t connect. %1$s</string>
+    <string name="add_patient_permission_error_snackbar" tools:keep="@string/add_patient_permission_error_snackbar">You don’t have permission to register patients. %1$s</string>
+    <string name="add_patient_unavailable_error_snackbar" tools:keep="@string/add_patient_unavailable_error_snackbar">Service is temporarily busy. %1$s</string>
+    <string name="add_patient_timeout_error_snackbar" tools:keep="@string/add_patient_timeout_error_snackbar">The connection took too long. %1$s</string>
+    <string name="add_patient_quota_error_snackbar" tools:keep="@string/add_patient_quota_error_snackbar">You reached the registration limit for now. %1$s</string>
+    <string name="add_patient_invalid_data_error_snackbar" tools:keep="@string/add_patient_invalid_data_error_snackbar">There is a problem with the submitted data. %1$s</string>
+    <string name="add_patient_cancelled_error_snackbar" tools:keep="@string/add_patient_cancelled_error_snackbar">Registration was cancelled before finishing. %1$s</string>
+    <string name="add_patient_unknown_error_snackbar">We had an unexpected problem. %1$s</string>
+    <string name="common_cancel" tools:keep="@string/common_cancel">Cancel</string>
+    <string name="add_meds_title" tools:keep="@string/add_meds_title">Medications</string>
+    <string name="add_meds_description" tools:keep="@string/add_meds_description">Search existing medications and select them to add to your workflow.</string>
+    <string name="add_meds_search_hint" tools:keep="@string/add_meds_search_hint">Search medications</string>
+    <string name="add_meds_search_placeholder">Enter the medication</string>
+    <string name="add_meds_add_action">Add</string>
+    <string name="add_meds_empty_description">No description available</string>
+    <string name="add_meds_empty_route" tools:keep="@string/add_meds_empty_route">Route not specified</string>
+    <string name="add_meds_empty_composition" tools:keep="@string/add_meds_empty_composition">Composition not specified</string>
+    <string name="add_meds_unknown" tools:keep="@string/add_meds_unknown">Medication without name</string>
+    <string name="add_meds_load_error" tools:keep="@string/add_meds_load_error">Could not load medication catalog</string>
+    <string name="add_meds_search_loading">Searching medications…</string>
+    <string name="add_meds_search_error">We couldn’t fetch the medications. Try again.</string>
+    <string name="add_meds_search_no_results">No results found for “%1$s”.</string>
+    <string name="add_meds_search_start">Type a medication name to begin.</string>
+    <string name="add_meds_selected_format" tools:keep="@string/add_meds_selected_format">%1$s selected</string>
+    <string name="add_meds_selected_title">Selected medication</string>
+    <string name="add_meds_route_label">Route: </string>
+    <string name="add_meds_substance_label" tools:keep="@string/add_meds_substance_label">Composition: </string>
+    <string name="add_meds_composition_label">Composition: </string>
+    <string name="add_meds_dosage_label">Dosage: </string>
+    <string name="add_meds_form_label">Format: </string>
+    <string name="add_meds_dosage_dialog_title">Add dosage</string>
+    <string name="add_meds_dosage_dialog_supporting">Select the correct format and unit for this medication before saving it.</string>
+    <string name="add_meds_dosage_form_hint">Medication format</string>
+    <string name="add_meds_dosage_amount_hint">Amount</string>
+    <string name="add_meds_dosage_amount_helper">E.g., 200, 500, 1.5</string>
+    <string name="add_meds_dosage_unit_hint">Dosage unit</string>
+    <string name="add_meds_dosage_save">Save dosage</string>
+    <string name="add_meds_dosage_form_tablet">Tablets / pills</string>
+    <string name="add_meds_dosage_form_capsule">Capsules</string>
+    <string name="add_meds_dosage_form_syrup">Syrup / solution</string>
+    <string name="add_meds_dosage_form_drops">Drops</string>
+    <string name="add_meds_dosage_form_injection">Injectable</string>
+    <string name="add_meds_dosage_form_other">Other format</string>
+    <string name="add_meds_dosage_unit_error">Select format and unit to continue.</string>
+    <string name="add_meds_dosage_amount_error">Enter a valid amount.</string>
+    <string name="add_meds_selection_count" tools:ignore="PluralsCandidate">%1$d selected</string>
+    <string name="add_meds_delete_selection">Delete selection</string>
+    <string name="add_meds_selection_removed_message">%1$s removed successfully</string>
+    <string name="add_meds_save_error">Error adding selected medication</string>
+    <string name="add_meds_dialog_title">Medication registered successfully</string>
+    <string name="add_meds_dialog_body">You have successfully registered a medication.</string>
+    <string name="add_meds_dialog_add_another">Add another</string>
+    <string name="add_meds_dialog_return">Return</string>
+    <string name="add_meds_summary_title">Summary</string>
+    <string name="add_meds_summary_subtitle">Of the selected medication to add</string>
+    <string name="add_meds_summary_cancel_title">Are you sure you want to cancel the operation?</string>
+    <string name="add_meds_summary_cancel_message" tools:ignore="Typos">You will lose all your progress so far.</string>
+    <string name="add_meds_summary_cancel_confirm">Yes</string>
+    <string name="add_meds_summary_cancel_dismiss">No</string>
+    <string name="alarm_list_title">Upcoming alarms</string>
+    <string name="meds_list_title">Registered medications</string>
+    <string name="pats_list_title">Registered patients</string>
+    <string name="list_selection_count" tools:ignore="PluralsCandidate">%1$d selected</string>
+    <string name="list_delete_confirm_title">Are you sure you want to delete the selected items?</string>
+    <string name="list_delete_confirm_supporting">This action is irreversible.</string>
+    <string name="list_delete_yes">Yes</string>
+    <string name="list_delete_no">No</string>
+    <string name="list_delete_success_title">Items deleted successfully</string>
+    <string name="list_delete_success_supporting">The selected items have been deleted successfully.</string>
+    <string name="list_delete_success_action">Back</string>
+    <string name="list_delete_error">The selected items could not be deleted.</string>
+    <string name="alarm_list_medication_format">%1$s - %2$s</string>
+    <string name="medication_detail_placeholder">No additional details</string>
+    <string name="edit_profile_title">Edit your profile</string>
+    <string name="edit_profile_subtitle">Keep your data up to date on the platform</string>
+    <string name="edit_profile_name_label">Full name</string>
+    <string name="edit_profile_name_placeholder">Jane Doe</string>
+    <string name="edit_profile_cancel_action">Cancel operation</string>
+    <string name="edit_profile_reset_action">Reset name</string>
+    <string name="edit_profile_cancel_title">Do you want to cancel the operation?</string>
+    <string name="edit_profile_cancel_supporting">Your data will remain the same and unchanged</string>
+    <string name="edit_profile_cancel_confirm">Yes</string>
+    <string name="edit_profile_cancel_dismiss">No</string>
+    <string name="edit_profile_success_title">Name reset successfully</string>
+    <string name="edit_profile_success_supporting">You have successfully updated your name</string>
+    <string name="edit_profile_success_action">Back</string>
+    <string name="edit_profile_error_title">We couldn’t change your name</string>
+    <string name="edit_profile_error_supporting">There was a problem updating your name. Try again in a few minutes.</string>
+    <string name="edit_profile_name_error">Enter your new name to continue.</string>
+    <string name="profile_tab_title">Profile</string>
+    <string name="notifications_action_label">Notifications</string>
+    <string name="settings_action_label">Settings</string>
+    <string name="profile_greeting_format">Welcome, %1$s</string>
+    <string name="profile_unknown_email">Email unavailable</string>
+    <string name="profile_caregiver_label">Caregiver name:</string>
+    <string name="profile_rut_label">RUT:</string>
+    <string name="profile_rut_placeholder">RUT unavailable</string>
+    <string name="profile_qr_title" tools:keep="@string/profile_qr_title">Your personal QR code</string>
+    <string name="profile_qr_description">QR code with your contact information</string>
+    <string name="profile_qr_error">Could not generate QR code</string>
+    <string name="profile_qr_supporting" tools:keep="@string/profile_qr_supporting">Share this code with your medical team to quickly access your data.</string>
+    <string name="profile_edit_action">Edit profile</string>
+    <string name="profile_logout_message" tools:keep="@string/profile_logout_message">Session closed</string>
+    <string name="profile_logout_dialog_title">Are you sure you want to log out?</string>
+    <string name="profile_logout_dialog_supporting">Once you log out, you will return to the start screen</string>
+    <string name="profile_logout_dialog_confirm">Log out</string>
+    <string name="profile_logout_dialog_cancel">Cancel</string>
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_headline_format">%1$s • %2$s</string>
+    <string name="notifications_empty">No recent notifications.</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_material_you_title">Enable Material You</string>
+    <string name="settings_material_you_subtitle">Colors will be based on your wallpaper</string>
+    <string name="settings_material_you_title_default">Enable default theme</string>
+    <string name="settings_material_you_default_subtitle">Return to Vitalarm’s base palette</string>
+    <string name="settings_material_you_enabled">Material You enabled.</string>
+    <string name="settings_material_you_disabled">Material You disabled.</string>
+    <string name="settings_clear_cache_title">Clear cache</string>
+    <string name="settings_clear_cache_subtitle">To optimize the app</string>
+    <string name="settings_cache_cleared">Cache cleared successfully.</string>
+    <string name="settings_cache_clear_failed">Cache could not be cleared.</string>
+    <string name="settings_cache_autoclear_disabled" tools:keep="@string/settings_cache_autoclear_disabled">Auto clear disabled.</string>
+    <string name="settings_language_title">App language</string>
+    <string name="settings_language_subtitle">Choose how Vitalarm is displayed</string>
+    <string name="settings_language_changed">Language changed to %1$s.</string>
+    <string name="language_option_spanish_us">Spanish (United States)</string>
+    <string name="language_option_english_us">English (United States)</string>
+    <string name="language_dialog_title">Choose language</string>
+    <string name="shortcut_clear_cache_short_label">Clear cache</string>
+    <string name="shortcut_clear_cache_long_label">Clear Vitalarm cache</string>
+    <string name="about_app_title">About the app</string>
+    <string name="about_app_headline">Vitalarm App</string>
+    <string name="about_app_version">Version %1$s</string>
+    <string name="medication_pathology">Associated pathology:</string>
+    <string name="medication_indication">Commonly used in patients with:</string>
+    <string name="add_alarm_title">Add an alarm</string>
+    <string name="add_alarm_subtitle">To begin, select a registered patient</string>
+    <string name="add_alarm_empty">You don’t have registered patients yet.</string>
+    <string name="add_alarm_continue">Continue</string>
+    <string name="select_med_title">Select medication</string>
+    <string name="select_med_subtitle">For the selected patient</string>
+    <string name="select_med_empty">No medications saved yet.</string>
+    <string name="confirm_alarm_title">Select date and time</string>
+    <string name="confirm_alarm_subtitle">Choose when the alarm will sound</string>
+    <string name="confirm_alarm_pick_date">Set date</string>
+    <string name="confirm_alarm_pick_time">Set time</string>
+    <string name="confirm_alarm_pick_date_time">Set date and time</string>
+    <string name="confirm_alarm_date_unset">Date not selected</string>
+    <string name="confirm_alarm_time_unset">Time not selected</string>
+    <string name="confirm_alarm_summary">Patient: %1$s
+Medication: %2$s
+Detail: %3$s</string>
+    <string name="confirm_alarm_sound_header">Alarm sound</string>
+    <string name="alarm_sum_title">Summary</string>
+    <string name="alarm_sum_subtitle">Of the alarm and its settings</string>
+    <string name="alarm_sum_patient_header">Selected patient</string>
+    <string name="alarm_sum_med_header">Selected medication</string>
+    <string name="alarm_sum_med_value">%1$s • %2$s</string>
+    <string name="alarm_sum_date_header">Set date</string>
+    <string name="alarm_sum_time_header">Set time</string>
+    <string name="alarm_sum_sound_header">Sound</string>
+    <string name="alarm_sum_save">Save</string>
+    <string name="alarm_sum_saved">Alarm saved successfully.</string>
+    <string name="alarm_sum_save_failed">Could not save the alarm to the cloud.</string>
+    <string name="alarm_sum_saved_title">Alarm saved</string>
+    <string name="alarm_sum_saved_message">The alarm was saved successfully.</string>
+    <string name="alarm_sum_saved_add_another">Add another</string>
+    <string name="alarm_sum_saved_return">Return</string>
+    <string name="alarm_sum_invalid_time">Select a future date and time for the alarm.</string>
+    <string name="select_sound_title">Choose sound</string>
+    <string name="select_sound_subtitle">Customize your alarm</string>
+    <string name="select_sound_summary">Pick the tone that will play when the alarm rings.</string>
+    <string name="select_sound_label">Selected sound</string>
+    <string name="select_sound_pick_button">Change sound</string>
+    <string name="select_sound_default_label">Default sound</string>
+    <string name="pre_alarm_notification_title">Alarm in 30 minutes</string>
+    <string name="pre_alarm_notification_content">%1$s for %2$s at %3$s</string>
+    <string name="pre_alarm_notification_detail">Medication: %1$s (%2$s)&#x0a;Patient: %3$s&#x0a;Date: %4$s · %5$s</string>
+    <string name="alarm_ring_medication">%1$s · %2$s</string>
+    <string name="alarm_ring_time">%1$s · %2$s</string>
+    <string name="alarm_ring_verify">Verify</string>
+    <string name="alarm_ring_verified">Alarm verified</string>
+    <string name="alarm_ring_capture_failed">Could not capture photo</string>
+    <string name="alarm_ring_header">Active alarm</string>
+    <string name="alarm_ring_body">Confirm the dose with a quick photo to keep your history up to date.</string>
+    <string name="past_alarms_title">Past alarms</string>
+    <string name="past_alarms_empty">No verified alarms in the last 7 days</string>
+    <string name="past_alarm_subtitle">%1$s · %2$s · %3$s</string>
+    <string name="past_alarm_detail_medication">%1$s · %2$s</string>
+    <string name="past_alarm_detail_verified">Alarm verified</string>
+    <string name="patient">Patient</string>
+    <string name="patient_caregiver_label">Caregiver: %1$s</string>
+    <string name="past_alarm_subtitle_desc">Medication - dosage - time</string>
+    <string name="medication">Medication</string>
+    <string name="past_alarm_detail_time_text">08:00</string>
+    <string name="current_patients" tools:keep="@string/current_patients">People in care</string>
+    <string name="no_patients_registered" tools:keep="@string/no_patients_registered">No people added\n\nPress the button below to add a person</string>
+    <string name="add_patient" tools:keep="@string/add_patient">Add person</string>
+    <string name="lan_menu_home">Home</string>
+    <string name="lan_add">Add</string>
+    <string name="lan_profile">Profile</string>
+</resources>

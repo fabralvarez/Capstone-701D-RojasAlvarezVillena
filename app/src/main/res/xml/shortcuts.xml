@@ -7,8 +7,10 @@
         android:shortcutLongLabel="@string/shortcut_clear_cache_long_label"
         android:shortcutShortLabel="@string/shortcut_clear_cache_short_label">
         <intent
-            android:action="android.intent.action.VIEW"
+            android:action="com.example.vitalarmapp.action.CLEAR_CACHE"
             android:targetClass="com.example.vitalarmapp.SettingsActivity"
-            android:targetPackage="com.example.vitalarmapp" />
+            android:targetPackage="com.example.vitalarmapp">
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent>
     </shortcut>
 </shortcuts>

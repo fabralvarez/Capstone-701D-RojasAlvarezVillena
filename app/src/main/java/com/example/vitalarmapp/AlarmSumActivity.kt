@@ -36,6 +36,8 @@ class AlarmSumActivity : AppCompatActivity() {
     private var patientName: String = ""
     private var medicationName: String = ""
     private var medicationDetail: String = ""
+    private var soundTitle: String = ""
+    private var soundUri: String = ""
     private var date: String = ""
     private var time: String = ""
     private val scheduler by lazy { AlarmScheduler(this) }
@@ -58,6 +60,8 @@ class AlarmSumActivity : AppCompatActivity() {
         patientName = intent.getStringExtra(EXTRA_PATIENT_NAME).orEmpty()
         medicationName = intent.getStringExtra(EXTRA_MED_NAME).orEmpty()
         medicationDetail = intent.getStringExtra(EXTRA_MED_DETAIL).orEmpty()
+        soundTitle = intent.getStringExtra(EXTRA_SOUND_TITLE).orEmpty()
+        soundUri = intent.getStringExtra(EXTRA_SOUND_URI).orEmpty()
         date = intent.getStringExtra(EXTRA_DATE).orEmpty()
         time = intent.getStringExtra(EXTRA_TIME).orEmpty()
 
@@ -77,6 +81,7 @@ class AlarmSumActivity : AppCompatActivity() {
         binding.alarmSumMedValue.text = getString(R.string.alarm_sum_med_value, medicationName, medicationDetail)
         binding.alarmSumDateValue.text = formatDateForDisplay(date)
         binding.alarmSumTimeValue.text = formatTimeForDisplay(time)
+        binding.alarmSumSoundValue.text = soundTitle.ifBlank { getString(R.string.select_sound_default_label) }
     }
 
     private fun setupActions() {
@@ -105,6 +110,8 @@ class AlarmSumActivity : AppCompatActivity() {
             patientName = patientName,
             medicationName = medicationName,
             medicationDetail = medicationDetail,
+            soundTitle = soundTitle,
+            soundUri = soundUri,
             date = date,
             time = time,
             scheduledAt = scheduledAt,
@@ -192,6 +199,8 @@ class AlarmSumActivity : AppCompatActivity() {
         const val EXTRA_PATIENT_NAME = "extra_patient_name"
         const val EXTRA_PATIENT_ID = "extra_patient_id"
         const val EXTRA_DATE = "extra_date"
+        const val EXTRA_SOUND_URI = "extra_sound_uri"
+        const val EXTRA_SOUND_TITLE = "extra_sound_title"
 
         fun intent(
             context: Context,
@@ -199,6 +208,8 @@ class AlarmSumActivity : AppCompatActivity() {
             patientName: String,
             medicationName: String,
             medicationDetail: String,
+            soundUri: String,
+            soundTitle: String,
             date: String,
             time: String,
         ): Intent = Intent(context, AlarmSumActivity::class.java).apply {
@@ -206,6 +217,8 @@ class AlarmSumActivity : AppCompatActivity() {
             putExtra(EXTRA_PATIENT_NAME, patientName)
             putExtra(EXTRA_MED_NAME, medicationName)
             putExtra(EXTRA_MED_DETAIL, medicationDetail)
+            putExtra(EXTRA_SOUND_URI, soundUri)
+            putExtra(EXTRA_SOUND_TITLE, soundTitle)
             putExtra(EXTRA_DATE, date)
             putExtra(EXTRA_TIME, time)
         }

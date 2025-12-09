@@ -63,7 +63,7 @@ class SelectMedActivity : AppCompatActivity() {
         binding.selectMedContinue.setOnClickListener {
             val med = selectedMedication ?: return@setOnClickListener
             startActivity(
-                ConfirmAlarmActivity.intent(
+                SelectSoundActivity.intent(
                     context = this,
                     patientId = patientId,
                     patientName = patientName,

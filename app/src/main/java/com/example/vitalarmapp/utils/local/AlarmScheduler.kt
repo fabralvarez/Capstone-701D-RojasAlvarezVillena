@@ -131,6 +131,8 @@ class AlarmScheduler(private val context: Context) {
         private const val EXTRA_DATE = "extra_alarm_date"
         private const val EXTRA_TIME = "extra_alarm_time"
         private const val EXTRA_SCHEDULED_AT = "extra_alarm_scheduled_at"
+        private const val EXTRA_SOUND_URI = "extra_alarm_sound_uri"
+        private const val EXTRA_SOUND_TITLE = "extra_alarm_sound_title"
 
         fun Intent.putAlarmPayload(record: AlarmRecord) {
             putExtra(EXTRA_ALARM_ID, record.id)
@@ -138,6 +140,8 @@ class AlarmScheduler(private val context: Context) {
             putExtra(EXTRA_PATIENT_NAME, record.patientName)
             putExtra(EXTRA_MED_NAME, record.medicationName)
             putExtra(EXTRA_MED_DETAIL, record.medicationDetail)
+            putExtra(EXTRA_SOUND_TITLE, record.soundTitle)
+            putExtra(EXTRA_SOUND_URI, record.soundUri)
             putExtra(EXTRA_DATE, record.date)
             putExtra(EXTRA_TIME, record.time)
             putExtra(EXTRA_SCHEDULED_AT, record.scheduledAt)
@@ -149,6 +153,8 @@ class AlarmScheduler(private val context: Context) {
             val patientName = getStringExtra(EXTRA_PATIENT_NAME) ?: return null
             val medName = getStringExtra(EXTRA_MED_NAME) ?: return null
             val medDetail = getStringExtra(EXTRA_MED_DETAIL) ?: return null
+            val soundTitle = getStringExtra(EXTRA_SOUND_TITLE).orEmpty()
+            val soundUri = getStringExtra(EXTRA_SOUND_URI).orEmpty()
             val date = getStringExtra(EXTRA_DATE) ?: return null
             val time = getStringExtra(EXTRA_TIME) ?: return null
             val scheduledAt = getLongExtra(EXTRA_SCHEDULED_AT, 0L)
@@ -160,6 +166,8 @@ class AlarmScheduler(private val context: Context) {
                 patientName = patientName,
                 medicationName = medName,
                 medicationDetail = medDetail,
+                soundTitle = soundTitle,
+                soundUri = soundUri,
                 date = date,
                 time = time,
                 scheduledAt = scheduledAt,

@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConfirmAlarmActivity">
+    tools:context=".SelectSoundActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/confirm_alarm_coordinator"
+        android:id="@+id/select_sound_coordinator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,7 +19,7 @@
             android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/confirm_alarm_collapsing"
+                android:id="@+id/select_sound_collapsing"
                 style="?attr/collapsingToolbarLayoutMediumStyle"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
@@ -30,14 +30,14 @@
                 app:statusBarScrim="?attr/colorSurface">
 
                 <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/confirm_alarm_toolbar"
+                    android:id="@+id/select_sound_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/outline_arrow_back_24"
-                    app:subtitle="@string/confirm_alarm_subtitle"
+                    app:subtitle="@string/select_sound_subtitle"
                     app:subtitleCentered="true"
-                    app:title="@string/confirm_alarm_title"
+                    app:title="@string/select_sound_title"
                     app:titleCentered="true" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -46,7 +46,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/confirm_alarm_content"
+        android:id="@+id/select_sound_content"
         style="@style/Widget.Material3.CardView.Filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/confirm_alarm_coordinator">
+        app:layout_constraintTop_toBottomOf="@id/select_sound_coordinator">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,52 +63,44 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/confirm_alarm_summary"
+                android:id="@+id/select_sound_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/select_sound_summary"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                tools:text="Paciente: Ana Díaz\nMedicamento: Paracetamol 500 mg" />
+                tools:text="Elige el sonido que se reproducirá cuando suene la alarma" />
 
             <TextView
-                android:id="@+id/confirm_alarm_selected_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/confirm_alarm_date_unset"
-                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                tools:text="05/06/2024" />
-
-            <TextView
-                android:id="@+id/confirm_alarm_selected_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/confirm_alarm_time_unset"
-                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                tools:text="07:30" />
-
-            <TextView
-                android:id="@+id/confirm_alarm_sound_header"
+                android:id="@+id/select_sound_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/confirm_alarm_sound_header"
+                android:text="@string/select_sound_label"
                 android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
                 android:textColor="?attr/colorOnSurfaceVariant" />
 
             <TextView
-                android:id="@+id/confirm_alarm_sound_value"
+                android:id="@+id/select_sound_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                tools:text="Ringtone predeterminado" />
+                tools:text="Default alarm" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/select_sound_picker_button"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/select_sound_pick_button"
+                android:textAllCaps="false" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
-        android:id="@+id/confirm_alarm_actions"
+        android:id="@+id/select_sound_actions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
@@ -119,15 +111,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/confirm_pick_date_time"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/confirm_alarm_pick_date_time"
-            android:textAllCaps="false" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/confirm_alarm_continue"
+            android:id="@+id/select_sound_continue"
             style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

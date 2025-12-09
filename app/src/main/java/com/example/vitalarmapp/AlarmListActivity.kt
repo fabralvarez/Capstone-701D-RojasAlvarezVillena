@@ -10,6 +10,7 @@ import com.example.vitalarmapp.databinding.ActivityAlarmListBinding
 import com.example.vitalarmapp.ui.lists.AlarmListAdapter
 import com.example.vitalarmapp.ui.lists.AlarmListItem
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.example.vitalarmapp.utils.local.AlarmScheduler
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.snackbar.Snackbar
@@ -19,11 +20,8 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.coroutineScope
 
 class AlarmListActivity : AppCompatActivity() {
 
@@ -35,9 +33,10 @@ class AlarmListActivity : AppCompatActivity() {
         AlarmListAdapter(::onAlarmLongPressed, ::onAlarmSelected)
     }
 
+    private val alarmScheduler by lazy { AlarmScheduler(this) }
+
     private val displayLocale = Locale("es", "US")
     private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", displayLocale)
-    private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", displayLocale)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,53 +103,41 @@ class AlarmListActivity : AppCompatActivity() {
     }
 
     private suspend fun buildAlarmItems(): List<AlarmListItem> {
-        val patients = FirebaseManager.getPeople()
-        val patientMap = patients.associateBy { it.id }
+        val alarmRecords = FirebaseManager.getUpcomingAlarms(limit = Int.MAX_VALUE)
 
-        val medicationLists = coroutineScope {
-            patients.map { patient ->
-                async { patient to FirebaseManager.getMedicationsForPerson(patient.id) }
-            }.awaitAll()
-        }
+        return alarmRecords.map { record ->
+            val schedule = parseSchedule(record.date, record.time, record.scheduledAt)
+            val scheduleText = formatSchedule(schedule, record.date, record.time)
 
-        val alarmItems = mutableListOf<AlarmListItem>()
-        medicationLists.forEach { (patient, medications) ->
-            medications.forEach { medication ->
-                medication.alarmTimes.forEach { time ->
-                    val schedule = parseSchedule(time)
-                    val scheduleText = formatSchedule(schedule, time)
-                    val patientName = patientMap[patient.id]?.name ?: patient.name
-                    alarmItems.add(
-                        AlarmListItem(
-                            id = "${medication.id}-$time",
-                            patientId = patient.id,
-                            medicationId = medication.id,
-                            patientName = patientName,
-                            medicationName = medication.name,
-                            scheduleText = scheduleText,
-                            scheduledAt = schedule,
-                            originalTime = time,
-                        )
-                    )
-                }
-            }
-        }
-
-        return alarmItems.sortedBy { it.scheduledAt ?: LocalDateTime.MAX }
+            AlarmListItem(
+                id = record.id,
+                patientId = record.patientId,
+                medicationId = record.medicationName,
+                patientName = record.patientName,
+                medicationName = record.medicationName,
+                scheduleText = scheduleText,
+                scheduledAt = schedule,
+                originalTime = record.time,
+            )
+        }.sortedBy { it.scheduledAt ?: LocalDateTime.MAX }
     }
 
-    private fun parseSchedule(time: String): LocalDateTime? {
+    private fun parseSchedule(date: String, time: String, fallbackMillis: Long): LocalDateTime? {
         return runCatching {
-            val parsedTime = LocalTime.parse(time, timeFormatter)
-            val today = LocalDate.now()
-            val now = LocalTime.now()
-            val targetDate = if (parsedTime.isBefore(now)) today.plusDays(1) else today
-            LocalDateTime.of(targetDate, parsedTime)
+            val parsedDate = LocalDate.parse(date)
+            val parsedTime = LocalTime.parse(time)
+            LocalDateTime.of(parsedDate, parsedTime)
+        }.getOrNull() ?: runCatching {
+            LocalDateTime.ofInstant(
+                java.time.Instant.ofEpochMilli(fallbackMillis),
+                java.time.ZoneId.systemDefault(),
+            )
         }.getOrNull()
     }
 
-    private fun formatSchedule(dateTime: LocalDateTime?, fallback: String): String {
-        return dateTime?.let { dateTimeFormatter.format(it) } ?: fallback
+    private fun formatSchedule(dateTime: LocalDateTime?, fallbackDate: String, fallbackTime: String): String {
+        return dateTime?.let { dateTimeFormatter.format(it) }
+            ?: "$fallbackDate $fallbackTime"
     }
 
     private fun onAlarmLongPressed(item: AlarmListItem) {
@@ -201,40 +188,20 @@ class AlarmListActivity : AppCompatActivity() {
 
     private fun deleteSelectedAlarms() {
         lifecycleScope.launch {
-            val currentItems = alarmAdapter.currentItems()
-            val selectedItems = currentItems.filter { selectedIds.contains(it.id) }
-
-            val groupedSelections = selectedItems.groupBy { it.medicationId to it.patientId }
+            val selectedAlarms = selectedIds.toList()
 
             val success = withContext(Dispatchers.IO) {
-                groupedSelections.entries.all { (medicationId, _) ->
-                    val patientId = medicationId.second
-                    val medId = medicationId.first
-                    updateMedicationTimes(patientId, medId, currentItems)
-                }
+                FirebaseManager.deleteAlarms(selectedAlarms)
             }
 
             if (success) {
+                alarmScheduler.cancelAlarms(selectedAlarms)
                 loadAlarms()
                 showSuccessDialog()
             } else {
                 Snackbar.make(binding.root, R.string.list_delete_error, Snackbar.LENGTH_LONG).show()
             }
         }
-    }
-
-    private suspend fun updateMedicationTimes(
-        patientId: String,
-        medicationId: String,
-        currentItems: List<AlarmListItem>,
-    ): Boolean {
-        val remainingTimes = currentItems.filter {
-            it.medicationId == medicationId &&
-                it.patientId == patientId &&
-                !selectedIds.contains(it.id)
-        }.map { it.originalTime }
-
-        return FirebaseManager.updateMedicationAlarmTimes(patientId, medicationId, remainingTimes)
     }
 
     private fun showSuccessDialog() {

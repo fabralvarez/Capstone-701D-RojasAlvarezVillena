@@ -51,6 +51,11 @@ sealed class AddPersonResult {
     data class UnknownError(val message: String? = null) : AddPersonResult()
 }
 
+data class DeletePersonResult(
+    val success: Boolean,
+    val deletedAlarmIds: List<String> = emptyList(),
+)
+
 object FirebaseManager {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     @SuppressLint("StaticFieldLeak")
@@ -260,25 +265,32 @@ object FirebaseManager {
         }
     }
 
-    suspend fun deletePerson(personId: String): Boolean {
-        val userId = getCurrentUserId() ?: return false
+    suspend fun deletePerson(personId: String): DeletePersonResult {
+        val userId = getCurrentUserId() ?: return DeletePersonResult(false)
 
         return try {
             val medicationsSnapshot = medicationsCollection(userId, personId).get().await()
+            val alarmsSnapshot = alarmsCollection(userId)
+                .whereEqualTo("patientId", personId)
+                .get()
+                .await()
+
+            val deletedAlarmIds = alarmsSnapshot.documents.map { it.id }
 
             db.runBatch { batch ->
                 medicationsSnapshot.documents.forEach { document ->
                     batch.delete(document.reference)
                 }
+                alarmsSnapshot.documents.forEach { document ->
+                    batch.delete(document.reference)
+                }
+                batch.delete(patientsCollection(userId).document(personId))
             }.await()
-            patientsCollection(userId)
-                .document(personId)
-                .delete()
-                .await()
-            true
+
+            DeletePersonResult(true, deletedAlarmIds)
         } catch (e: Exception) {
             Log.e(LOG_TAG, "Error eliminando persona: ${e.message}")
-            false
+            DeletePersonResult(false)
         }
     }
 

@@ -77,6 +77,46 @@ class AlarmScheduler(private val context: Context) {
         )
     }
 
+    fun cancelAlarms(alarmIds: Collection<String>) {
+        if (alarmIds.isEmpty()) return
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        alarmIds.forEach { alarmId ->
+            val triggerIntent = Intent(context, AlarmReceiver::class.java).apply {
+                action = ACTION_TRIGGER_ALARM
+            }
+
+            val triggerPendingIntent = PendingIntent.getBroadcast(
+                context,
+                alarmId.hashCode(),
+                triggerIntent,
+                PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE,
+            )
+
+            triggerPendingIntent?.let {
+                alarmManager.cancel(it)
+                it.cancel()
+            }
+
+            val reminderIntent = Intent(context, AlarmReceiver::class.java).apply {
+                action = ACTION_PRE_ALARM_NOTIFICATION
+            }
+
+            val reminderPendingIntent = PendingIntent.getBroadcast(
+                context,
+                alarmId.hashCode() + PRE_NOTIFICATION_REQUEST_CODE_OFFSET,
+                reminderIntent,
+                PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE,
+            )
+
+            reminderPendingIntent?.let {
+                alarmManager.cancel(it)
+                it.cancel()
+            }
+        }
+    }
+
     companion object {
         const val ACTION_TRIGGER_ALARM = "ACTION_TRIGGER_ALARM"
         const val ACTION_PRE_ALARM_NOTIFICATION = "ACTION_PRE_ALARM_NOTIFICATION"

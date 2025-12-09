@@ -11,7 +11,6 @@ import com.example.vitalarmapp.AddAlarmActivity.Companion.EXTRA_PATIENT_NAME
 import com.example.vitalarmapp.SelectMedActivity.Companion.EXTRA_MED_DETAIL
 import com.example.vitalarmapp.SelectMedActivity.Companion.EXTRA_MED_NAME
 import com.example.vitalarmapp.databinding.ActivityConfirmAlarmBinding
-import com.example.vitalarmapp.ui.home.HomeTabFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -163,10 +162,10 @@ class ConfirmAlarmActivity : AppCompatActivity() {
     }
 
     private fun navigateToMenu() {
-        val intent = Intent(this, HomeTabFragment::class.java)
-        startActivity(intent.apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        })
+        val intent = LanMenuActivity.intentForTab(this, R.id.nav_home).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
+        startActivity(intent)
         finish()
     }
 

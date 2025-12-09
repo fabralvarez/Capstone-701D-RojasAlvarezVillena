@@ -46,9 +46,6 @@
             android:exported="false"
             android:theme="@style/Theme.Material3.DayNight.NoActionBar" />
         <activity
-            android:name=".PastAlarmsActivity"
-            android:exported="false" />
-        <activity
             android:name=".PastAlarmDetailActivity"
             android:exported="false" />
         <activity

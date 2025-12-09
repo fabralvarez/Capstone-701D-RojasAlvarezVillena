@@ -1,6 +1,5 @@
 package com.example.vitalarmapp
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
@@ -9,13 +8,15 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 import com.example.vitalarmapp.AddAlarmActivity.Companion.EXTRA_PATIENT_ID
 import com.example.vitalarmapp.AddAlarmActivity.Companion.EXTRA_PATIENT_NAME
 import com.example.vitalarmapp.databinding.ActivitySelectSoundBinding
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 import com.google.android.material.transition.platform.MaterialSharedAxis
 
 class SelectSoundActivity : AppCompatActivity() {
-
+    private var isDarkMode: Boolean = false
     private lateinit var binding: ActivitySelectSoundBinding
 
     private var patientId: String = ""
@@ -27,9 +28,16 @@ class SelectSoundActivity : AppCompatActivity() {
 
     private val ringtonePickerLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
-            val uri = result.data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-                ?: return@registerForActivityResult
+            if (result.resultCode != RESULT_OK) return@registerForActivityResult
+
+            val uri = result.data?.let {
+                IntentCompat.getParcelableExtra(
+                    it,
+                    RingtoneManager.EXTRA_RINGTONE_PICKED_URI,
+                    Uri::class.java
+                )
+            } ?: return@registerForActivityResult
+
             applySelection(uri)
         }
 
@@ -37,6 +45,7 @@ class SelectSoundActivity : AppCompatActivity() {
         window.enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
         window.returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
         super.onCreate(savedInstanceState)
+        isDarkMode = DarkModeUtils.isDarkMode(this)
         binding = ActivitySelectSoundBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)

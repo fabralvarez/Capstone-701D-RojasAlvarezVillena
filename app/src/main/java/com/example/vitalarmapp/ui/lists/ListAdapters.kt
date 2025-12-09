@@ -73,8 +73,6 @@ internal class AlarmListAdapter(
         notifyDataSetChanged()
     }
 
-    fun currentItems(): List<AlarmListItem> = items.toList()
-
     class AlarmViewHolder(private val binding: ItemAlarmEntryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 

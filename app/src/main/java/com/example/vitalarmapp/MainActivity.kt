@@ -15,9 +15,7 @@ private lateinit var mainLoginBtn: MaterialButton
 private lateinit var mainSignupBtn: MaterialButton
 
 class MainActivity : AppCompatActivity() {
-    private companion object {
-        const val TAG = "MainActivity"
-    }
+    private companion object;
 
     private lateinit var binding: ActivityMainBinding
 

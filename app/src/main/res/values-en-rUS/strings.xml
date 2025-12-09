@@ -68,7 +68,7 @@
     <string name="login_loading">Signing in…</string>
     <string name="login_error_invalid_email">Enter a valid email.</string>
     <string name="login_error_empty_password">Enter your password.</string>
-    <string name="login_error_short_password">Password must have at least 6 characters.</string>
+    <string name="login_error_short_password">Password must have at least six characters.</string>
     <string name="login_dialog_user_not_found_title">Account not found</string>
     <string name="login_dialog_user_not_found_message">We couldn’t find an account with those credentials. Check your email or sign up.</string>
     <string name="login_dialog_connection_error_title">No connection</string>
@@ -91,7 +91,7 @@
     <string name="sign_up_error_empty_name">Enter your full name.</string>
     <string name="sign_up_error_invalid_email">Enter a valid email.</string>
     <string name="sign_up_error_invalid_rut">Enter a valid RUT.</string>
-    <string name="sign_up_error_password_length">Password must have at least 6 characters.</string>
+    <string name="sign_up_error_password_length">Password must have at least six characters.</string>
     <string name="sign_up_error_password_mismatch">Passwords do not match.</string>
     <string name="sign_up_error_empty_password">Enter a password.</string>
     <string name="sign_up_error_empty_confirm_password">Confirm your password.</string>
@@ -104,11 +104,11 @@
     <string name="sign_up_error_dialog_title">We couldn’t register your account</string>
     <string name="sign_up_error_message_generic">There was a problem creating your account. Try again.</string>
     <string name="sign_up_error_message_email_in_use">That email is already registered. Sign in or try another email.</string>
-    <string name="sign_up_error_message_weak_password">Your password must have at least 6 characters combining letters and numbers.</string>
+    <string name="sign_up_error_message_weak_password">Your password must have at least six characters combining letters and numbers.</string>
     <string name="error_detail_network">Check your internet connection and try again.</string>
     <string name="error_detail_credentials">Verify the entered data and try again.</string>
     <string name="error_detail_email_in_use">That email already has an account.</string>
-    <string name="error_detail_weak_password">Your password must be stronger. Use at least 6 characters combining letters and numbers.</string>
+    <string name="error_detail_weak_password">Your password must be stronger. Use at least six characters combining letters and numbers.</string>
     <string name="error_detail_invalid_email">The email format is invalid. Review it and try again.</string>
     <string name="error_detail_missing_password">We’re missing your password. Type it to continue.</string>
     <string name="error_detail_too_many_requests">We tried too many times in a row. Wait a moment and try again.</string>
@@ -150,7 +150,7 @@
     <string name="add_main_card_medication_subtitle">Add one or more medications to the list from Vitalarm’s database</string>
     <string name="add_main_toolbar_title">What do you want to add?</string>
     <string name="add_alarm_alt_title" tools:keep="@string/add_alarm_alt_title">Add alarms</string>
-    <string name="add_alarm_description" tools:keep="@string/add_alarm_description">Schedule reminders for your patients. You can add several times and we’ll keep them ordered.</string>
+    <string name="add_alarm_description" tools:keep="@string/add_alarm_description">Schedule reminders for your patients. You can add several times, and we’ll keep them ordered.</string>
     <string name="add_alarm_add_time" tools:keep="@string/add_alarm_add_time">Add time</string>
     <string name="add_alarm_notes" tools:keep="@string/add_alarm_notes">Optional notes</string>
     <string name="add_alarm_save" tools:keep="@string/add_alarm_save">Save alarms</string>
@@ -372,12 +372,11 @@ Detail: %3$s</string>
     <string name="alarm_ring_body">Confirm the dose with a quick photo to keep your history up to date.</string>
     <string name="past_alarms_title">Past alarms</string>
     <string name="past_alarms_empty">No verified alarms in the last 7 days</string>
-    <string name="past_alarm_subtitle">%1$s · %2$s · %3$s</string>
+    <string name="past_alarms_incomplete_data">Alarm data is incomplete or could not be fetched correctly.</string>
     <string name="past_alarm_detail_medication">%1$s · %2$s</string>
     <string name="past_alarm_detail_verified">Alarm verified</string>
     <string name="patient">Patient</string>
     <string name="patient_caregiver_label">Caregiver: %1$s</string>
-    <string name="past_alarm_subtitle_desc">Medication - dosage - time</string>
     <string name="medication">Medication</string>
     <string name="past_alarm_detail_time_text">08:00</string>
     <string name="current_patients" tools:keep="@string/current_patients">People in care</string>

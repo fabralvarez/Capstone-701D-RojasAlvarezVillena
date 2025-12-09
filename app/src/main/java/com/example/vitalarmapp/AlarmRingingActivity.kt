@@ -2,7 +2,6 @@ package com.example.vitalarmapp
 
 import android.media.Ringtone
 import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
@@ -21,6 +20,7 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialFadeThrough
 import kotlinx.coroutines.launch
+import androidx.core.net.toUri
 
 class AlarmRingingActivity : AppCompatActivity() {
 
@@ -124,8 +124,7 @@ class AlarmRingingActivity : AppCompatActivity() {
 
     private fun startAlarmSound() {
         val preferredUri = record?.soundUri
-            ?.takeIf { it.isNotBlank() }
-            ?.let { Uri.parse(it) }
+            ?.takeIf { it.isNotBlank() }?.toUri()
 
         val fallbackUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
             ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
@@ -143,8 +142,6 @@ class AlarmRingingActivity : AppCompatActivity() {
             resources.getColor(android.R.color.background_dark, theme)
         )
         binding.root.setBackgroundColor(surfaceColor)
-        window.statusBarColor = surfaceColor
-        window.navigationBarColor = surfaceColor
         val controller = WindowInsetsControllerCompat(window, binding.root)
         val lightBars = MaterialColors.isColorLight(surfaceColor)
         controller.isAppearanceLightStatusBars = lightBars

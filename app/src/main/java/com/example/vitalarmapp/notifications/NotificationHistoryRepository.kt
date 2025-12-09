@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import org.json.JSONArray
 import org.json.JSONObject
+import androidx.core.content.edit
 
 internal data class NotificationEntry(
     val title: String,
@@ -41,9 +42,9 @@ internal class NotificationHistoryRepository {
     @VisibleForTesting
     fun clear(context: Context) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .remove(KEY_ENTRIES)
-            .apply()
+            .edit {
+                remove(KEY_ENTRIES)
+            }
     }
 
     private fun saveEntries(context: Context, entries: List<NotificationEntry>) {
@@ -58,9 +59,9 @@ internal class NotificationHistoryRepository {
         }
 
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .putString(KEY_ENTRIES, array.toString())
-            .apply()
+            .edit {
+                putString(KEY_ENTRIES, array.toString())
+            }
     }
 
     private fun JSONObject.toEntry(): NotificationEntry? {

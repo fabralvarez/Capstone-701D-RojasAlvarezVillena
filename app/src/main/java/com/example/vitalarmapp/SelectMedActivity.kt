@@ -16,11 +16,12 @@ import com.example.vitalarmapp.alarm.MedicationRadioAdapter
 import com.example.vitalarmapp.alarm.toChoice
 import com.example.vitalarmapp.databinding.ActivitySelectMedBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import kotlinx.coroutines.launch
 
 class SelectMedActivity : AppCompatActivity() {
-
+    private var isDarkMode: Boolean = false
     private lateinit var binding: ActivitySelectMedBinding
     private val adapter = MedicationRadioAdapter(::onMedicationSelected)
 
@@ -32,6 +33,7 @@ class SelectMedActivity : AppCompatActivity() {
         window.enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
         window.returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
         super.onCreate(savedInstanceState)
+        isDarkMode = DarkModeUtils.isDarkMode(this)
         binding = ActivitySelectMedBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)

@@ -4,10 +4,11 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.view.Menu
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.core.view.size
+import androidx.core.view.get
 
 object DarkModeUtils {
     fun isDarkMode(context: Context): Boolean {
@@ -28,15 +29,9 @@ object DarkModeUtils {
         bottomNavigationView.itemIconTintList = tintList
         bottomNavigationView.itemTextColor = tintList
     }
-
-    fun applyIconTint(imageView: ImageView, isDarkMode: Boolean? = null) {
-        val tintColor = resolveTint(imageView.context, isDarkMode)
-        imageView.drawable = imageView.drawable?.mutate()?.apply { setTint(tintColor) }
-    }
-
     private fun tintMenu(menu: Menu, color: Int) {
-        for (i in 0 until menu.size()) {
-            val icon = menu.getItem(i).icon ?: continue
+        for (i in 0 until menu.size) {
+            val icon = menu[i].icon ?: continue
             icon.mutate().setTint(color)
         }
     }

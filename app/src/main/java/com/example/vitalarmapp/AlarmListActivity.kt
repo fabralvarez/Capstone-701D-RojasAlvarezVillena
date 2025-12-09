@@ -36,7 +36,7 @@ class AlarmListActivity : AppCompatActivity() {
 
     private val alarmScheduler by lazy { AlarmScheduler(this) }
 
-    private val displayLocale = Locale("es", "US")
+    private val displayLocale = Locale.Builder().setLanguage("es").setRegion("US").build()
     private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", displayLocale)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,16 +59,6 @@ class AlarmListActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         binding.alarmListToolbar.setNavigationOnClickListener { finish() }
-        binding.alarmListToolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.action_past_alarms -> {
-                    startActivity(PastAlarmsActivity.intent(this))
-                    true
-                }
-
-                else -> false
-            }
-        }
     }
 
     private fun setupSelectionToolbar() {

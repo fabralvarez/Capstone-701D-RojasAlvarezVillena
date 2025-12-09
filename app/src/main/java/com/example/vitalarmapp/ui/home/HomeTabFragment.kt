@@ -17,7 +17,6 @@ import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.google.android.material.transition.MaterialFadeThrough
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.Period
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -134,7 +133,8 @@ class HomeTabFragment : Fragment() {
 
     private fun calculateAge(birthDate: String?): Int? {
         if (birthDate.isNullOrBlank()) return null
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale("es", "US"))
+        val locale = Locale.Builder().setLanguage("es").setRegion("US").build()
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", locale)
         return runCatching {
             val birth = LocalDate.parse(birthDate, formatter)
             val today = LocalDate.now()

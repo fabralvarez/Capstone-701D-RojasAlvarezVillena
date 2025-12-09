@@ -4,9 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.view.KeyEvent
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDialog
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalarmapp.databinding.ActivityAlarmSumBinding
 import com.example.vitalarmapp.models.AlarmRecord
@@ -84,10 +85,12 @@ class AlarmSumActivity : AppCompatActivity() {
 
     private fun renderSummary() {
         binding.alarmSumPatientValue.text = patientName
-        binding.alarmSumMedValue.text = getString(R.string.alarm_sum_med_value, medicationName, medicationDetail)
+        binding.alarmSumMedValue.text =
+            getString(R.string.alarm_sum_med_value, medicationName, medicationDetail)
         binding.alarmSumDateValue.text = formatDateForDisplay(date)
         binding.alarmSumTimeValue.text = formatTimeForDisplay(time)
-        binding.alarmSumSoundValue.text = soundTitle.ifBlank { getString(R.string.select_sound_default_label) }
+        binding.alarmSumSoundValue.text =
+            soundTitle.ifBlank { getString(R.string.select_sound_default_label) }
     }
 
     private fun setupActions() {
@@ -131,7 +134,8 @@ class AlarmSumActivity : AppCompatActivity() {
                 scheduler.schedule(record)
                 showSuccessDialog()
             } else {
-                Snackbar.make(binding.root, R.string.alarm_sum_save_failed, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.root, R.string.alarm_sum_save_failed, Snackbar.LENGTH_LONG)
+                    .show()
             }
         }
     }
@@ -156,14 +160,16 @@ class AlarmSumActivity : AppCompatActivity() {
             .create()
 
         dialog.setCanceledOnTouchOutside(false)
-        dialog.setOnKeyListener { _, keyCode, _ ->
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
                 navigateToHomeTab()
-                true
-            } else {
-                false
             }
         }
+        (dialog as? AppCompatDialog)?.onBackPressedDispatcher?.addCallback(
+            this,
+            onBackPressedCallback
+        )
         dialog.show()
     }
 

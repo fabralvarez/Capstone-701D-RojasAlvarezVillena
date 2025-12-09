@@ -1,5 +1,6 @@
 package com.example.vitalarmapp.notifications
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +27,7 @@ internal class NotificationsAdapter :
 
     override fun getItemCount(): Int = items.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(entries: List<NotificationEntry>) {
         val previousSize = items.size
         items.clear()

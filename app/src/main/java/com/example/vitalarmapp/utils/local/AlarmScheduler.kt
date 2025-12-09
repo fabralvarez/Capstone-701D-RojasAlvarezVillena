@@ -1,5 +1,6 @@
 package com.example.vitalarmapp.utils.local
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -50,6 +51,7 @@ class AlarmScheduler(private val context: Context) {
         }
     }
 
+    @SuppressLint("ScheduleExactAlarm")
     private fun schedulePreAlarmNotification(alarmManager: AlarmManager, record: AlarmRecord) {
         val reminderAt = record.scheduledAt - TimeUnit.MINUTES.toMillis(PRE_NOTIFICATION_MINUTES)
         val triggerAt = if (reminderAt > System.currentTimeMillis()) {

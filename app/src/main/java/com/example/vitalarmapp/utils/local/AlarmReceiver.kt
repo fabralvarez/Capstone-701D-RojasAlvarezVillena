@@ -1,10 +1,12 @@
 package com.example.vitalarmapp.utils.local
 
+import android.Manifest
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.vitalarmapp.AlarmRingingActivity
@@ -17,13 +19,13 @@ import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.ACTION_PRE_ALARM_NOTIFICATION
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.ACTION_TRIGGER_ALARM
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.extractAlarmPayload
-import com.example.vitalarmapp.utils.local.NotificationHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class AlarmReceiver : BroadcastReceiver() {
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
             ACTION_PRE_ALARM_NOTIFICATION -> handlePreAlarmNotification(context, intent)
@@ -32,6 +34,7 @@ class AlarmReceiver : BroadcastReceiver() {
         }
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private fun handlePreAlarmNotification(context: Context, intent: Intent) {
         val payload = intent.extractAlarmPayload() ?: return
         NotificationHelper.createNotificationChannel(context)

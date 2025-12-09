@@ -41,7 +41,6 @@
                 android:elevation="0dp"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/outline_arrow_back_24"
-                app:menu="@menu/menu_alarm_list_actions"
                 app:title="@string/alarm_list_title"
                 app:titleCentered="false"
                 app:titleTextAppearance="@style/TextAppearance.App.ToolbarHeadline" />

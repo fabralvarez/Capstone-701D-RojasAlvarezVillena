@@ -569,7 +569,7 @@ object FirebaseManager {
                 .await()
                 .documents
                 .mapNotNull { doc ->
-                    doc.toObject(AlarmRecord::class.java)?.copy(id = doc.id)
+                    mapAlarmDocument(doc)
                 }
                 .filter { record ->
                     record.verifiedAt == null && record.scheduledAt >= now
@@ -602,24 +602,36 @@ object FirebaseManager {
         }
     }
 
-    suspend fun getAlarms(): List<AlarmRecord> {
-        val userId = getCurrentUserId() ?: return emptyList()
+    data class AlarmFetchResult(
+        val items: List<AlarmRecord>,
+        val hasIncompleteData: Boolean,
+    )
+
+    suspend fun getAlarms(): AlarmFetchResult {
+        val userId = getCurrentUserId() ?: return AlarmFetchResult(emptyList(), false)
         return try {
             val now = System.currentTimeMillis()
             val result = alarmsCollection(userId)
                 .get()
                 .await()
 
-            result.documents.mapNotNull { doc ->
-                doc.toObject(AlarmRecord::class.java)?.copy(id = doc.id)
+            var hasIncompleteData = false
+            val items = result.documents.mapNotNull { doc ->
+                val mapped = mapAlarmDocument(doc)
+                if (mapped == null || mapped.patientName.isBlank() || mapped.medicationName.isBlank()) {
+                    hasIncompleteData = true
+                }
+                mapped
             }.filter { record ->
                 record.verifiedAt != null || record.triggeredAt != null || record.scheduledAt < now
             }.sortedByDescending { record ->
                 record.verifiedAt ?: record.triggeredAt ?: record.scheduledAt
             }
+
+            AlarmFetchResult(items, hasIncompleteData)
         } catch (e: Exception) {
             Log.e(LOG_TAG, "❌ Error obteniendo alarmas: ${e.message}", e)
-            emptyList()
+            AlarmFetchResult(emptyList(), true)
         }
     }
 
@@ -737,6 +749,25 @@ object FirebaseManager {
     private fun alarmsCollection(userId: String) = db.collection(COLLECTION_USERS)
         .document(userId)
         .collection(COLLECTION_ALARMS)
+
+    private fun mapAlarmDocument(doc: com.google.firebase.firestore.DocumentSnapshot): AlarmRecord? {
+        val data = doc.data ?: return null
+        return AlarmRecord(
+            id = doc.id,
+            patientId = data["patientId"] as? String ?: "",
+            patientName = data["patientName"]?.toString() ?: "",
+            medicationName = data["medicationName"] as? String ?: "",
+            medicationDetail = data["medicationDetail"] as? String ?: "",
+            soundTitle = data["soundTitle"] as? String ?: "",
+            soundUri = data["soundUri"] as? String ?: "",
+            date = data["date"] as? String ?: "",
+            time = data["time"] as? String ?: "",
+            scheduledAt = (data["scheduledAt"] as? Number)?.toLong() ?: 0L,
+            createdAt = (data["createdAt"] as? Number)?.toLong() ?: 0L,
+            triggeredAt = (data["triggeredAt"] as? Number)?.toLong(),
+            verifiedAt = (data["verifiedAt"] as? Number)?.toLong(),
+        )
+    }
 }
 
 internal interface PatientRegistrar {

@@ -27,14 +27,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.set
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 
 class ProfileTabFragment : Fragment() {
 
     private var _binding: FragmentProfileTabBinding? = null
     private val binding get() = _binding!!
+    private var isDarkMode: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        isDarkMode = DarkModeUtils.isDarkMode(requireContext())
         val fadeThrough = MaterialFadeThrough()
         enterTransition = fadeThrough
         reenterTransition = MaterialFadeThrough()
@@ -53,6 +56,7 @@ class ProfileTabFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        DarkModeUtils.applyToolbarIconColors(binding.topAppBar, isDarkMode)
         setupActions()
         loadProfile()
     }

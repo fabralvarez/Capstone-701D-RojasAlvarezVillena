@@ -7,9 +7,9 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vitalarmapp.databinding.ActivityPastAlarmsBinding
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
-import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -40,22 +40,19 @@ class PastAlarmsActivity : AppCompatActivity() {
         binding.pastAlarmsList.apply {
             layoutManager = LinearLayoutManager(this@PastAlarmsActivity)
             adapter = this@PastAlarmsActivity.adapter
-            addItemDecoration(
-                MaterialDividerItemDecoration(
-                    context,
-                    LinearLayoutManager.VERTICAL
-                )
-            )
         }
     }
 
     private fun loadAlarms() {
         lifecycleScope.launch {
             showLoading(true)
-            val items = withContext(Dispatchers.IO) { FirebaseManager.getAlarms() }
-            adapter.submitList(items)
-            updateEmptyState(items.isEmpty())
+            val result = withContext(Dispatchers.IO) { FirebaseManager.getAlarms() }
+            adapter.submitList(result.items)
+            updateEmptyState(result.items.isEmpty())
             showLoading(false)
+            if (result.hasIncompleteData) {
+                showDataWarning()
+            }
         }
     }
 
@@ -72,6 +69,14 @@ class PastAlarmsActivity : AppCompatActivity() {
         binding.pastAlarmsLoading.isVisible = isLoading
         binding.pastAlarmsList.isVisible = !isLoading
         binding.pastAlarmsEmpty.isVisible = !isLoading && binding.pastAlarmsEmpty.isVisible
+    }
+
+    private fun showDataWarning() {
+        Snackbar.make(
+            binding.root,
+            R.string.past_alarms_incomplete_data,
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     companion object {

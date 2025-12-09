@@ -1,9 +1,7 @@
 package com.example.vitalarmapp
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.vitalarmapp.databinding.ActivityMainBinding
@@ -11,6 +9,7 @@ import com.google.android.material.button.MaterialButton
 import com.example.vitalarmapp.utils.local.NotificationHelper
 import com.example.vitalarmapp.utils.local.SessionManager
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 
 private lateinit var mainLoginBtn: MaterialButton
 private lateinit var mainSignupBtn: MaterialButton
@@ -38,11 +37,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun darkModeChecker() {
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_NO -> Log.d(TAG, "Modo claro activo")
-            Configuration.UI_MODE_NIGHT_YES -> Log.d(TAG, "Modo oscuro activo")
-            else -> Log.d(TAG, "Modo de interfaz desconocido")
-        }
+        DarkModeUtils.applyToolbarIconColors(binding.mainToolbar)
     }
 
     private fun initComponents() {

@@ -12,6 +12,7 @@ import com.example.vitalarmapp.databinding.ActivityAlarmSumBinding
 import com.example.vitalarmapp.models.AlarmRecord
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.AlarmScheduler
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialSharedAxis
@@ -65,9 +66,14 @@ class AlarmSumActivity : AppCompatActivity() {
         date = intent.getStringExtra(EXTRA_DATE).orEmpty()
         time = intent.getStringExtra(EXTRA_TIME).orEmpty()
 
+        darkModeChecker()
         setupToolbar()
         renderSummary()
         setupActions()
+    }
+
+    private fun darkModeChecker() {
+        DarkModeUtils.applyToolbarIconColors(binding.alarmSumToolbar)
     }
 
     private fun setupToolbar() {
@@ -144,7 +150,7 @@ class AlarmSumActivity : AppCompatActivity() {
                 restartAlarmFlow()
             }
             .setPositiveButton(R.string.alarm_sum_saved_return) { _, _ ->
-                navigateToAddMainTab()
+                navigateToHomeTab()
             }
             .setCancelable(false)
             .create()
@@ -152,7 +158,7 @@ class AlarmSumActivity : AppCompatActivity() {
         dialog.setCanceledOnTouchOutside(false)
         dialog.setOnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_BACK) {
-                navigateToAddMainTab()
+                navigateToHomeTab()
                 true
             } else {
                 false
@@ -183,9 +189,9 @@ class AlarmSumActivity : AppCompatActivity() {
         return parsed.format(formatter)
     }
 
-    private fun navigateToAddMainTab() {
+    private fun navigateToHomeTab() {
         startActivity(
-            AddMainTabActivity.intent(this).apply {
+            LanMenuActivity.intentForTab(this, R.id.nav_home).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
         )

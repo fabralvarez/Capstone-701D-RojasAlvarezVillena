@@ -11,6 +11,7 @@ import com.example.vitalarmapp.ui.lists.AlarmListAdapter
 import com.example.vitalarmapp.ui.lists.AlarmListItem
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.AlarmScheduler
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.snackbar.Snackbar
@@ -44,10 +45,16 @@ class AlarmListActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
+        darkModeChecker()
         setupToolbar()
         setupSelectionToolbar()
         setupRecyclerView()
         loadAlarms()
+    }
+
+    private fun darkModeChecker() {
+        DarkModeUtils.applyToolbarIconColors(binding.alarmListToolbar)
+        DarkModeUtils.applyToolbarIconColors(binding.alarmSelectionToolbar)
     }
 
     private fun setupToolbar() {

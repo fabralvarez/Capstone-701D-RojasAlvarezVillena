@@ -13,6 +13,7 @@ import com.example.vitalarmapp.ui.add.AddMainTabFragment
 import com.example.vitalarmapp.ui.home.HomeTabFragment
 import com.example.vitalarmapp.ui.profile.ProfileTabFragment
 import com.example.vitalarmapp.utils.firebase.FirebaseManager
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,6 +33,7 @@ class LanMenuActivity : AppCompatActivity() {
 
         setUserNameLoadingState(true)
 
+        darkModeChecker()
         setupBottomNavigation()
         setupAppBar()
 
@@ -69,6 +71,11 @@ class LanMenuActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    private fun darkModeChecker() {
+        DarkModeUtils.applyToolbarIconColors(binding.lanMenuToolbar)
+        DarkModeUtils.applyBottomNavigationColors(binding.lanMenuBottomNavigation)
     }
 
     private fun setupBottomNavigation() {

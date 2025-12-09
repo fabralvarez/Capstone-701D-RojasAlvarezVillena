@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.vitalarmapp.databinding.ActivityAddMainTabBinding
 import com.example.vitalarmapp.navigation.BottomNavigationHelper
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 
 class AddMainTabActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddMainTabBinding
@@ -17,9 +18,15 @@ class AddMainTabActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
+        darkModeChecker()
         setupNavigation()
         setupActions()
         setupTopActions()
+    }
+
+    private fun darkModeChecker() {
+        DarkModeUtils.applyToolbarIconColors(binding.topAppBar)
+        DarkModeUtils.applyBottomNavigationColors(binding.lanMenuBottomNavigation)
     }
 
     private fun setupNavigation() {

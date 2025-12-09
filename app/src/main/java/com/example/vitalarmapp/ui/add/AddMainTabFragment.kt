@@ -14,14 +14,17 @@ import com.example.vitalarmapp.R
 import com.example.vitalarmapp.SettingsActivity
 import com.example.vitalarmapp.databinding.FragmentAddMainTabBinding
 import com.google.android.material.transition.MaterialFadeThrough
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 
 class AddMainTabFragment : Fragment() {
 
     private var _binding: FragmentAddMainTabBinding? = null
     private val binding get() = _binding!!
+    private var isDarkMode: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        isDarkMode = DarkModeUtils.isDarkMode(requireContext())
         val fadeThrough = MaterialFadeThrough()
         enterTransition = fadeThrough
         reenterTransition = MaterialFadeThrough()
@@ -40,6 +43,7 @@ class AddMainTabFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        DarkModeUtils.applyToolbarIconColors(binding.topAppBar, isDarkMode)
         setupActions()
     }
 

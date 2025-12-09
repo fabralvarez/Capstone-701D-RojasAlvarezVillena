@@ -14,6 +14,7 @@ import com.example.vitalarmapp.databinding.ActivityAddPatsBinding
 import com.example.vitalarmapp.utils.firebase.AddPersonResult
 import com.example.vitalarmapp.utils.firebase.FirebasePatientRegistrar
 import com.example.vitalarmapp.utils.firebase.PatientRegistrar
+import com.example.vitalarmapp.utils.ui.DarkModeUtils
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -40,8 +41,13 @@ class AddPatsActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
+        darkModeChecker()
         setupToolbar()
         setupListeners()
+    }
+
+    private fun darkModeChecker() {
+        DarkModeUtils.applyToolbarIconColors(binding.patientToolbar)
     }
 
     private fun setupToolbar() {

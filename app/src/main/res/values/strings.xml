@@ -328,6 +328,7 @@
     <string name="confirm_alarm_subtitle">Seleccione cuándo sonará la alarma</string>
     <string name="confirm_alarm_pick_date">Fijar fecha</string>
     <string name="confirm_alarm_pick_time">Fijar hora</string>
+    <string name="confirm_alarm_pick_date_time">Fijar fecha y hora</string>
     <string name="confirm_alarm_date_unset">Fecha no seleccionada</string>
     <string name="confirm_alarm_time_unset">Hora no seleccionada</string>
     <string name="confirm_alarm_summary">Paciente: %1$s

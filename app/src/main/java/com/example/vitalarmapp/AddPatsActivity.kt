@@ -20,12 +20,16 @@ import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import kotlinx.coroutines.launch
 
 class AddPatsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddPatsBinding
-    private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private val displayLocale = Locale("es", "US")
+    private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", displayLocale).apply {
+        timeZone = TimeZone.getDefault()
+    }
     private var birthDatePicker: MaterialDatePicker<Long>? = null
     private var successDialog: AlertDialog? = null
 

@@ -30,8 +30,9 @@ internal class UpcomingAlarmAdapter :
     RecyclerView.Adapter<UpcomingAlarmAdapter.UpcomingAlarmViewHolder>() {
 
     private val items = mutableListOf<UpcomingAlarmUiModel>()
-    private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
-    private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
+    private val displayLocale = Locale("es", "US")
+    private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", displayLocale)
+    private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", displayLocale)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpcomingAlarmViewHolder {
         val binding = ItemUpcomingAlarmBinding.inflate(

@@ -13,15 +13,20 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.android.material.transition.platform.MaterialSharedAxis
-import java.util.Locale
 import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.time.ZoneId
+import java.util.Locale
 
 class ConfirmAlarmActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityConfirmAlarmBinding
+    private val displayLocale = Locale("es", "US")
+    private val dateFormatter = DateTimeFormatter
+        .ofLocalizedDate(FormatStyle.SHORT)
+        .withLocale(displayLocale)
 
     private var patientId: String = ""
     private var patientName: String = ""
@@ -64,8 +69,7 @@ class ConfirmAlarmActivity : AppCompatActivity() {
     }
 
     private fun setupActions() {
-        binding.confirmPickDate.setOnClickListener { showDatePicker() }
-        binding.confirmPickTime.setOnClickListener { showTimePicker() }
+        binding.confirmPickDateTime.setOnClickListener { showDatePicker() }
         binding.confirmAlarmContinue.setOnClickListener {
             val time = selectedTime ?: return@setOnClickListener
             val date = selectedDate ?: return@setOnClickListener
@@ -93,18 +97,29 @@ class ConfirmAlarmActivity : AppCompatActivity() {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate()
             selectedDate = date
-            binding.confirmAlarmSelectedDate.text = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+            binding.confirmAlarmSelectedDate.text = date.format(dateFormatter)
             updateContinueState()
+            showTimePicker()
         }
 
         picker.show(supportFragmentManager, "alarm_date_picker")
     }
 
     private fun showTimePicker() {
-        val picker = MaterialTimePicker.Builder()
+        val builder = MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
             .setTitleText(R.string.confirm_alarm_pick_time)
-            .build()
+
+        selectedTime?.split(":")?.let { parts ->
+            val hour = parts.getOrNull(0)?.toIntOrNull()
+            val minute = parts.getOrNull(1)?.toIntOrNull()
+            if (hour != null && minute != null) {
+                builder.setHour(hour)
+                builder.setMinute(minute)
+            }
+        }
+
+        val picker = builder.build()
 
         picker.addOnPositiveButtonClickListener {
             val hour = picker.hour

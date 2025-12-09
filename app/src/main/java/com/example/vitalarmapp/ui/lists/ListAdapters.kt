@@ -16,6 +16,7 @@ import java.time.LocalDateTime
 
 internal data class AlarmListItem(
     val id: String,
+    val patientId: String,
     val medicationId: String,
     val patientName: String,
     val medicationName: String,

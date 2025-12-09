@@ -17,7 +17,6 @@ import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.extractAlarmPayload
 import com.example.vitalarmapp.utils.local.AlarmScheduler.Companion.putAlarmPayload
 import com.google.android.material.color.MaterialColors
-import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialFadeThrough
 import kotlinx.coroutines.launch
@@ -130,7 +129,11 @@ class AlarmRingingActivity : AppCompatActivity() {
     }
 
     private fun applySurfacePalette() {
-        val surfaceColor = SurfaceColors.SURFACE_0.getColor(this)
+        val surfaceColor = MaterialColors.getColor(
+            this,
+            com.google.android.material.R.attr.colorSurface,
+            resources.getColor(android.R.color.background_dark, theme)
+        )
         binding.root.setBackgroundColor(surfaceColor)
         window.statusBarColor = surfaceColor
         window.navigationBarColor = surfaceColor

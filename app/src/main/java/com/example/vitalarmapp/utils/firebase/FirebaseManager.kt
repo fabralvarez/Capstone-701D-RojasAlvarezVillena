@@ -560,11 +560,31 @@ object FirebaseManager {
         }
     }
 
-    suspend fun getAlarms(): List<AlarmRecord> {
+    suspend fun getUpcomingAlarms(limit: Int = 3): List<AlarmRecord> {
         val userId = getCurrentUserId() ?: return emptyList()
         return try {
             val now = System.currentTimeMillis()
-            val sevenDaysAgo = now - java.util.concurrent.TimeUnit.DAYS.toMillis(7)
+            alarmsCollection(userId)
+                .get()
+                .await()
+                .documents
+                .mapNotNull { doc ->
+                    doc.toObject(AlarmRecord::class.java)?.copy(id = doc.id)
+                }
+                .filter { record ->
+                    record.verifiedAt == null && record.scheduledAt >= now
+                }
+                .sortedBy { it.scheduledAt }
+                .take(limit)
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "❌ Error obteniendo próximas alarmas: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun getAlarms(): List<AlarmRecord> {
+        val userId = getCurrentUserId() ?: return emptyList()
+        return try {
             val result = alarmsCollection(userId)
                 .get()
                 .await()
@@ -572,8 +592,7 @@ object FirebaseManager {
             result.documents.mapNotNull { doc ->
                 doc.toObject(AlarmRecord::class.java)?.copy(id = doc.id)
             }.filter { record ->
-                val verifiedAt = record.verifiedAt
-                verifiedAt != null && verifiedAt in sevenDaysAgo..now && record.scheduledAt <= now
+                record.verifiedAt != null
             }.sortedByDescending { it.verifiedAt ?: it.createdAt }
         } catch (e: Exception) {
             Log.e(LOG_TAG, "❌ Error obteniendo alarmas: ${e.message}", e)

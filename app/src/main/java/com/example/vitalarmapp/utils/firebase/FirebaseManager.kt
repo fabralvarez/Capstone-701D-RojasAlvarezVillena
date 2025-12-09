@@ -587,12 +587,14 @@ object FirebaseManager {
         if (alarmIds.isEmpty()) return true
 
         return try {
+            val batch = db.batch()
+
             alarmIds.forEach { alarmId ->
-                alarmsCollection(userId)
-                    .document(alarmId)
-                    .delete()
-                    .await()
+                batch.delete(alarmsCollection(userId).document(alarmId))
+                batch.delete(db.collection(COLLECTION_ALARMS).document(alarmId))
             }
+
+            batch.commit().await()
             true
         } catch (e: Exception) {
             Log.e(LOG_TAG, "❌ Error eliminando alarmas: ${e.message}", e)
@@ -603,6 +605,7 @@ object FirebaseManager {
     suspend fun getAlarms(): List<AlarmRecord> {
         val userId = getCurrentUserId() ?: return emptyList()
         return try {
+            val now = System.currentTimeMillis()
             val result = alarmsCollection(userId)
                 .get()
                 .await()
@@ -610,8 +613,10 @@ object FirebaseManager {
             result.documents.mapNotNull { doc ->
                 doc.toObject(AlarmRecord::class.java)?.copy(id = doc.id)
             }.filter { record ->
-                record.verifiedAt != null
-            }.sortedByDescending { it.verifiedAt ?: it.createdAt }
+                record.verifiedAt != null || record.triggeredAt != null || record.scheduledAt < now
+            }.sortedByDescending { record ->
+                record.verifiedAt ?: record.triggeredAt ?: record.scheduledAt
+            }
         } catch (e: Exception) {
             Log.e(LOG_TAG, "❌ Error obteniendo alarmas: ${e.message}", e)
             emptyList()

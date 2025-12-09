@@ -4,21 +4,20 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.databinding.ActivityMedsListBinding
 import com.example.vitalarmapp.ui.lists.MedicationListAdapter
 import com.example.vitalarmapp.ui.lists.MedicationListItem
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.launch
 
 class MedsListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMedsListBinding
-    private val gson: Gson by lazy { Gson() }
     private val selectedIds = mutableSetOf<String>()
     private var isSelectionMode: Boolean = false
 
@@ -71,24 +70,20 @@ class MedsListActivity : AppCompatActivity() {
 
     private fun loadMedications() {
         showLoading(true)
-        val prefs = getSharedPreferences("medications_prefs", MODE_PRIVATE)
-        val storedJson = prefs.getString("medications_list", "[]")
-        val type = object : TypeToken<List<MedicationSearchItem>>() {}.type
-        val medications = runCatching {
-            gson.fromJson<List<MedicationSearchItem>>(storedJson, type)
-        }.getOrDefault(emptyList())
+        lifecycleScope.launch {
+            val medications = FirebaseManager.getRegisteredMedications()
+            val items = medications.map { registered ->
+                MedicationListItem(
+                    id = registered.id,
+                    medication = registered.medication,
+                )
+            }
 
-        val items = medications.mapIndexed { index, item ->
-            MedicationListItem(
-                id = "med_${index}_${item.name}",
-                medication = item,
-            )
+            medicationAdapter.submitList(items)
+            updateSelectionState(emptySet(), false)
+            updateEmptyState(items.isEmpty())
+            showLoading(false)
         }
-
-        medicationAdapter.submitList(items)
-        updateSelectionState(emptySet(), false)
-        updateEmptyState(items.isEmpty())
-        showLoading(false)
     }
 
     private fun onMedicationLongPressed(item: MedicationListItem) {
@@ -138,21 +133,20 @@ class MedsListActivity : AppCompatActivity() {
     }
 
     private fun deleteSelectedMedications() {
-        val currentItems = medicationAdapter.currentItems()
-        val remainingItems = currentItems.filterNot { selectedIds.contains(it.id) }
+        showLoading(true)
+        lifecycleScope.launch {
+            val success = FirebaseManager.deleteRegisteredMedications(selectedIds.toList())
 
-        val prefs = getSharedPreferences("medications_prefs", MODE_PRIVATE)
-        val committed = prefs.edit()
-            .putString("medications_list", gson.toJson(remainingItems.map { it.medication }))
-            .commit()
-
-        if (committed) {
-            medicationAdapter.removeItems { selectedIds.contains(it.id) }
-            updateSelectionState(emptySet(), false)
-            updateEmptyState(remainingItems.isEmpty())
-            showSuccessDialog()
-        } else {
-            Snackbar.make(binding.root, R.string.list_delete_error, Snackbar.LENGTH_LONG).show()
+            if (success) {
+                medicationAdapter.removeItems { selectedIds.contains(it.id) }
+                updateSelectionState(emptySet(), false)
+                updateEmptyState(medicationAdapter.currentItems().isEmpty())
+                showSuccessDialog()
+            } else {
+                Snackbar.make(binding.root, R.string.list_delete_error, Snackbar.LENGTH_LONG)
+                    .show()
+            }
+            showLoading(false)
         }
     }
 

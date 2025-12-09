@@ -15,6 +15,8 @@ import kotlinx.coroutines.tasks.await
 import com.example.vitalarmapp.models.Medication
 import com.example.vitalarmapp.models.Patient
 import com.example.vitalarmapp.models.User
+import com.example.vitalarmapp.adapters.MedicationForm
+import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.google.firebase.Firebase
 
 sealed class LoginResult {
@@ -52,6 +54,7 @@ object FirebaseManager {
     private const val COLLECTION_USERS = "users"
     private const val COLLECTION_PATIENTS = "patients"
     private const val COLLECTION_MEDICATIONS = "medications"
+    private const val COLLECTION_REGISTERED_MEDICATIONS = "registered_medications"
     private const val LOG_TAG = "FirebaseManager"
 
     suspend fun registerUser(
@@ -282,6 +285,90 @@ object FirebaseManager {
             .document(userId)
             .collection(COLLECTION_PATIENTS)
 
+    private fun registeredMedicationsCollection(userId: String) =
+        db.collection(COLLECTION_USERS)
+            .document(userId)
+            .collection(COLLECTION_REGISTERED_MEDICATIONS)
+
+    suspend fun saveRegisteredMedication(medication: MedicationSearchItem): Boolean {
+        val userId = getCurrentUserId() ?: return false
+
+        return try {
+            val medicationData = mapOf(
+                "name" to medication.name,
+                "indication" to medication.indication,
+                "pharmacology" to medication.pharmacology,
+                "route" to medication.route,
+                "composition" to medication.composition,
+                "dosageValue" to medication.dosageValue,
+                "dosageUnit" to medication.dosageUnit,
+                "form" to medication.form?.name,
+                "createdAt" to System.currentTimeMillis(),
+            )
+
+            registeredMedicationsCollection(userId)
+                .add(medicationData)
+                .await()
+            true
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "Error guardando medicamento: ${e.message}", e)
+            false
+        }
+    }
+
+    suspend fun getRegisteredMedications(): List<RegisteredMedication> {
+        val userId = getCurrentUserId() ?: return emptyList()
+
+        return try {
+            val result = registeredMedicationsCollection(userId)
+                .orderBy("createdAt")
+                .get()
+                .await()
+
+            result.documents.mapNotNull { document ->
+                val data = document.data ?: return@mapNotNull null
+
+                val formName = data["form"] as? String
+                val medication = MedicationSearchItem(
+                    name = data["name"] as? String ?: "",
+                    indication = data["indication"] as? String,
+                    pharmacology = data["pharmacology"] as? String,
+                    route = data["route"] as? String,
+                    composition = data["composition"] as? String,
+                    dosageValue = data["dosageValue"] as? String,
+                    dosageUnit = data["dosageUnit"] as? String,
+                    form = formName?.let { MedicationForm.valueOf(it) },
+                )
+
+                RegisteredMedication(
+                    id = document.id,
+                    medication = medication,
+                )
+            }
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "Error obteniendo medicamentos registrados: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun deleteRegisteredMedications(ids: List<String>): Boolean {
+        val userId = getCurrentUserId() ?: return false
+        if (ids.isEmpty()) return true
+
+        return try {
+            db.runBatch { batch ->
+                ids.forEach { id ->
+                    val docRef = registeredMedicationsCollection(userId).document(id)
+                    batch.delete(docRef)
+                }
+            }.await()
+            true
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "Error eliminando medicamentos: ${e.message}", e)
+            false
+        }
+    }
+
     suspend fun getMedicationsForPerson(personId: String): List<Medication> {
         return try {
             Log.d(LOG_TAG, "🔍 Buscando medicamentos para persona: $personId")
@@ -426,3 +513,8 @@ internal object FirebasePatientRegistrar : PatientRegistrar {
         notes: String,
     ): AddPersonResult = FirebaseManager.addPerson(name, birthDate, gender, notes)
 }
+
+data class RegisteredMedication(
+    val id: String,
+    val medication: MedicationSearchItem,
+)

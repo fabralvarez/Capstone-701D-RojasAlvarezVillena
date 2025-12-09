@@ -16,18 +16,14 @@ import com.example.vitalarmapp.alarm.MedicationRadioAdapter
 import com.example.vitalarmapp.alarm.toChoice
 import com.example.vitalarmapp.adapters.MedicationSearchItem
 import com.example.vitalarmapp.databinding.ActivitySelectMedBinding
+import com.example.vitalarmapp.utils.firebase.FirebaseManager
 import com.google.android.material.transition.platform.MaterialSharedAxis
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SelectMedActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySelectMedBinding
     private val adapter = MedicationRadioAdapter(::onMedicationSelected)
-    private val gson: Gson by lazy { Gson() }
 
     private var selectedMedication: MedicationChoice? = null
     private var patientId: String = ""
@@ -82,24 +78,13 @@ class SelectMedActivity : AppCompatActivity() {
     private fun loadMedications() {
         lifecycleScope.launch {
             setLoading(true)
-            val storedItems = withContext(Dispatchers.IO) { fetchMedications() }
+            val storedItems = FirebaseManager.getRegisteredMedications().map { registered ->
+                registered.medication.toChoice(id = registered.id)
+            }
             adapter.submitList(storedItems)
             selectedMedication = null
             binding.selectMedContinue.isEnabled = false
             setLoading(false)
-        }
-    }
-
-    private fun fetchMedications(): List<MedicationChoice> {
-        val prefs = getSharedPreferences("medications_prefs", MODE_PRIVATE)
-        val storedJson = prefs.getString("medications_list", "[]")
-        val type = object : TypeToken<List<MedicationSearchItem>>() {}.type
-        val medications = runCatching {
-            gson.fromJson<List<MedicationSearchItem>>(storedJson, type)
-        }.getOrDefault(emptyList())
-
-        return medications.mapIndexed { index, item ->
-            item.toChoice(id = "med_choice_${index}_${item.name}")
         }
     }
 

@@ -161,7 +161,13 @@ object FirebaseManager {
         }
 
         return try {
-            val userName = auth.currentUser?.displayName ?: getCurrentUserName()
+            val userName = getCurrentUserName()
+                .ifBlank {
+                    auth.currentUser?.displayName
+                        ?.takeIf { it.isNotBlank() }
+                        ?: auth.currentUser?.email
+                        ?: "Usuario"
+                }
 
             val personData = mutableMapOf<String, Any>(
                 "name" to name,
@@ -232,6 +238,8 @@ object FirebaseManager {
         return try {
             Log.d("FirebaseDebug", "🎯 Consultando Firestore...")
 
+            val currentUserName = getCurrentUserName()
+
             val result = patientsCollection(userId)
                 .get()
                 .await()
@@ -249,7 +257,9 @@ object FirebaseManager {
                     gender = data["gender"] as? String ?: "",
                     notes = data["notes"] as? String ?: "",
                     userId = data["userId"] as? String ?: "",
-                    userName = data["userName"] as? String ?: "",
+                    userName = (data["userName"] as? String)
+                        ?.takeIf { it.isNotBlank() }
+                        ?: currentUserName,
                     createdAt = (data["createdAt"] as? Number)?.toLong() ?: 0L
                 )
             }
